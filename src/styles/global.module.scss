@@ -1,17 +1,35 @@
-// src/styles/global.module.scss
+// ==========================================================================
+// BREAKPOINTS & RESPONSIVE MIXINS
+// ==========================================================================
+$breakpoint-mobile: 768px;
+$breakpoint-tablet: 1024px;
+
+@mixin mobile {
+  @media (max-width: #{$breakpoint-mobile}) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: #{$breakpoint-mobile + 1px}) and (max-width: #{$breakpoint-tablet}) {
+    @content;
+  }
+}
 
 // ==========================================================================
-// VARIABLES DE COLORES (Tema oscuro suavizado y acentos morados brillantes)
+// VARIABLES DE COLORES
 // ==========================================================================
-$bg-main: #16161a;         // Fondo principal de la aplicación
-$bg-card: #202024;         // Fondo de las tarjetas, Navbar y Footer
-$bg-input: #2a2a30;        // Fondo de los campos de texto e inputs
+$bg-main: #070a13;               
+$bg-card: rgba(23, 31, 51, 0.8); 
+$bg-input: #131c2e;              
 
-$color-primary: #b160ff;       // Color morado principal para botones
-$color-primary-hover: #c586ff; // Morado más claro para el efecto hover
+$color-primary: #7c3aed;         
+$color-primary-hover: #9061f9;    
+$color-glow: rgba(210, 187, 255, 0.1);
 
-$text-main: #f3f4f6;       // Texto principal de alto contraste
-$text-muted: #a1a1aa;      // Texto secundario para fechas y descripciones
+$text-main: #ffffff;             
+$text-muted: #64748b;
+$text-brand: #c3c0ff;      
 
 // ==========================================================================
 // EXPORTACIÓN DE VARIABLES A JAVASCRIPT / TYPESCRIPT
@@ -22,15 +40,15 @@ $text-muted: #a1a1aa;      // Texto secundario para fechas y descripciones
   bgInput: $bg-input;
   colorPrimary: $color-primary;
   colorPrimaryHover: $color-primary-hover;
+  colorGlow: $color-glow;
   textMain: $text-main;
   textMuted: $text-muted;
+  textBrand: $text-brand;
 }
 
 // ==========================================================================
 // CLASES GLOBALES REUTILIZABLES (SCSS MODULES)
 // ==========================================================================
-
-// Estilo para el fondo completo de cualquier pantalla (Figma Frame)
 .pageLayout {
   min-height: 100vh;
   background-color: $bg-main;
@@ -40,23 +58,43 @@ $text-muted: #a1a1aa;      // Texto secundario para fechas y descripciones
   flex-direction: column;
 }
 
-// Estructura base para contenedores o cajas (como el rectángulo de Login/Register)
 .baseCard {
-  background-color: $bg-card;
+  background-color: rgba($bg-card, 0.6);
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, $color-glow 0%, transparent 60%);
+    filter: blur(40px);
+    z-index: -1;
+    pointer-events: none;
+  }
 }
 
-// Tipografía: Título principal de gran tamaño (36px aprox.)
 .mainTitle {
   font-size: 2.25rem;
   font-weight: 700;
   color: $text-main;
 }
 
-// Tipografía: Subtítulo o texto secundario (18px aprox.)
 .subTitle {
   font-size: 1.125rem;
   color: $text-muted;
+}
+
+:global {
+  html, body {
+    margin: 0;
+    padding: 0;
+    background-color: $bg-main;
+  }
 }
