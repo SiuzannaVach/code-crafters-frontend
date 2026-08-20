@@ -1,0 +1,25 @@
+// ==========================================================================
+// VARIABLES DE COLORES (Tema oscuro suavizado y acentos morados brillantes)
+// ==========================================================================
+$bg-main: #16161a;         // Fondo principal de la aplicación (no cansa la vista)
+$bg-card: #202024;         // Fondo de las tarjetas, Navbar y Footer (más claro)
+$bg-input: #2a2a30;        // Fondo de los campos de texto e inputs
+
+$color-primary: #b160ff;       // Color morado principal vibrante para botones
+$color-primary-hover: #c586ff; // Morado más claro para el efecto hover
+
+$text-main: #f3f4f6;       // Texto principal (blanco de alto contraste)
+$text-muted: #a1a1aa;      // Texto secundario (gris para fechas y descripciones)
+
+// ==========================================================================
+// EXPORTACIÓN DE VARIABLES A JAVASCRIPT / TYPESCRIPT
+// ==========================================================================
+:export {
+  bgMain: $bg-main;
+  bgCard: $bg-card;
+  bgInput: $bg-input;
+  colorPrimary: $color-primary;
+  colorPrimaryHover: $color-primary-hover;
+  textMain: $text-main;
+  textMuted: $text-muted;
+}
