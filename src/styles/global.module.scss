@@ -1,0 +1,62 @@
+// src/styles/global.module.scss
+
+// ==========================================================================
+// VARIABLES DE COLORES (Tema oscuro suavizado y acentos morados brillantes)
+// ==========================================================================
+$bg-main: #16161a;         // Fondo principal de la aplicación
+$bg-card: #202024;         // Fondo de las tarjetas, Navbar y Footer
+$bg-input: #2a2a30;        // Fondo de los campos de texto e inputs
+
+$color-primary: #b160ff;       // Color morado principal para botones
+$color-primary-hover: #c586ff; // Morado más claro para el efecto hover
+
+$text-main: #f3f4f6;       // Texto principal de alto contraste
+$text-muted: #a1a1aa;      // Texto secundario para fechas y descripciones
+
+// ==========================================================================
+// EXPORTACIÓN DE VARIABLES A JAVASCRIPT / TYPESCRIPT
+// ==========================================================================
+:export {
+  bgMain: $bg-main;
+  bgCard: $bg-card;
+  bgInput: $bg-input;
+  colorPrimary: $color-primary;
+  colorPrimaryHover: $color-primary-hover;
+  textMain: $text-main;
+  textMuted: $text-muted;
+}
+
+// ==========================================================================
+// CLASES GLOBALES REUTILIZABLES (SCSS MODULES)
+// ==========================================================================
+
+// Estilo para el fondo completo de cualquier pantalla (Figma Frame)
+.pageLayout {
+  min-height: 100vh;
+  background-color: $bg-main;
+  color: $text-main;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+// Estructura base para contenedores o cajas (como el rectángulo de Login/Register)
+.baseCard {
+  background-color: $bg-card;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+// Tipografía: Título principal de gran tamaño (36px aprox.)
+.mainTitle {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: $text-main;
+}
+
+// Tipografía: Subtítulo o texto secundario (18px aprox.)
+.subTitle {
+  font-size: 1.125rem;
+  color: $text-muted;
+}
