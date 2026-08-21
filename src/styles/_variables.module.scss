@@ -1,15 +1,35 @@
 // ==========================================================================
-// VARIABLES DE COLORES (Tema oscuro suavizado y acentos morados brillantes)
+// BREAKPOINTS & RESPONSIVE MIXINS
 // ==========================================================================
-$bg-main: #16161a;         // Fondo principal de la aplicación (no cansa la vista)
-$bg-card: #202024;         // Fondo de las tarjetas, Navbar y Footer (más claro)
-$bg-input: #2a2a30;        // Fondo de los campos de texto e inputs
+$breakpoint-mobile: 768px;
+$breakpoint-tablet: 1024px;
 
-$color-primary: #b160ff;       // Color morado principal vibrante para botones
-$color-primary-hover: #c586ff; // Morado más claro para el efecto hover
+@mixin mobile {
+  @media (max-width: #{$breakpoint-mobile}) {
+    @content;
+  }
+}
 
-$text-main: #f3f4f6;       // Texto principal (blanco de alto contraste)
-$text-muted: #a1a1aa;      // Texto secundario (gris para fechas y descripciones)
+@mixin tablet {
+  @media (min-width: #{$breakpoint-mobile + 1px}) and (max-width: #{$breakpoint-tablet}) {
+    @content;
+  }
+}
+
+// ==========================================================================
+// VARIABLES DE COLORES (Tema oscuro, acentos morados con glow)
+// ==========================================================================
+$bg-main: #070a13;
+$bg-card: rgba(23, 31, 51, 0.8);
+$bg-input: #131c2e;
+
+$color-primary: #7c3aed;
+$color-primary-hover: #9061f9;
+$color-glow: rgba(210, 187, 255, 0.1);
+
+$text-main: #ffffff;
+$text-muted: #64748b;
+$text-brand: #c3c0ff;
 
 // ==========================================================================
 // EXPORTACIÓN DE VARIABLES A JAVASCRIPT / TYPESCRIPT
@@ -20,6 +40,62 @@ $text-muted: #a1a1aa;      // Texto secundario (gris para fechas y descripciones
   bgInput: $bg-input;
   colorPrimary: $color-primary;
   colorPrimaryHover: $color-primary-hover;
+  colorGlow: $color-glow;
   textMain: $text-main;
   textMuted: $text-muted;
+  textBrand: $text-brand;
+}
+
+// ==========================================================================
+// CLASES GLOBALES REUTILIZABLES (SCSS MODULES)
+// ==========================================================================
+.pageLayout {
+  min-height: 100vh;
+  background-color: $bg-main;
+  color: $text-main;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+.baseCard {
+  background-color: rgba($bg-card, 0.6);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, $color-glow 0%, transparent 60%);
+    filter: blur(40px);
+    z-index: -1;
+    pointer-events: none;
+  }
+}
+
+.mainTitle {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: $text-main;
+}
+
+.subTitle {
+  font-size: 1.125rem;
+  color: $text-muted;
+}
+
+:global {
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: $bg-main;
+  }
 }
