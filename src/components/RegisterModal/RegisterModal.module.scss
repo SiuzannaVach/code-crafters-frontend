@@ -1,0 +1,415 @@
+@use '../../styles/global.module' as *;
+
+
+// 📱 
+.register-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  
+  
+    background: radial-gradient(circle at 50% 25%, #1e29a3 0%, #0d0c24 55%, #05050d 100%);
+
+  
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+
+  &__body {
+    position: relative;
+    width: 100%;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem 1.25rem;
+    box-sizing: border-box;
+  }
+
+  &__close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: #918FA1;
+    cursor: pointer;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    z-index: 10;
+  }
+
+  &__footer {
+    margin-top: auto;
+    padding-top: 2.5rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: #918FA1;
+  }
+
+  &__footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-weight: 500;
+    color: #b2a3ff;
+  }
+}
+
+
+.brand-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  width: 100%;
+
+      &__logo-box {
+      background: transparent;
+      border: none;
+      width: 56px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 0.75rem;
+      filter: drop-shadow(0 0 15px rgba(147, 129, 255, 0.5));
+    }
+
+  &__logo-icon { color: #ffffff; }
+  &__title {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: -0.01em;
+  }
+  &__subtitle {
+    margin: 0.4rem 0 0;
+    font-size: 0.9rem;
+    color: #c7c4d8;
+    line-height: 1.4;
+  }
+  &__subtitle-mobile { display: inline; }
+  &__subtitle-desktop { display: none; }
+}
+
+.auth-card {
+  display: block !important;
+  width: 100%;
+  max-width: 358px; 
+  background-color: rgba(21, 26, 44, 0.6) !important;
+  border: 1px solid rgba(145, 143, 161, 0.2) !important; 
+  border-radius: 16px; 
+  padding: 2.25rem 1.25rem; 
+  box-sizing: border-box;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4);
+
+  &__title { display: none; }
+  
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+  }
+
+  &__submit-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 13px;
+    border-radius: 8px;
+    font-weight: 700; 
+    font-size: 0.95rem;
+    cursor: pointer;
+    border: none;
+    background-color: #c3b6ff; 
+    color: #070610; 
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  &__redirect {
+    margin-top: 1.5rem;
+    text-align: center;
+    color: #918FA1;
+    font-size: 0.85rem;
+  }
+  &__link {
+    color: #c3b6ff;
+    text-decoration: none;
+    font-weight: 600;
+  }
+}
+
+
+.form-field {
+  display: flex !important;
+  flex-direction: column;
+  gap: 0.4rem;
+  width: 100%;
+
+  &__label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: #c3c0ff; 
+    opacity: 0.85;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-align: left;
+  }
+  &__control {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  &__icon {
+    position: absolute;
+    left: 14px;
+    color: #ffffff;
+    opacity: 0.75; 
+    z-index: 2;
+  }
+  &__input, &__select {
+    width: 100%;
+    padding: 12px 12px 12px 44px; 
+    background-color: #131b2e;  
+    border: 1px solid  #464555; 
+    border-radius: 8px;
+    color: #ffffff;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    outline: none;
+    box-sizing: border-box;
+
+     &::placeholder {
+      color: #918FA1;
+      opacity: 0.8;
+    }
+
+    &:focus {
+      border-color: #c3b6ff;
+    }
+  }
+  &__select {
+    appearance: none;
+    cursor: pointer;
+    color: #918FA1; 
+  }
+  &__toggle-pass, &__select-arrow {
+    position: absolute;
+    right: 14px;
+    background: none;
+    border: none;
+    color: #c3c0ff;
+    opacity: 0.8;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+  &--account-type { display: flex; }
+}
+
+
+// 🖥️ 
+@media (min-width: 769px) {
+  
+  .register-modal {
+    background-color: rgba(5, 4, 12, 0.75);
+    backdrop-filter: blur(8px);
+
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+     align-items: center !important;
+     background: radial-gradient(circle at 50% 45%, #362d7c 0%,#100d2b 50%, #14112e 100%) !important;
+      position: fixed;
+    box-sizing: border-box;
+
+    &__body {
+      width: 100%;
+      max-width: 1200px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 4rem;
+      box-sizing: border-box;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+    }
+
+
+    &__footer {
+      display: flex !important; 
+      flex-direction: row !important; 
+      justify-content: space-between; 
+      align-items: center;
+      width: 100%;
+      max-width: 1200px; 
+      margin: auto auto 0 auto; 
+      padding: 2rem 4rem;
+      border-top: 1px solid rgba(195, 192, 255, 0.08); 
+      box-sizing: border-box;
+      font-size: 0.85rem;
+      color: #918FA1;
+    }
+
+    &__footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #c3c0ff; // Светло-сиреневый бренд
+    }
+
+    &__copyright {
+      opacity: 0.8;
+    }
+  }
+
+  .brand-header {
+    margin-bottom: 2rem;
+    text-align: center;
+
+    &__logo-box {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 0.75rem;
+      filter: drop-shadow(0 0 20px rgba(147, 129, 255, 0.6));
+    }
+
+    &__title {
+      font-size: 2.25rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: #ffffff;
+    }
+
+    &__subtitle {
+      color: #c3c0ff; 
+      opacity: 0.85;
+      font-size: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    &__subtitle-mobile { display: none; }
+    &__subtitle-desktop { display: inline; }
+  }
+
+  
+  .auth-card {
+    width: 100%;
+    max-width: 500px; 
+   background-color: rgba(20, 19, 36, 0.45) !important; 
+    border: 1px solid rgba(178, 163, 255, 0.18) !important; 
+    border-radius: 16px; 
+    padding:  2.25rem 2.75rem 2rem;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    box-sizing: border-box;
+
+    &__title {
+      display: block; 
+      margin: 0 0 1rem;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #ffffff;
+      text-align: left; 
+    }
+
+    &__form {
+      gap: 1rem; 
+    }
+
+   
+    &__submit-btn {
+      background-color: transparent; 
+      border: 1px solid rgba(178, 163, 255, 0.3) !important; 
+      color: #b2a3ff !important; 
+      margin-top: 0.5rem;
+      font-size: 0.95rem;
+      padding: 13px;
+      box-shadow: none;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      //transition: all 0.2s ease-in-out;
+      //font-weight: 700;
+
+      &:hover {
+        border-color: #b2a3ff;
+        background-color: rgba(124, 58, 237, 0.12); 
+        box-shadow: 0 0 15px rgba(178, 163, 255, 0.2);
+      }
+    }
+
+    
+    &__redirect {
+      margin-top: 1.25rem;
+      font-size: 0.85rem;
+      color: #7e7c9c;
+    }
+
+    &__link {
+      color: #b2a3ff;
+    }
+  }
+
+  
+  .form-field {
+    gap: 0.35rem;
+
+    &__label {
+      color: #c3c0ff !important;
+      opacity: 0.85;
+      font-size: 0.7rem;
+    }
+
+    &__input, &__select {
+      background-color: #0b0a14; 
+      border: 1px solid #1f1d36; 
+      padding: 11px 12px 11px 44px; 
+      font-size: 0.95rem !important;
+      color: #ffffff;
+
+      &:focus {
+        border-color: #b2a3ff;
+      }
+    }
+
+    &__icon {
+      color: #5d598c; 
+      //left: 16px;
+    }
+
+    
+    &--account-type {
+      display: flex !important;
+      
+      .form-field__select {
+        appearance: none;
+        cursor: pointer;
+      }
+      .form-field__select-arrow {
+        color: #c3c0ff;
+        opacity: 0.8;
+        pointer-events: none;
+      }
+    }
+  }
+}
