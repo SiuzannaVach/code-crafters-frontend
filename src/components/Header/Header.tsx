@@ -36,7 +36,7 @@ const Header: React.FC<HeaderProps> = ({ isAuthenticated = false }) => {
                 strokeWidth="2" 
                 strokeLinecap="round" 
                 strokeLinejoin="round"
-                xmlns="http://w3.org"
+                xmlns="http://www.w3.org/2000/svg"
               >
                 <circle cx="11" cy="11" r="8" />
                 <line x1="21" y1="21" x2="16.65" y2="16.65" />
@@ -49,7 +49,7 @@ const Header: React.FC<HeaderProps> = ({ isAuthenticated = false }) => {
             />
           </div>
           
-          {/* Правый блок: Капсула утилитарных иконок (448px из Figma) */}
+         
           <div className={styles.header__actions}>
             <div className={styles.header__profile} aria-label="Perfil">
               <img src={iconProfile} className={styles['header__action-img']} alt="Perfil" />
