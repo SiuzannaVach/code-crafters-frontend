@@ -1,22 +1,19 @@
 @use '../../styles/global.module' as *;
 
-
-// 📱 
+// 📱 Mobile Styles
 .register-modal {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  
-  
-    background: radial-gradient(circle at 50% 25%, #1e29a3 0%, #0d0c24 55%, #05050d 100%);
-
-  
+  background: radial-gradient(circle at 50% 25%, #1e29a3 0%, #0d0c24 55%, #05050d 100%);
   z-index: 1000;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
+  overflow-y: initial !important;
+
+  
 
   &__body {
     position: relative;
@@ -67,23 +64,22 @@
   }
 }
 
-
 .brand-header {
   text-align: center;
   margin-bottom: 2rem;
   width: 100%;
 
-      &__logo-box {
-      background: transparent;
-      border: none;
-      width: 56px;
-      height: 56px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 0.75rem;
-      filter: drop-shadow(0 0 15px rgba(147, 129, 255, 0.5));
-    }
+  &__logo-box {
+    background: transparent;
+    border: none;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 0.75rem;
+    filter: drop-shadow(0 0 15px rgba(147, 129, 255, 0.5));
+  }
 
   &__logo-icon { color: #ffffff; }
   &__title {
@@ -153,7 +149,6 @@
   }
 }
 
-
 .form-field {
   display: flex !important;
   flex-direction: column;
@@ -185,7 +180,7 @@
     width: 100%;
     padding: 12px 12px 12px 44px; 
     background-color: #131b2e;  
-    border: 1px solid  #464555; 
+    border: 1px solid #464555; 
     border-radius: 8px;
     color: #ffffff;
     font-family: 'JetBrains Mono', monospace;
@@ -221,23 +216,61 @@
   &--account-type { display: flex; }
 }
 
-
-// 🖥️ 
+// 🖥️ Desktop Styles
 @media (min-width: 769px) {
   
   .register-modal {
-    background-color: rgba(5, 4, 12, 0.75);
-    backdrop-filter: blur(8px);
-
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
     display: flex !important;
     flex-direction: column !important;
-    justify-content: flex-start !important;
-     align-items: center !important;
-     background: radial-gradient(circle at 50% 45%, #362d7c 0%,#100d2b 50%, #14112e 100%) !important;
-      position: fixed;
+    justify-content: center !important;
+    align-items: center !important;
     box-sizing: border-box;
+    overflow: hidden !important; 
+    background: #060512 !important; 
+    backdrop-filter: none !important;
 
+    &::before {
+      content: '';
+      position: absolute;
+      top: 35%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 140vw;
+      height: 120vh;
+           background: none !important;
+    background-image: 
+     
+      radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.03) 25%, transparent 55%),
+     
+      radial-gradient(circle at 50% 50%, #3e33b8 0%, rgba(15, 10, 50, 0.82) 42%, #0d0a21 72%, #04030a 100%) !important;
+
+
+      filter: blur(60px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+      &::after {
+      content: '';
+      position: absolute;
+      top: 15%; 
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+      filter: blur(60px); 
+      pointer-events: none;
+      z-index: 0;
+    }
     &__body {
+      position: relative;
       width: 100%;
       max-width: 1200px;
       flex: 1;
@@ -247,42 +280,42 @@
       justify-content: center;
       padding: 2rem 4rem;
       box-sizing: border-box;
-      background: transparent;
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      z-index: 1;
+    }
+
+    &__close-btn {
+      position: absolute;
+      top: 32px;
+      right: 40px;
+      background: none;
       border: none;
-      box-shadow: none;
-    }
-
-
-    &__footer {
-      display: flex !important; 
-      flex-direction: row !important; 
-      justify-content: space-between; 
-      align-items: center;
-      width: 100%;
-      max-width: 1200px; 
-      margin: auto auto 0 auto; 
-      padding: 2rem 4rem;
-      border-top: 1px solid rgba(195, 192, 255, 0.08); 
-      box-sizing: border-box;
-      font-size: 0.85rem;
-      color: #918FA1;
-    }
-
-    &__footer-brand {
+      color: rgba(145, 143, 161, 0.8);
+      cursor: pointer;
+      padding: 8px;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      color: #c3c0ff; // Светло-сиреневый бренд
+      justify-content: center;
+      border-radius: 50%;
+      z-index: 2;
+
+      &:hover {
+        color: #ffffff;
+      }
     }
 
-    &__copyright {
-      opacity: 0.8;
+    &__footer {
+      display: none !important;
     }
   }
 
   .brand-header {
-    margin-bottom: 2rem;
     text-align: center;
+    margin-bottom: 2rem;
+    margin-top: -3.5rem; 
+    width: 100%;
 
     &__logo-box {
       background: transparent;
@@ -290,124 +323,185 @@
       box-shadow: none;
       width: 56px;
       height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       margin: 0 auto 0.75rem;
-      filter: drop-shadow(0 0 20px rgba(147, 129, 255, 0.6));
+      filter: drop-shadow(0 0 25px rgba(147, 129, 255, 0.85));
     }
 
+    &__logo-icon { color: #ffffff; }
+    
     &__title {
+      margin: 0;
       font-size: 2.25rem;
       font-weight: 700;
-      letter-spacing: -0.01em;
       color: #ffffff;
+      letter-spacing: -0.01em;
     }
-
+    
     &__subtitle {
-      color: #c3c0ff; 
-      opacity: 0.85;
+      margin: 0.5rem 0 0;
       font-size: 1rem;
-      margin-top: 0.5rem;
+      color: #c3c0ff;
+      opacity: 0.9;
+      line-height: 1.4;
     }
-
+    
     &__subtitle-mobile { display: none; }
     &__subtitle-desktop { display: inline; }
   }
 
-  
   .auth-card {
+    display: block !important;
     width: 100%;
-    max-width: 500px; 
-   background-color: rgba(20, 19, 36, 0.45) !important; 
-    border: 1px solid rgba(178, 163, 255, 0.18) !important; 
+    max-width: 440px; 
+    background-color: rgba(24, 22, 43, 0.65) !important; 
+    border: 1px solid rgba(178, 163, 255, 0.15) !important; 
+    border-top: 2px solid #b2a3ff !important;
     border-radius: 16px; 
-    padding:  2.25rem 2.75rem 2rem;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(10px);
+    padding: 2.5rem 2.5rem 2.25rem !important;
+    box-shadow: 
+      0 30px 70px rgba(0, 0, 0, 0.6), 
+      0 0 30px rgba(178, 163, 255, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1); 
+    backdrop-filter: blur(12px);
     box-sizing: border-box;
+    display: block !important;
 
     &__title {
       display: block; 
-      margin: 0 0 1rem;
-      font-size: 1.5rem;
+      margin: 0 0 1.25rem;
+      font-size: 1.6rem;
       font-weight: 600;
       color: #ffffff;
       text-align: left; 
     }
-
+    
     &__form {
-      gap: 1rem; 
+      display: flex;
+      flex-direction: column;
+      gap: 1.15rem;
     }
 
-   
     &__submit-btn {
-      background-color: transparent; 
-      border: 1px solid rgba(178, 163, 255, 0.3) !important; 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 14px;
+      border-radius: 8px;
+      font-weight: 600; 
+      font-size: 0.9rem;
+      cursor: pointer;
+      background-color: transparent !important; 
+      border: 1px solid rgba(178, 163, 255, 0.35) !important; 
       color: #b2a3ff !important; 
-      margin-top: 0.5rem;
-      font-size: 0.95rem;
-      padding: 13px;
+      width: 100%;
+      margin-top: 0.75rem;
       box-shadow: none;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      //transition: all 0.2s ease-in-out;
-      //font-weight: 700;
 
       &:hover {
         border-color: #b2a3ff;
-        background-color: rgba(124, 58, 237, 0.12); 
-        box-shadow: 0 0 15px rgba(178, 163, 255, 0.2);
+        background-color: rgba(124, 58, 237, 0.15); 
+        box-shadow: 0 0 15px rgba(178, 163, 255, 0.25);
       }
     }
 
-    
     &__redirect {
-      margin-top: 1.25rem;
+      margin-top: 1.5rem;
+      text-align: center;
+      color: #8c8aa8;
       font-size: 0.85rem;
-      color: #7e7c9c;
     }
-
+    
     &__link {
       color: #b2a3ff;
+      text-decoration: none;
+      font-weight: 600;
     }
   }
 
-  
   .form-field {
-    gap: 0.35rem;
+    display: flex !important;
+    flex-direction: column;
+    gap: 0.4rem;
+    width: 100%;
 
     &__label {
-      color: #c3c0ff !important;
-      opacity: 0.85;
       font-size: 0.7rem;
+      text-transform: uppercase;
+      color: #c3c0ff !important; 
+      opacity: 0.85;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-align: left;
     }
-
+    
+    &__control {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    
+    &__icon {
+      position: absolute;
+      left: 14px;
+      color: #5d598c;
+      opacity: 1; 
+      z-index: 2;
+    }
+    
     &__input, &__select {
-      background-color: #0b0a14; 
-      border: 1px solid #1f1d36; 
-      padding: 11px 12px 11px 44px; 
-      font-size: 0.95rem !important;
+      width: 100%;
+      padding: 12px 12px 12px 44px; 
+      background-color: #0d0c1d !important;  
+      border: 1px solid #24223d !important; 
+      border-radius: 8px;
       color: #ffffff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem !important;
+      outline: none;
+      box-sizing: border-box;
+
+      &::placeholder {
+        color: #918FA1;
+        opacity: 0.8;
+      }
 
       &:focus {
-        border-color: #b2a3ff;
+        border-color: rgba(178, 163, 255, 0.7);
       }
     }
-
-    &__icon {
-      color: #5d598c; 
-      //left: 16px;
-    }
-
     
-    &--account-type {
-      display: flex !important;
+    &__select {
+      appearance: none;
+      cursor: pointer;
+      color: #918FA1; 
+    }
+    
+    &__toggle-pass, &__select-arrow {
+      position: absolute;
+      right: 14px;
+      background: none;
+      border: none;
+      color: #c3c0ff;
+      opacity: 0.7;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+    
+    &--account-type { 
+      display: flex !important; 
       
       .form-field__select {
         appearance: none;
         cursor: pointer;
       }
       .form-field__select-arrow {
-        color: #c3c0ff;
-        opacity: 0.8;
         pointer-events: none;
       }
     }

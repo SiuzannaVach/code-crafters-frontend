@@ -17,7 +17,7 @@ $breakpoint-tablet: 1024px;
 }
 
 // ==========================================================================
-// VARIABLES DE COLORES
+// VARIABLES DE COLORES 
 // ==========================================================================
 $bg-main: #070a13;               
 $bg-card: rgba(23, 31, 51, 0.8); 
@@ -32,9 +32,25 @@ $text-muted: #64748b;
 $text-brand: #c3c0ff;      
 
 // ==========================================================================
+// VARIABLES DE COLORES 
+// ==========================================================================
+$modal-bg-gradient-start: #1e29a3;
+$modal-bg-gradient-middle: #0d0c24;
+$modal-bg-gradient-end: #05050d;
+$modal-bg-card: rgba(21, 26, 44, 0.6);
+$modal-border-card: rgba(145, 143, 161, 0.2);
+$modal-bg-input: #0d0c1d;
+$modal-border-input: #24223d;
+$modal-text-purple: #b2a3ff;
+$modal-text-muted: #918FA1;
+$modal-text-label: #c3c0ff;
+$modal-icon: #5d598c;
+
+// ==========================================================================
 // EXPORTACIÓN DE VARIABLES A JAVASCRIPT / TYPESCRIPT
 // ==========================================================================
 :export {
+  
   bgMain: $bg-main;
   bgCard: $bg-card;
   bgInput: $bg-input;
@@ -44,6 +60,10 @@ $text-brand: #c3c0ff;
   textMain: $text-main;
   textMuted: $text-muted;
   textBrand: $text-brand;
+  
+
+  modalBgInput: $modal-bg-input;
+  modalTextPurple: $modal-text-purple;
 }
 
 // ==========================================================================

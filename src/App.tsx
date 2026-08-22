@@ -1,22 +1,37 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import styles from './styles/global.module.scss';
 import { RegisterModal } from './components/RegisterModal/RegisterModal';
+import { LoginCard } from './components/Login/LoginCard';
 
 function App() {
+  const [isRegisterOpen, setIsRegisterOpen] = useState<boolean>(false);
+
+  
+  useEffect(() => {
+    if (window.location.hash === '#register') {
+      setIsRegisterOpen(true);
+    }
+  }, []);
+
+  const handleNavigateToRegister = () => {
+    window.location.hash = 'register';
+    setIsRegisterOpen(true);
+  };
+
   return (
     <div className={styles.pageLayout}>
-      {/* Верхняя панель навигации */}
       <Header isAuthenticated={true} />
-      <RegisterModal />
 
-      {/* Сюда мы будем вставлять настоящие страницы или карточки событий */}
-      <main style={{ padding: '2rem', flex: '1' }}>
-        {/* Текст удален. Теперь здесь пустое рабочее пространство */}
+      <main className={styles.mainContent}>
+        
+        <LoginCard onNavigate={handleNavigateToRegister} />
+
+      
+        {isRegisterOpen && <RegisterModal key="fixed-overlay-modal" />}
       </main>
 
-      {/* Нижняя панель */}
       <Footer />
     </div>
   );
