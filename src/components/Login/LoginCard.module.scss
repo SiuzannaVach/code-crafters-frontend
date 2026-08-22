@@ -1,0 +1,214 @@
+@use '../../styles/global.module' as global;
+
+// 🖥️ DEFAULT STYLES (DESKTOP FIRST)
+.loginContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh !important;
+  padding: 3rem 2rem;
+  width: 100%;
+
+ 
+  background: none !important;
+  background-image: 
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.03) 25%, transparent 55%),
+    radial-gradient(circle at 50% 50%, #3e33b8 0%, rgba(15, 10, 50, 0.82) 42%, #0d0a21 72%, #04030a 100%) !important;
+}
+
+.loginCard {
+  width: 580px;
+  max-width: 580px;
+  padding: 4.5rem 4rem;
+  background-color: rgba(29, 35, 68, 0.85) !important;
+  border-radius: 12px;
+  border: 1px solid rgba(195, 192, 255, 0.15) !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.titleBlock {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.mainFormTitle {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: global.$text-main;
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: global.$text-muted;
+  margin: 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: global.$text-brand;
+    letter-spacing: 0.05em;
+  }
+}
+
+.inputWrapper {
+  position: relative; 
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: global.$bg-input; 
+  border: 1px solid rgba(100, 116, 139, 0.3);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+  width: 100%;
+
+  &:focus-within {
+    border-color: global.$color-primary;
+    box-shadow: 0 0 12px rgba(124, 58, 237, 0.4);
+  }
+
+  
+  select {
+    width: 100%;
+    background-color: transparent !important;
+    background: transparent !important;
+    border: none !important;
+    color: global.$text-main !important;
+    font-size: 0.95rem;
+    outline: none !important;
+    font-family: inherit;
+    cursor: pointer;
+    appearance: none !important; 
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    padding-right: 2.5rem !important;
+    padding-left: 0.25rem;
+
+    option {
+      background-color: global.$bg-input !important;
+      color: global.$text-main !important;
+      padding: 10px;
+    }
+  }
+}
+
+.selectArrow {
+  position: absolute;
+  right: 1rem;
+  color: global.$text-muted;
+  font-size: 0.65rem;
+  pointer-events: none;
+}
+
+.inputIcon {
+  color: global.$text-muted;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.inputWrapper input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: global.$text-main;
+  font-size: 0.95rem;
+  outline: none;
+  font-family: inherit;
+
+  &::placeholder {
+    color: rgba(100, 116, 139, 0.6);
+  }
+}
+
+.submitButton {
+  background-color: global.$color-primary;
+  color: global.$text-main;
+  padding: 0.85rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.2s, transform 0.1s;
+  margin-top: 0.5rem;
+
+  &:hover {
+    background-color: global.$color-primary-hover;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.footerLink {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.85rem;
+  color: global.$text-muted;
+
+  a {
+    color: global.$text-brand;
+    text-decoration: underline;
+    font-weight: 600;
+
+    &:hover {
+      color: global.$text-main;
+    }
+  }
+}
+
+// 📱 
+@include global.mobile {
+  .loginContainer {
+    padding: 1rem;
+    background: #0f0a32 !important; 
+  }
+
+  .loginCard {
+    width: 100%;
+    max-width: 100%;
+    padding: 2.25rem 1.25rem;
+    background-color: rgba(21, 26, 44, 0.6) !important;
+    border: 1px solid rgba(145, 143, 161, 0.2) !important;
+    border-radius: 16px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5), 0 0 20px rgba(147, 129, 255, 0.05) !important;
+  }
+
+  .mainFormTitle {
+    font-size: 1.75rem;
+  }
+
+  .titleBlock {
+    margin-bottom: 2rem;
+  }
+
+  .inputWrapper {
+    border: 1px solid rgba(100, 116, 139, 0.2);
+
+    &:focus-within {
+      box-shadow: 0 0 10px rgba(124, 58, 237, 0.3);
+    }
+  }
+}
