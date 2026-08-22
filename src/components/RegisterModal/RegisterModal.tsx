@@ -29,14 +29,14 @@ export const RegisterModal: React.FC = () => {
   return (
     <div className={styles['register-modal']} onClick={handleClose}>
       
-      {/* Тело модалки, центрирующее форму */}
+      
       <div className={styles['register-modal__body']} onClick={(e) => e.stopPropagation()}>
         
         <button className={styles['register-modal__close-btn']} onClick={handleClose} aria-label="Cerrar">
           <X size={20} />
         </button>
 
-        {/* Блок заголовка бренда */}
+        
         <div className={styles['brand-header']}>
           <div className={styles['brand-header__logo-box']}>
             <img 
@@ -52,13 +52,13 @@ export const RegisterModal: React.FC = () => {
           </p>
         </div>
 
-        {/* Карточка формы */}
+        
         <div className={styles['auth-card']}>
           <h2 className={styles['auth-card__title']}>Crear Cuenta</h2>
 
           <form onSubmit={handleSubmit(onSubmit)} className={styles['auth-card__form']} autoComplete="off">
             
-            {/* Поле: Имя */}
+            
             <div className={styles['form-field']}>
               <label className={styles['form-field__label']} htmlFor="fullName">Nombre Completo</label>
               <div className={styles['form-field__control']}>
@@ -73,7 +73,7 @@ export const RegisterModal: React.FC = () => {
               </div>
             </div>
 
-            {/* Поле: Email */}
+            
             <div className={styles['form-field']}>
               <label className={styles['form-field__label']} htmlFor="email">Dirección de Email</label>
               <div className={styles['form-field__control']}>
@@ -82,14 +82,14 @@ export const RegisterModal: React.FC = () => {
                   id="email"
                   type="email"
                   className={styles['form-field__input']}
-                  placeholder="siuzannavach@gmail.com"
+                  placeholder="dev@codecrafters.com"
                   autoComplete="one-time-code"
                   {...register('email', { required: true })}
                 />
               </div>
             </div>
 
-            {/* Поле: Пароль */}
+         
             <div className={styles['form-field']}>
               <label className={styles['form-field__label']} htmlFor="password">Contraseña</label>
               <div className={styles['form-field__control']}>
@@ -112,7 +112,7 @@ export const RegisterModal: React.FC = () => {
               </div>
             </div>
 
-            {/* Поле: Тип аккаунта */}
+            
             <div className={`${styles['form-field']} ${styles['form-field--account-type']}`}>
               <label className={styles['form-field__label']} htmlFor="accountType">Tipo de Cuenta</label>
               <div className={styles['form-field__control']}>
@@ -126,7 +126,7 @@ export const RegisterModal: React.FC = () => {
               </div>
             </div>
 
-            {/* Кнопка отправки формы */}
+            
             <button type="submit" className={styles['auth-card__submit-btn']}>
               <span>CREAR CUENTA</span>
               <ArrowRight size={18} />
@@ -138,9 +138,9 @@ export const RegisterModal: React.FC = () => {
           </div>
         </div>
 
-      </div> {/* 🌟 Тело модалки закрывается строго тут */}
+      </div> 
 
-      {/* 🚀 Глобальный подвал на одном уровне с телом модалки */}
+      
       <footer className={styles['register-modal__footer']}>
         <div className={styles['register-modal__footer-brand']}>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={styles['brand-header__logo-icon']}>
