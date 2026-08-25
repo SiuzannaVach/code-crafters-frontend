@@ -1,0 +1,13 @@
+@use '../../styles/global.module' as *;
+
+.layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: $bg-main;
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+  color: $text-main;
+}

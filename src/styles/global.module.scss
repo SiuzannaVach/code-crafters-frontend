@@ -1,8 +1,18 @@
-// ==========================================================================
+
 // BREAKPOINTS & RESPONSIVE MIXINS
-// ==========================================================================
+
 $breakpoint-mobile: 768px;
 $breakpoint-tablet: 1024px;
+$bg-main: #060814;           
+$bg-card: rgba(14, 20, 41, 0.85); 
+$bg-input: #0a0f24;          
+$color-electric: #00d2ff;    
+$text-brand: #8ae4ff;        
+$bg-main: #0b0a1a;           
+$bg-card: rgba(33, 30, 56, 0.85); 
+$bg-input: #1b182e;            
+$text-brand: #c9c5ff;       
+
 
 @mixin mobile {
   @media (max-width: #{$breakpoint-mobile}) {
@@ -16,9 +26,7 @@ $breakpoint-tablet: 1024px;
   }
 }
 
-// ==========================================================================
-// VARIABLES DE COLORES 
-// ==========================================================================
+
 $bg-main: #070a13;               
 $bg-card: rgba(23, 31, 51, 0.8); 
 $bg-input: #131c2e;              
@@ -31,9 +39,7 @@ $text-main: #ffffff;
 $text-muted: #64748b;
 $text-brand: #c3c0ff;      
 
-// ==========================================================================
-// VARIABLES DE COLORES 
-// ==========================================================================
+
 $modal-bg-gradient-start: #1e29a3;
 $modal-bg-gradient-middle: #0d0c24;
 $modal-bg-gradient-end: #05050d;
