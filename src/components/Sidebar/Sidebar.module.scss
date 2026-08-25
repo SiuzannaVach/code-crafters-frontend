@@ -1,0 +1,113 @@
+@use '../../styles/variables.module.scss' as var;
+
+
+
+.appSidebar {
+  display: none;
+}
+
+// desktop
+
+@media (min-width: 1024px) {
+  .appSidebar {
+    display: flex; 
+    flex-direction: column; 
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 260px; 
+    height: 100vh;
+    padding: 2.5rem 1.5rem;
+    padding-top: 100px;
+    background-color: var.$bg-card;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(8px);
+    box-sizing: border-box;
+    position: sticky;
+    top: 0;
+  }
+
+  .profileSection {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding-bottom: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .avatarWrapper {
+    position: relative;
+  }
+
+  .avatarPlaceholder {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+   background-color: #5d598c;
+   border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .profileInfo {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .profileName {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var.$text-main;
+    margin: 0;
+  }
+
+  .profileRole {
+    font-size: 0.8rem;
+    color: var.$text-muted;
+  }
+
+  .sidebarNav {
+    display: flex;
+    flex-direction: column; 
+    width: 100%;
+    gap: 0.75rem;
+  }
+
+  .navButton {
+    background: transparent;
+    border: none;
+    color: var.$text-muted;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.75rem;
+    padding: 0.8rem 1rem;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: var.$text-main;
+      background-color: rgba(255, 255, 255, 0.03);
+    }
+
+    &Active {
+      background-color: var.$color-primary; 
+      color: var.$text-main;
+      box-shadow: 0 0 12px var.$color-glow;
+
+      &:hover {
+        background-color: var.$color-primary-hover;
+      }
+    }
+
+   
+    .navIcon {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+    }
+  }
+}
