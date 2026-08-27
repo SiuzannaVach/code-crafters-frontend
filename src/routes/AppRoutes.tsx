@@ -3,6 +3,7 @@ import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { LoginCard } from '../pages/Login/LoginCard';
 import { RegisterModal } from '../components/RegisterModal/RegisterModal';
 import CreateEvent from '../pages/CreateEvent/CreateEvent';
+import Home from '../pages/Home/Home';
 import AuthenticatedLayout from '../components/AuthenticatedLayout/AuthenticatedLayout';
 
 const AppRoutes: React.FC = () => {
@@ -10,8 +11,8 @@ const AppRoutes: React.FC = () => {
 
   return (
     <Routes>
-      {/* Páginas SIN Sidebar (Login, Register) */}
-      <Route path="/" element={<Navigate to="/login" replace />} />
+      {/* Páginas SIN Sidebar/Header (Login, Register) */}
+      <Route path="/" element={<Navigate to="/home" replace />} />
       <Route
         path="/login"
         element={<LoginCard onNavigate={() => navigate('/register')} />}
@@ -23,11 +24,12 @@ const AppRoutes: React.FC = () => {
 
       {/* Páginas CON Sidebar — envueltas en el layout */}
       <Route element={<AuthenticatedLayout />}>
+        <Route path="/home" element={<Home />} />
         <Route path="/create-event" element={<CreateEvent />} />
-        {/* Aquí se añadirán después: /dashboard, /my-events, /stats, etc. */}
       </Route>
 
-      <Route path="*" element={<Navigate to="/login" replace />} />
+      {/* Редирект для всех остальных несуществующих страниц */}
+      <Route path="*" element={<Navigate to="/home" replace />} />
     </Routes>
   );
 };
