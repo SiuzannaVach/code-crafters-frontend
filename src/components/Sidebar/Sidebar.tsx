@@ -24,16 +24,18 @@ export const Sidebar: React.FC = () => {
       </div>
 
   
-      <nav className={styles.sidebarNav}>
+            <nav className={styles.sidebarNav}>
+        
         <button 
           type="button" 
-          className={`${styles.navButton} ${location.pathname === '/explorar' ? styles.navButtonActive : ''}`} 
-          onClick={() => navigate('/explorar')}
+          className={`${styles.navButton} ${location.pathname === '/home' ? styles.navButtonActive : ''}`} 
+          onClick={() => navigate('/home')}
         >
           <img src={explorerIcon} alt="Explorar" className={styles.navIcon} />
           <span>EXPLORAR</span>
         </button>
 
+       
         <button 
           type="button" 
           className={`${styles.navButton} ${location.pathname === '/create-event' ? styles.navButtonActive : ''}`}
@@ -43,6 +45,7 @@ export const Sidebar: React.FC = () => {
           <span>GESTIÓN</span>
         </button>
       </nav>
+
     </aside>
   );
 };
