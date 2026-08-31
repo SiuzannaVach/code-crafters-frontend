@@ -1,0 +1,605 @@
+@use '../../styles/global.module.scss' as *;
+
+
+$bg-dark: #060913;
+$card-bg: rgba(30, 41, 59, 0.25);
+$card-border: rgba(255, 255, 255, 0.08);
+$text-muted: #94a3b8;
+
+.detail {
+  width: 100%;
+  box-sizing: border-box;
+  color: #ffffff;
+  font-family: sans-serif;
+
+  // ==========================================
+  // 📱 МОБИЛЬНАЯ ВЕРСИЯ (По умолчанию)
+  // ==========================================
+  &__mobileView {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 100px; 
+    width: 100%;
+  }
+
+  &__desktopView {
+    display: none; 
+  }
+
+  &__back {
+    background: transparent;
+    border: none;
+    color: #a855f7;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 1.5rem 4vw 0.5rem;
+    text-align: left;
+    letter-spacing: 0.05em;
+  }
+
+  &__mobileBanner {
+    position: relative !important;
+    width: 100vw !important;
+    margin-left: calc(-50vw + 50%) !important;
+    height: 105vw !important;     
+    max-height: 480px !important;  
+    overflow: hidden !important;
+  
+      &__mobileBannerImg {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;       
+    object-position: center top !important; 
+  }
+
+    &Img {
+       width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center top !important;
+    }
+
+    &Overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 60%, $bg-dark 100%);
+    }
+  }
+
+  &__mobileContent {
+    padding: 1.5rem 4vw 30px 4vw !important;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  &__badgeRow {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  &__badge {
+    background-color: rgba(147, 51, 234, 0.15);
+    border: 1px solid rgba(147, 51, 234, 0.3);
+    color: #c084fc;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 100px;
+    text-transform: uppercase;
+  }
+
+  &__mobileTitle {
+    font-size: 1.6rem;
+    font-weight: 800;
+    line-height: 1.25;
+    margin: 0;
+  }
+
+  &__mobileCards {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  &__infoCard {
+    background: $card-bg;
+    border: 1px solid $card-border;
+    padding: 1rem;
+    border-radius: 12px;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+
+    &Icon {
+      background: rgba(255, 255, 255, 0.04);
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    &Text {
+      display: flex;
+      flex-direction: column;
+      span {
+        font-size: 0.95rem;
+        font-weight: 700;
+      }
+      small {
+        font-size: 0.85rem;
+        color: $text-muted;
+        margin-top: 2px;
+      }
+    }
+  }
+
+  &__section {
+    margin-bottom: 0.5rem;
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin: 0 0 1rem 0;
+    }
+  }
+
+  &__description {
+    p {
+      color: $text-muted;
+      line-height: 1.6;
+      font-size: 1.05rem !important;
+      margin: 0 0 1rem 0;
+      margin: 0 0 1.25rem 0;
+      &:last-child { margin-bottom: 0; }
+    }
+  }
+
+  &__pointsList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+
+  &__pointItem {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+
+    p {
+      margin: 0;
+      color: $text-muted;
+      font-size: 1.02rem !important;
+      line-height: 1.5;
+    }
+  }
+
+  &__pointIcon {
+    width: 22px !important;      
+    height: 22px !important;
+    flex-shrink: 0 !important;
+    margin-top: 2px !important;
+     display: block !important;
+    opacity: 1 !important;        
+    background: transparent !important;
+  }
+
+  &__organizer {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    padding: 1rem;
+    margin-top: 2.5rem !important;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    small {
+      font-size: 0.75rem;
+      color: #64748b;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    &Body {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    &Avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+    }
+
+    &Name {
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+  }
+
+  &__mobileAction {
+     position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    padding: 16px 20px 32px 20px !important;
+    background: linear-gradient(to top, $bg-dark 80%, transparent 100%);
+    z-index: 999 !important;
+    box-sizing: border-box !important;
+  }
+     :global(button) {
+      width: 100% !important;
+      max-width: 100% !important;
+      padding: 16px 24px !important;
+      background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%) !important; /* Красивый сиреневый градиент */
+      border: none !important;
+      border-radius: 12px !important;
+      color: #ffffff !important;
+      font-weight: 700 !important;
+      font-size: 1rem !important;
+      cursor: pointer !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      box-shadow: 0 4px 14px rgba(168, 85, 247, 0.3) !important;
+    }
+     
+  }
+ :global(.footer), 
+  .detail__footer, 
+  :global(#footer),
+  :global(footer) {
+    display: none !important; 
+  }
+  // ==========================================
+  // 🖥️ ДЕСКТОПНАЯ ВЕРСИЯ (Экраны от 769px)
+  // ==========================================
+ @media (min-width: 769px) {
+ 
+  .detail__mobileView {
+    display: none !important;
+  }
+
+ 
+  .detail__desktopView {
+    display: block !important;
+    width: 100%;
+  }
+
+  
+  .detail__desktopMainContent {
+    flex: 1;
+    padding: 0 !important; 
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    box-sizing: border-box;
+    background-color: #0f1322 !important;
+  }
+}
+
+    .detail__desktopBanner {
+      position: relative;
+      width: 100%;
+      height: auto !important;
+      border-radius: 0px !important; 
+      overflow: hidden;
+      margin: 2rem 0px 2.5rem 0px; 
+      background: transparent !important; 
+      border: none !important;
+      box-shadow: none !important;
+
+      &Img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover !important; 
+        object-position: center center !important;
+        opacity: 1 !important;
+        filter: none !important;
+      }
+
+      &Overlay {
+        display: none !important;
+      }
+    }
+
+      .detail__desktopGrid {
+      display: flex;
+      gap: 2.5rem;
+      width: 100%;
+      align-items: flex-start;
+      padding: 0 2.5rem 3rem 2.5rem !important;
+      box-sizing: border-box;
+    }
+
+        .detail__desktopLeft {
+      flex: 1.8;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+      .detail__desktopCardBox {
+      background-color: #111625;
+      border: 1px solid $card-border;
+      padding: 2rem;
+      border-radius: 16px;
+      
+      h2 {
+        margin-top: 0;
+        font-size: 1.3rem;
+        margin-bottom: 1.25rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      p {
+        color: $text-muted;
+        line-height: 1.6;
+        font-size: 0.95rem;
+        margin: 0 0 1rem 0;
+        &:last-child { margin-bottom: 0; }
+      }
+    }
+
+        .detail__desktopPointsSection {
+       margin-top: 3rem !important;
+
+      h2 {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #ffffff;
+        margin: 0 0 1.5rem 0;
+      }
+    }
+    
+        .detail__desktopPointsGrid {
+      display: grid !important;
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 1.25rem !important;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+ 
+        .detail__highlightCard {
+      background-color: #111625 !important;
+      border: 1px solid rgba(255, 255, 255, 0.05) !important;
+      padding: 1.25rem 1.5rem !important; 
+      border-radius: 12px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 0.5rem !important;
+      width: 100% !important; 
+      height: auto !important; 
+      min-height: 0 !important;
+      box-sizing: border-box;
+
+      h3 {
+        margin: 0 !important;
+        font-size: 1.15rem !important;
+        font-weight: 700 !important;
+        color: #ffffff !important;
+        letter-spacing: -0.01em;
+        line-height: 1.3 !important;
+      }
+
+      p {
+        margin: 0 !important;
+        color: #94a3b8 !important;
+        font-size: 0.88rem !important;
+        line-height: 1.4 !important;
+      }
+
+     
+      &--full {
+        grid-column: 1 / span 2 !important; 
+        width: 100% !important;
+        height: auto !important; 
+      }
+    }
+
+        .detail__highlightIconBox {
+      background: transparent !important; 
+      border: none !important;
+      box-shadow: none !important;
+      width: auto !important;
+      height: auto !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: flex-start !important;
+      margin-bottom: 0.25rem !important;
+      flex-shrink: 0;
+
+      img {
+        width: 24px !important;
+        height: 24px !important;
+        display: block !important;
+      }
+    }
+
+    
+        .detail__desktopRightSidebar {
+      flex: 0 0 288px !important; 
+      width: 288px !important;
+      position: sticky;
+      top: 100px;
+      box-sizing: border-box;
+    }
+
+        .detail__sidebarStickyBlock {
+      background: #111625;
+      opacity: 1; 
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 24px !important; 
+      gap: 16px !important; 
+      border-radius: 12px !important; 
+      display: flex;
+      flex-direction: column;
+      min-height: 535px; 
+      box-sizing: border-box;
+    }
+
+    .detail__deskInfoItem {
+       display: flex !important;
+      align-items: flex-start !important;
+       
+      gap: 12px !important;              
+      background: transparent !important; 
+      padding: 8px 0 !important;         
+      width: 100% !important;
+      box-sizing: border-box !important;
+       &:nth-of-type(2) {
+        .detail__deskInfoIcon {
+          margin-left: -3px !important;  
+        }
+      }
+       div {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important; 
+      }
+      
+      h4 {
+        margin: 0;
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #ffffff;
+      }
+      p {
+        margin: 4px 0 0 0;
+        color: #94a3b8;
+        font-size: 0.85rem;
+      }
+    }
+
+    .detail__deskInfoIcon {
+      font-size: 1.25rem !important;
+      width: 28px !important;            
+      height: 24px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important; 
+      flex-shrink: 0 !important;
+      margin-top: 1px !important;
+    }
+
+    
+    .detail__mockMap {
+      width: 100%;
+      height: 140px !important; 
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      position: relative;
+      background: transparent !important;
+    }
+
+    .detail__mapImage {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+      display: block;
+      opacity: 1 !important; 
+      filter: none !important;
+    }
+
+    .detail__mapPlaceholder {
+      width: 100%;
+      height: 100%;
+      background: url('https://googleapis.com') center/cover;
+      background-color: #121622;
+    }
+
+      
+    .detail__deskOrganizer {
+      display: flex;
+      gap: 16px !important;
+      align-items: center;
+
+      img {
+        width: 32px !important;  
+        height: 32px !important; 
+        max-width: 32px !important;
+        max-height: 32px !important;
+        object-fit: contain !important;
+        display: block !important;
+      }  
+
+      small {
+        font-family: 'Courier New', Courier, monospace !important; 
+        font-size: 0.78rem !important;
+        color: #94a3b8 !important;
+        letter-spacing: 0.05em !important;
+        display: block;
+        margin: 0 0 2px 0;
+      }
+
+      h4 {
+        margin: 0 !important;
+        font-size: 1.1rem !important;
+        font-weight: 700 !important;
+        color: #ffffff !important;
+      }
+    }
+
+   
+    .detail__sidebarFooterDivider {
+      width: 100%;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.12) !important; 
+      margin-top: 4px !important; 
+      margin-bottom: 8px !important;
+    }
+
+   
+    .detail__desktopActionWrapper {
+      width: 100% !important;
+      margin-top: 16px !important; 
+      display: block !important;
+
+      :global(button) {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 16px 24px !important;
+        background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%) !important; 
+        border: none !important; 
+        outline: none !important;
+        box-shadow: 0 4px 14px rgba(168, 85, 247, 0.4) !important;
+        color: #ffffff !important;
+        border-radius: 12px !important; 
+        font-weight: 700 !important;
+        cursor: pointer !important;
+        font-size: 0px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        &::before {
+          content: 'Inscribirme Ahora →' !important; 
+          font-size: 1rem !important;
+          font-weight: 700 !important;
+          color: #ffffff !important;
+          display: inline-block !important;
+        }
+
+        &:hover {
+          opacity: 0.95 !important;
+        }
+      }
+    }
+   
+
+
