@@ -5,6 +5,8 @@ import { RegisterModal } from '../components/RegisterModal/RegisterModal';
 import CreateEvent from '../pages/CreateEvent/CreateEvent';
 import Home from '../pages/Home/Home';
 import AuthenticatedLayout from '../components/AuthenticatedLayout/AuthenticatedLayout';
+import EventDetail from '../pages/EventDetail/EventDetail'; 
+
 
 const AppRoutes: React.FC = () => {
   const navigate = useNavigate();
@@ -22,11 +24,13 @@ const AppRoutes: React.FC = () => {
         element={<RegisterModal onNavigate={() => navigate('/login')} />}
       />
 
-      {/* Páginas CON Sidebar — envueltas en el layout */}
+             {/* Páginas CON Sidebar — envueltas en el layout */}
       <Route element={<AuthenticatedLayout />}>
         <Route path="/home" element={<Home />} />
+        <Route path="/events/:id" element={<EventDetail />} />
         <Route path="/create-event" element={<CreateEvent />} />
       </Route>
+
 
       {/* Редирект для всех остальных несуществующих страниц */}
       <Route path="*" element={<Navigate to="/home" replace />} />
