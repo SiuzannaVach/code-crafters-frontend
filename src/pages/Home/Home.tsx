@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate} from 'react-router-dom';
 import styles from './Home.module.scss';
 
 import heroBg from '../../assets/images/hero-bg.png';
@@ -136,8 +136,9 @@ description: 'Aprende a construir layouts complejos y componentes responsivos ut
 
 const Home: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState('Todos');
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams,] = useSearchParams();
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 769);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleResize = () => {
@@ -307,11 +308,15 @@ const Home: React.FC = () => {
                 </div>
               )}
 
-              {isDesktop && (
-                <button className={styles['card__btnDetails']}>
-                  Ver Detalles
-                </button>
-              )}
+                       {isDesktop && (
+            <button 
+              className={styles['card__btnDetails']}
+              onClick={() => navigate(`/events/${event.id}`)} // Вот эту строчку добавляем!
+            >
+              Ver Detalles
+            </button>
+          )}
+
             </div>
           </article>
         ))}
