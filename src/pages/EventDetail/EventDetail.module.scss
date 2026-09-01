@@ -13,7 +13,7 @@ $text-muted: #94a3b8;
   font-family: sans-serif;
 
   // ==========================================
-  // 📱 МОБИЛЬНАЯ ВЕРСИЯ (По умолчанию)
+  // 📱 
   // ==========================================
   &__mobileView {
     display: flex;
@@ -243,7 +243,7 @@ $text-muted: #94a3b8;
       width: 100% !important;
       max-width: 100% !important;
       padding: 16px 24px !important;
-      background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%) !important; /* Красивый сиреневый градиент */
+      background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%) !important; 
       border: none !important;
       border-radius: 12px !important;
       color: #ffffff !important;
@@ -257,14 +257,9 @@ $text-muted: #94a3b8;
     }
      
   }
- :global(.footer), 
-  .detail__footer, 
-  :global(#footer),
-  :global(footer) {
-    display: none !important; 
-  }
+
   // ==========================================
-  // 🖥️ ДЕСКТОПНАЯ ВЕРСИЯ (Экраны от 769px)
+  // 🖥️ 
   // ==========================================
  @media (min-width: 769px) {
  
