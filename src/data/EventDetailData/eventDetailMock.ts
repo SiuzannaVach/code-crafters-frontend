@@ -1,6 +1,82 @@
+// src/data/EventDetailData/eventDetailMock.ts
+import iconBuilding from '../../assets/icons/icon-building.svg';
+import iconSpeaker from '../../assets/icons/icon-speaker.svg';
+import iconNetworking from '../../assets/icons/icon-networking.svg';
+import iconTools from '../../assets/icons/icon-tools.svg';
+import iconCreative from '../../assets/icons/creative.svg';
+import iconCheckCustom from '../../assets/icons/check-icon.svg';
+
+export const eventIcons = {
+  building: iconBuilding,
+  speaker: iconSpeaker,
+  networking: iconNetworking,
+  tools: iconTools,
+  creative: iconCreative,
+  check: iconCheckCustom
+};
+
 export const mockEvents = [
+  // 💻 EVENTOS DESKTOP (ID: 11, 12, 13)
   {
-    id: 1, // Главный баннер
+    id: 11,
+    title: 'React Conf Latam 2026',
+    location: 'Buenos Aires, Argentina',
+    address: 'Palacio San Miguel, Buenos Aires',
+    date: '20 Noviembre, 2026',
+    time: '09:00 AM - 18:00 PM',
+    tags: ['Web Dev', 'React', 'Conference'],
+    description: [
+      '¡La conferencia de React más grande de Latinoamérica! Únete a expertos internacionales para discutir sobre el futuro de React, Server Components y optimización de rendimiento.',
+      'Aprende de casos de estudio reales y comparte con una comunidad vibrante de desarrolladores.'
+    ],
+    points: [
+      'Ponentes Internacionales: Charlas exclusivas de core-contributors de React.',
+      'Talleres Prácticos: Implementación de nuevas APIs y Server Actions desde cero.',
+      'Networking Exclusivo: Conecta con las empresas tecnológicas líderes de la región.'
+    ]
+  },
+  {
+    id: 12,
+    title: 'Meetup IA y Data Science con Python',
+    location: 'Online (Zoom)',
+    address: 'Transmisión en Vivo (Zoom / Meet)',
+    date: '25 Noviembre, 2026',
+    time: '19:00 PM EST',
+    tags: ['AI & ML', 'Python', 'Online'],
+    description: [
+      'Sumérgete en el mundo de la Inteligencia Artificial y la Ciencia de Datos utilizando Python.',
+      'Analizaremos integraciones con grandes modelos de lenguaje (LLMs), visualización de datos complejos y pipelines de entrenamiento.'
+    ],
+    points: [
+      'Modelos de Lenguaje: Introducción práctica a Prompt Engineering y Fine-Tuning.',
+      'Librerías Clave: Uso profesional de Pandas, NumPy y Scikit-Learn.',
+      'Casos de Éxito: Descubre cómo las startups están automatizando procesos con IA.'
+    ]
+  },
+  {
+    id: 13,
+    title: 'Cloud Architecture Summit 2026',
+    category: 'Data Science',
+    modality: 'Presencial',
+    location: 'Ciudad de México, MX',
+    address: 'Centro Citibanamex, Ciudad de México',
+    date: '05 Diciembre, 2026',
+    time: '09:00 AM - 17:00 PM CST',
+    tags: ['Cloud', 'Architecture', 'Presencial'],
+    description: [
+      'El principal encuentro para arquitectos de software y líderes de infraestructura en la nube.',
+      'Explora las mejores prácticas para diseñar sistemas altamente escalables, tolerantes a fallos y optimizados en costos.'
+    ],
+    points: [
+      'Arquitecturas Serverless: Diseña servicios basados en eventos sin preocuparte por servidores.',
+      'Seguridad en la Nube: Implementación de políticas de acceso estricto.',
+      'Optimización de Costos: Estrategias avanzadas para reducir la facturación cloud.'
+    ]
+  },
+
+  // 📱 EVENTOS MOBILE (ID: 1, 2, 3, 4, 5, 6)
+  {
+    id: 1,
     title: 'Global Web3 Hackathon 2026',
     location: 'Online / Global',
     address: 'Plataforma del Hackathon (Discord & GitHub)',
@@ -12,13 +88,13 @@ export const mockEvents = [
       'Sácale provecho a contratos inteligentes, protocolos DeFi y soluciones de escalabilidad en el evento Web3 más grande del año.'
     ],
     points: [
-      'Premios en Cripto: Mentorías exclusivas y miles de dólares en premios para los mejores proyectos.',
-      'Talleres Técnicos: Aprende Solidity, Rust y seguridad en Smart Contracts desde cero.',
-      'Networking Global: Conecta con fundadores de protocolos y firmas de Venture Capital.'
+      'Premios en Cripto: Mentorías exclusivas y miles de dólares en premios.',
+      'Talleres Técnicos: Aprende Solidity, Rust y seguridad en Smart Contracts.',
+      'Networking Global: Conecta con fundadores de protocolos.'
     ]
   },
   {
-    id: 2, // Первая карточка ленты
+    id: 2,
     title: 'Taller de Patrones Avanzados en React',
     location: 'Online',
     address: 'Transmisión en Vivo (Zoom / Meet)',
@@ -27,16 +103,16 @@ export const mockEvents = [
     tags: ['Web Dev', 'React', 'Online'],
     description: [
       'Sumérgete en la concurrencia de React, Hooks personalizados avanzados y optimización de renderizado.',
-      'Aprende a estructurar aplicaciones escalables utilizando patrones de diseño modernos que evitan re-renders innecesarios.'
+      'Aprende a estructurar aplicaciones escalables utilizando patrones de diseño modernos.'
     ],
     points: [
-      'Hooks Personalizados: Diseña lógica de estado completamente reutilizable y limpia.',
-      'Optimización Real: Uso profesional de useMemo, useCallback y la nueva API de transiciones.',
-      'Estudios de Caso: Analizamos repositorios reales de producción para corregir cuellos de botella.'
+      'Hooks Personalizados: Diseña lógica de estado completamente reutilizable.',
+      'Optimización Real: Uso profesional de useMemo, useCallback.',
+      'Estudios de Caso: Analizamos repositorios reales.'
     ]
   },
   {
-    id: 3, // Вторая карточка ленты
+    id: 3,
     title: 'Cumbre de Ingeniería de IA 2026',
     location: 'SF, CA',
     address: 'Moscone Center, San Francisco, California',
@@ -44,17 +120,17 @@ export const mockEvents = [
     time: '09:00 AM - 17:00 PM PST',
     tags: ['AI & ML', 'Conference', 'Presencial'],
     description: [
-      'El principal encuentro para desarrolladores que construyen el futuro con modelos de lenguaje a gran escala.',
-      'Analizaremos integraciones con LLMs, arquitecturas RAG (Retrieval-Augmented Generation) y despliegue local de modelos.'
+      'El principal encuentro para desarrolladores que construyen el futuro con modelos de lenguaje.',
+      'Analizaremos integraciones con LLMs, arquitecturas RAG.'
     ],
     points: [
-      'Modelos de Lenguaje (LLMs): Técnicas avanzadas de Prompt Engineering y Fine-Tuning.',
-      'Arquitecturas RAG: Conecta modelos de IA con bases de datos vectoriales de forma segura.',
-      'Infraestructura: Optimización de costos y rendimiento en servidores con GPUs de última generación.'
+      'Modelos de Lenguaje (LLMs): Técnicas avanzadas de Prompt Engineering.',
+      'Arquitecturas RAG: Conecta modelos de IA con bases de datos vectoriales.',
+      'Infraestructura: Optimización de servidores con GPUs de última generación.'
     ]
   },
   {
-    id: 4, // Третья карточка ленты
+    id: 4,
     title: 'Dominando Tailwind CSS v3',
     location: 'Online',
     address: 'Plataforma Educativa Code Crafters',
@@ -63,16 +139,16 @@ export const mockEvents = [
     tags: ['Design', 'Tailwind', 'Online'],
     description: [
       'Aprende a construir layouts complejos y componentes responsivos utilizando utilidades de Tailwind.',
-      'Domina el sistema de diseño basado en utilidades, configuración de temas personalizados y optimización con PurgeCSS.'
+      'Domina el sistema de diseño basado en utilidades, configuración de temas personalizados.'
     ],
     points: [
-      'Layouts Complejos: Diseña grids y flexboxes avanzados sin escribir una sola línea de CSS plano.',
-      'Temas Personalizados: Extiende la configuración de Tailwind con tus propios colores, fuentes и брейкпоинты.',
-      'Buenas Prácticas: Mantén tus clases legibles, organizadas y fáciles de mantener en componentes React.'
+      'Layouts Complejos: Diseña grids y flexboxes avanzados.',
+      'Temas Personalizados: Extiende la configuración de Tailwind.',
+      'Buenas Prácticas: Mantén tus clases legibles.'
     ]
   },
   {
-    id: 5, // Четвертая карточка ленты
+    id: 5,
     title: 'Inmersión en Arquitectura Serverless',
     location: 'Online',
     address: 'Sesión Virtual Interactiva',
@@ -81,16 +157,16 @@ export const mockEvents = [
     tags: ['Cloud', 'AWS', 'Online'],
     description: [
       'Explora los pros y contras de arquitecturas basadas en eventos utilizando proveedores cloud modernos.',
-      'Diseña sistemas completamente escalables sin preocuparte por el aprovisionamiento ni el mantenimiento de servidores.'
+      'Diseña sistemas completamente escalables sin preocuparte por servidores.'
     ],
     points: [
-      'AWS Lambda & DynamoDB: Despliega funciones serverless conectadas a bases de datos NoSQL de alta velocidad.',
-      'Arquitecturas de Eventos: Uso de colas y mensajería (SQS, SNS) для синхронизации микросервисов.',
-      'Costos Optimizados: Estrategias de monitoreo para pagar estrictamente por los milisegundos de cómputo utilizados.'
+      'AWS Lambda & DynamoDB: Despliega funciones serverless.',
+      'Arquitecturas de Eventos: Uso de colas y mensajería.',
+      'Costos Optimizados: Infraestructura con оплатой por milisegundos.'
     ]
   },
   {
-    id: 6, // Пятая карточка ленты
+    id: 6,
     title: 'Hackathon de Innovación FinTech',
     location: 'Austin, TX',
     address: 'Tech Hub Austin, Texas, USA',
@@ -99,12 +175,12 @@ export const mockEvents = [
     tags: ['Hackathon', 'Fintech', 'Presencial'],
     description: [
       'Construye la próxima disrupción en finanzas personales, seguridad transaccional o criptomonedas.',
-      'Colabora con diseñadores, desarrolladores y expertos del sector bancario para prototipar soluciones de impacto financiero.'
+      'Colabora con diseñadores, desarrolladores y expertos.'
     ],
     points: [
-      'APIs Bancarias Abiertas: Acceso exclusivo a sandboxes financieros para integración de datos de transacciones.',
-      'Seguridad Transaccional: Implementación de biometría y algoritmos de prevención de fraude.',
-      'Pitch de Negocios: Presenta tu prototipo ante un jurado compuesto por inversionistas ángeles y directivos FinTech.'
+      'APIs Bancarias Abiertas: Acceso exclusivo a sandboxes.',
+      'Seguridad Transaccional: Implementación de biometría.',
+      'Pitch de Negocios: Presentación ante inversionistas.'
     ]
   }
 ];

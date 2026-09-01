@@ -3,24 +3,16 @@ import styles from './EventDetail.module.scss';
 import { EventDetailButton } from '../../components/EventDetailButton/EventDetailButton';
 import { useEventDetail } from '../../hooks/useEventDetail/useEventDetail';
 import { getItem, setItem } from '../../utils/storage'; 
-
 import bannerDesktopDefault from '../../assets/images/detalle-banner.png';
 import bannerMobileDefault from '../../assets/images/event-hero-stage.png';
-
-import iconMap from '../../assets/icons/roadmap.svg';
-import iconBuilding from '../../assets/icons/icon-building.svg';
-import iconSpeaker from '../../assets/icons/icon-speaker.svg';
-import iconNetworking from '../../assets/icons/icon-networking.svg';
-import iconTools from '../../assets/icons/icon-tools.svg';
-import iconCreative from '../../assets/icons/creative.svg';
-import iconCheckCustom from '../../assets/icons/check-icon.svg'; 
-
+import { eventIcons } from '../../data/EventDetailData/eventDetailMock';
 
 const EventDetail: React.FC = () => {
-  const { event, handleBack } = useEventDetail();
+ const { event, mapUrl, handleBack } = useEventDetail();
 
-   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const icons = [iconMap, iconBuilding, iconSpeaker, iconNetworking, iconTools, iconCreative];
+    if (!event) {
+    return <div className={styles['detail']}>Cargando...</div>;
+  }
 
   const storageKey = `code_crafters_event_${event?.id}`;
 
@@ -75,7 +67,8 @@ const EventDetail: React.FC = () => {
               <div className={styles['detail__infoCardIcon']}>📍</div>
               <div className={styles['detail__infoCardText']}>
                 <span>{event.location}</span>
-                <small>{event.address}</small>
+               <small>{event?.address || ''}</small>
+
               </div>
             </div>
           </div>
@@ -83,11 +76,16 @@ const EventDetail: React.FC = () => {
         
           <section className={styles['detail__section']}>
             <h2>Sobre el evento</h2>
-            <div className={styles['detail__description']}>
-              {event.description?.map((paragraph, index) => (
-                <p key={index}>{paragraph}</p>
-              ))}
-            </div>
+                  <div className={styles['detail__description']}>
+          {Array.isArray(event.description) ? (
+            event.description.map((paragraph, index) => (
+              <p key={index}>{paragraph}</p>
+            ))
+          ) : (
+            <p>{event.description}</p>
+          )}
+        </div>
+
           </section>
 
          
@@ -99,7 +97,8 @@ const EventDetail: React.FC = () => {
                     <li key={index} className={styles['detail__pointItem']}>
                       
                       <img 
-                        src={iconCheckCustom} 
+                        src={eventIcons.check}
+
                         alt="Check" 
                         className={styles['detail__pointIcon']} 
                         width="22" 
@@ -117,7 +116,8 @@ const EventDetail: React.FC = () => {
           <div className={styles['detail__organizer']}>
             <small>ORGANIZADO POR</small>
             <div className={styles['detail__organizerBody']}>
-              <img src={iconCreative} alt="Organizer" className={styles['detail__organizerAvatar']} />
+              <img src={eventIcons.creative}
+alt="Organizer" className={styles['detail__organizerAvatar']} />
               <span className={styles['detail__organizerName']}>Creative Code Collective</span>
             </div>
           </div>
@@ -150,9 +150,14 @@ const EventDetail: React.FC = () => {
             <main className={styles['detail__desktopLeft']}>
               <section className={styles['detail__desktopCardBox']}>
                 <h2>📄 Acerca del Evento</h2>
-                {event.description?.map((paragraph, index) => (
-                  <p key={index}>{paragraph}</p>
-                ))}
+          {Array.isArray(event.description) ? (
+  event.description.map((paragraph, index) => (
+    <p key={index}>{paragraph}</p>
+  ))
+) : (
+  <p>{event.description}</p>
+)}
+
               </section>
 
               <section className={styles['detail__desktopPointsSection']}>
@@ -163,7 +168,7 @@ const EventDetail: React.FC = () => {
                   {/* Карточка 1 */}
                   <div className={styles['detail__highlightCard']}>
                     <div className={styles['detail__highlightIconBox']}>
-                      <img src={iconSpeaker} alt="Speaker" />
+                      <img src={eventIcons.speaker} alt="Speaker" />
                     </div>
                     <h3>{event.points?.[0]?.includes(': ') ? event.points[0].split(': ')[0] : 'Ponentes Avanzados'}</h3>      
                     <p>{event.points?.[0]?.includes(': ') ? event.points[0].split(': ')[1] : event.points?.[0]}</p>
@@ -172,7 +177,7 @@ const EventDetail: React.FC = () => {
                   {/* Карточка 2 */}
                   <div className={styles['detail__highlightCard']}>
                     <div className={styles['detail__highlightIconBox']}>
-                      <img src={iconTools} alt="Tools" />
+                      <img src={eventIcons.tools} alt="Tools" />
                     </div>
                     <h3>{event.points?.[1]?.includes(': ') ? event.points[1].split(': ')[0] : 'Talleres Prácticos'}</h3>
                     <p>{event.points?.[1]?.includes(': ') ? event.points[1].split(': ')[1] : event.points?.[1]}</p>
@@ -181,7 +186,7 @@ const EventDetail: React.FC = () => {
                   {/* Карточка 3 (Нижняя длинная) */}
                   <div className={`${styles['detail__highlightCard']} ${styles['detail__highlightCard--full']}`}>
                     <div className={styles['detail__highlightIconBox']}>
-                      <img src={iconNetworking} alt="Networking" />
+                      <img src={eventIcons.networking} alt="Networking" />
                     </div>
                     <h3>{event.points?.[2]?.includes(': ') ? event.points[2].split(': ')[0] : 'Networking Exclusivo'}</h3>
                     <p>{event.points?.[2]?.includes(': ') ? event.points[2].split(': ')[1] : event.points?.[2]}</p>
@@ -212,16 +217,26 @@ const EventDetail: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Блок с картой */}
-                <div className={styles['detail__mockMap']}>
-                  <img src={iconMap} alt="Mapa de ubicación" className={styles['detail__mapImage']} />
-                </div>
-                
+              {/* mapa*/}
+<div className={styles['detail__desktopMapWrapper']} style={{ marginTop: '16px' }}>
+ <iframe
+ src="https://google.com"
+  width="100%"
+  height="180"
+  style={{ border: 0, borderRadius: '8px' }}
+  allowFullScreen={false}
+  loading="lazy"
+  title="Google Map Desktop"
+/>
+
+
+</div>
+
                 <div className={styles['detail__sidebarFooterDivider']} />
 
                 <div className={styles['detail__deskOrganizer']}>
                   <div className={styles['detail__deskOrganizerIconBox']}>
-                    <img src={iconBuilding} alt="Building" width="20" height="20" />
+                    <img src={eventIcons.building} alt="Building" width="20" height="20" />
                   </div>
                   <div>
                     <small>Organizado por</small>
