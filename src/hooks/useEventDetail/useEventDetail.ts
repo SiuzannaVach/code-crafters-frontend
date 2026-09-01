@@ -9,10 +9,11 @@ export const useEventDetail = () => {
 
   const event = mockEvents.find(e => e.id === Number(id));
 
- 
-  const mapUrl = event?.location
-    ? "https://google.com" + encodeURIComponent(event.location) + "&t=&z=13&ie=UTF8&iwloc=&output=embed"
-    : "";
+ const mapUrl = event?.address || event?.location
+  ? `https://www.google.com/maps?q=${encodeURIComponent(
+      event.address || event.location || ''
+    )}&t=&z=15&ie=UTF8&iwloc=&output=embed&hl=es`
+  : '';
 
   const [isMobile, setIsMobile] = useState(
     typeof window !== 'undefined' ? window.innerWidth <= 768 : false

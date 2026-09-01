@@ -28,13 +28,14 @@ export const useHome = (desktopEvents: any[], mobileEvents: any[]) => {
   };
 
   // Функционирование верхних кнопок баннера (Ведут на страницу главного Хакатона)
+   const handleAgendaClick = () => {
+    // Находим блок поиска по его ID и плавно катимся к нему
+    document.getElementById('events-section')?.scrollIntoView({ behavior: 'smooth' });
+  };
   const handleRegisterClick = () => {
-    navigate('/events/1'); 
+    navigate('/events/1');
   };
 
-  const handleAgendaClick = () => {
-    navigate('/events/1'); 
-  };
 
   // Динамический переход для карточек (Открывает конкретный ID)
   const handleEventClick = (id: number) => {
