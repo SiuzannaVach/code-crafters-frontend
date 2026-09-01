@@ -8,27 +8,30 @@ import bannerMobileDefault from '../../assets/images/event-hero-stage.png';
 import { eventIcons } from '../../data/EventDetailData/eventDetailMock';
 
 const EventDetail: React.FC = () => {
- const { event, mapUrl, handleBack } = useEventDetail();
+ const { event, mapUrl } = useEventDetail();
 
     if (!event) {
     return <div className={styles['detail']}>Cargando...</div>;
   }
 
-  const storageKey = `code_crafters_event_${event?.id}`;
+    const storageKey = `code_crafters_event_inscribed_${event?.id || 1}`;
+
 
   const [isInscribed, setIsInscribed] = useState<boolean>(() => {
     if (!event?.id) return false;
     return getItem<boolean>(storageKey, false);
   });
-  const handleEnrollmentFlow = () => {
+   const handleEnrollmentFlow = (e?: React.MouseEvent) => {
+    if (e) e.preventDefault();
+    
     const confirmEnrollment = window.confirm('¿Estás seguro de que deseas inscribirte a este evento?');
 
-    
     if (confirmEnrollment) {
       setItem<boolean>(storageKey, true);
       setIsInscribed(true);
     }
   };
+
 
   return (
     <div className={styles['detail']}>
@@ -36,10 +39,6 @@ const EventDetail: React.FC = () => {
     {/*mobile*/}  
 
       <div className={styles['detail__mobileView']}>
-        <button className={styles['detail__back']} onClick={handleBack}>
-          ← VOLVER 
-        </button>
-
         <div className={styles['detail__mobileBanner']}>
           <img src={bannerMobileDefault} alt={event.title} className={styles['detail__mobileBannerImg']} />
           <div className={styles['detail__mobileBannerOverlay']} />
@@ -126,11 +125,10 @@ alt="Organizer" className={styles['detail__organizerAvatar']} />
       
      <EventDetailButton 
   eventId={event.id} 
-  onClick={handleEnrollmentFlow} 
+  onClick={() => handleEnrollmentFlow()}
   isInscribed={isInscribed} 
 />
-
-      </div>
+ </div>
 
     {/*desktop*/}
 
@@ -220,7 +218,7 @@ alt="Organizer" className={styles['detail__organizerAvatar']} />
               {/* mapa*/}
 <div className={styles['detail__desktopMapWrapper']} style={{ marginTop: '16px' }}>
  <iframe
- src="https://google.com"
+  src={mapUrl}
   width="100%"
   height="180"
   style={{ border: 0, borderRadius: '8px' }}
@@ -228,8 +226,6 @@ alt="Organizer" className={styles['detail__organizerAvatar']} />
   loading="lazy"
   title="Google Map Desktop"
 />
-
-
 </div>
 
                 <div className={styles['detail__sidebarFooterDivider']} />
@@ -244,16 +240,16 @@ alt="Organizer" className={styles['detail__organizerAvatar']} />
                   </div>
                 </div>
 
-              <div className={styles['detail__desktopActionWrapper']}>
-  <EventDetailButton 
-    eventId={event.id} 
-    onClick={handleEnrollmentFlow} 
-    isInscribed={isInscribed} 
-    isDesktop={true} 
+             <div className={styles['detail__desktopActionWrapper']}>
+  <EventDetailButton
+    key={isInscribed ? 'inscribed' : 'not-inscribed'} 
+    eventId={event.id}
+    onClick={() => handleEnrollmentFlow()}
+    isInscribed={isInscribed}
+    isDesktop={true}
   />
 </div>
-
-              </div>
+          </div>
             </aside>
 
           </div>

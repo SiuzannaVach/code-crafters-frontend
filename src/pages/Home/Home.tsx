@@ -29,6 +29,8 @@ const Home: React.FC = () => {
     handleAgendaClick,
     handleEventClick
   } = useHome(desktopEvents, mobileEvents);
+ 
+  const isMainEventInscribed = localStorage.getItem('code_crafters_event_inscribed_1') === 'true';
 
   return (
     <div className={styles.home}>
@@ -57,17 +59,22 @@ const Home: React.FC = () => {
           </div>
 
           <div className={styles.hero__actions}>
-            <HomePrimaryButton onClick={handleRegisterClick}>
-              Registrarse Ahora →
-            </HomePrimaryButton>
+                   <HomePrimaryButton 
+          onClick={handleRegisterClick}
+          disabled={isMainEventInscribed}
+        >
+          {isMainEventInscribed ? '¡Ya estás inscrito! ✓' : 'Registrarse Ahora →'}
+        </HomePrimaryButton>
+
             <HomeOutlineButton onClick={handleAgendaClick}>
               Ver Agenda
             </HomeOutlineButton>
           </div>
-        </div>
+        </div>?
       </section>
    
-      <div className={styles.searchAndFilters}>
+    <div id="events-section" className={styles.searchAndFilters}>
+
         {/* 🔍 BUSCADOR */}
         <div className={styles.searchBar}>
           <div className={styles.searchBar__inputWrapper}>

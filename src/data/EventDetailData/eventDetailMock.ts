@@ -80,8 +80,8 @@ export const mockEvents = [
     title: 'Global Web3 Hackathon 2026',
     location: 'Online / Global',
     address: 'Plataforma del Hackathon (Discord & GitHub)',
-    date: 'Diciembre 2026',
-    time: '24/7 Sprints de Código',
+    date: '15-17 Noviembre, 2026',
+    time: '09:00AM - 18:00 PM (CET)',
     tags: ['Hackathon', 'Web3', 'Blockchain'],
     description: [
       'Únete a desarrolladores de todo el mundo para construir la próxima generación de aplicaciones descentralizadas.',

@@ -3,38 +3,42 @@ import styles from '../../pages/EventDetail/EventDetail.module.scss';
 
 interface Props {
   eventId: number;
-  onClick: (id: number) => void;
+  onClick: () => void; 
   isInscribed: boolean;
   isDesktop?: boolean;
 }
 
 export const EventDetailButton: React.FC<Props> = ({ eventId, onClick, isInscribed, isDesktop = false }) => {
   
-  // Создаем динамический класс. Если пользователь записан, добавляем класс успеха
   const buttonClass = `${styles['detail__btnSubmit']} ${isInscribed ? styles['detail__btnSubmit--success'] : ''}`;
 
-  // Текст кнопки меняется динамически на десктопе и мобилке
-  const buttonText = isInscribed 
-    ? '¡Ya estás inscrito! ✓' 
-    : (isDesktop ? 'Inscribirme Ahora →' : 'Inscribirme →');
-
-  const pureButton = (
+       const pureButton = (
     <button 
-      onClick={() => !isInscribed && onClick(eventId)}
+      onClickCapture={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        if (!isInscribed) {
+          onClick();
+          console.log("Inscribiendo al evento ID:", eventId);
+        }
+      }}
       type="button"
       disabled={isInscribed}
       className={buttonClass}
     >
-      {buttonText}
+      {isInscribed ? '¡Ya estás inscrito! ✓' : (isDesktop ? 'Inscribirme Ahora →' : 'Inscribirme →')}
     </button>
   );
 
-  // Если десктоп — отдаем чистую кнопку без мобильной фиксированной обертки
   if (isDesktop) {
-    return pureButton;
+    return (
+      <div style={{ width: '100%' }}>
+        {pureButton}
+      </div>
+    );
   }
 
-  // Если мобилка — упаковываем в фиксированный у пола контейнер
   return (
     <div className={styles['detail__mobileAction']}>
       {pureButton}
