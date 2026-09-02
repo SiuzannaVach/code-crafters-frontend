@@ -1,29 +1,40 @@
 @use '../../styles/variables.module.scss' as var;
 
-
-
 .appSidebar {
   display: none;
 }
 
-// desktop
-
+// ==========================================
+// DESKTOP MODE (СТИЛИ ДЛЯ КОМПЬЮТЕРОВ)
+// ==========================================
 @media (min-width: 1024px) {
   .appSidebar {
     display: flex; 
     flex-direction: column; 
-    justify-content: flex-start;
+    justify-content: space-between; 
     align-items: flex-start;
-    width: 260px; 
+    width: 290px; 
     height: 100vh;
     padding: 2.5rem 1.5rem;
     padding-top: 100px;
     background-color: var.$bg-card;
-    border-right: 1px solid rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(8px);
     box-sizing: border-box;
     position: sticky;
     top: 0;
+    
+    // 🔥 СОЧНЫЙ ВЕРТИКАЛЬНЫЙ НЕОН: Свечение строго по правому краю
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 1px;
+      height: 100%; // На всю высоту Сайдбара
+      background: linear-gradient(to bottom, rgba(139, 92, 246, 0.5), rgba(99, 102, 241, 0.2));
+      box-shadow: -2px 0 15px rgba(139, 92, 246, 0.6), -4px 0 25px rgba(99, 102, 241, 0.3);
+      z-index: 10;
+    }
   }
 
   .profileSection {
@@ -38,14 +49,51 @@
 
   .avatarWrapper {
     position: relative;
+    width: 48px;  
+    height: 48px;
   }
 
-  .avatarPlaceholder {
-    width: 48px;
-    height: 48px;
+  .avatarPlaceholderBox {
+    width: 100%;
+    height: 100%;
     border-radius: 50%;
-   background-color: #5d598c;
-   border: 1px solid rgba(255, 255, 255, 0.1);
+    background: linear-gradient(135deg, #2e2a4f 0%, #1a1633 100%); 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid rgba(99, 102, 241, 0.4); 
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.2); 
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+
+    &:hover {
+      border-color: #6366f1;
+      box-shadow: 0 0 15px rgba(99, 102, 241, 0.5); 
+    }
+  }
+
+  .avatarInitials {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var.$color-primary 0%, #4f46e5 100%);
+    color: var.$text-main;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-sizing: border-box;
+  }
+
+  .avatarImage {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .profileInfo {
@@ -70,6 +118,7 @@
     flex-direction: column; 
     width: 100%;
     gap: 0.75rem;
+    flex: 1; 
   }
 
   .navButton {
@@ -82,11 +131,15 @@
     justify-content: flex-start;
     gap: 0.75rem;
     padding: 0.8rem 1rem;
-    font-size: 0.9rem;
+    
+    font-size: 0.95rem;
+    font-weight: 800; 
+    letter-spacing: 0.08em; 
+    
     border-radius: 8px;
-    font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
+    line-height: 1.3;
 
     &:hover {
       color: var.$text-main;
@@ -103,11 +156,52 @@
       }
     }
 
-   
     .navIcon {
       width: 20px;
       height: 20px;
       object-fit: contain;
+    }
+  }
+
+  .navSubtitle {
+    font-size: 0.75rem; 
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.5); 
+    text-transform: lowercase; 
+    letter-spacing: 0.02em; 
+    display: inline-block;
+    margin-top: 2px;
+  }
+
+  .sidebarFooter {
+    width: 100%;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 1.5rem;
+    margin-top: auto; 
+  }
+
+  .logoutButton {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: #f43f5e; 
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.75rem;
+    padding: 0.8rem 1rem;
+    font-size: 0.95rem; 
+    border-radius: 8px;
+    font-weight: 700; 
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid rgba(244, 63, 94, 0.2); 
+
+    &:hover {
+      color: #ffffff;
+      background-color: #f43f5e; 
+      box-shadow: 0 0 14px rgba(244, 63, 94, 0.5); 
+      border-color: #f43f5e;
     }
   }
 }
