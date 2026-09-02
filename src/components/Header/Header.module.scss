@@ -83,6 +83,47 @@
     }
   }
 
+  &__search-results {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    width: 100%;
+    min-width: 220px;
+    background-color: $bg-card;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+    list-style: none;
+    margin: 0;
+    padding: 0.4rem;
+    z-index: 200;
+    max-height: 260px;
+    overflow-y: auto;
+  }
+
+  &__search-result-item {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    color: $text-main;
+    padding: 0.6rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background-color 0.15s;
+
+    &:hover {
+      background-color: $color-glow;
+    }
+  }
+
+  &__search-empty {
+    padding: 0.6rem 0.75rem;
+    font-size: 0.8rem;
+    color: $text-muted;
+  }
+
   &__actions {
     display: flex;
     align-items: center;
