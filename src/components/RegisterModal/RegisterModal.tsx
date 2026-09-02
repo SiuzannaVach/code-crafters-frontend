@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { User, Mail, Lock, ChevronDown, Eye, EyeOff, ArrowRight, X } from 'lucide-react';
 import styles from './RegisterModal.module.scss';
 import logoIcon from '../../assets/icons/icon-code.svg';
@@ -18,9 +19,24 @@ interface RegisterModalProps {
 export const RegisterModal: React.FC<RegisterModalProps> = ({ onNavigate }) => {
   const [showPassword, setShowPassword] = useState(false);
   const { register, handleSubmit } = useForm<RegisterFormData>();
+  const navigate = useNavigate();
 
   const onSubmit = (data: RegisterFormData) => {
-    console.log('Form Submitted inside Modal:', data);
+    const userSession = {
+      id: `user-${Date.now()}`,
+      email: data.email,
+      name: data.fullName,
+      role: data.accountType || 'espectador',
+      isAuthenticated: true
+    };
+
+    localStorage.setItem('logged_user', JSON.stringify(userSession));
+
+    if (data.accountType === 'organizador') {
+      navigate('/dashboard');
+    } else {
+      navigate('/home');
+    }
   };
 
   return (
@@ -47,7 +63,7 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({ onNavigate }) => {
           <h1 className={styles['brand-header__title']}>Code Crafters</h1>
           <p className={styles['brand-header__subtitle']}>
             <span className={styles['brand-header__subtitle-mobile']}>Crea tu cuenta para empezar a construir.</span>
-            <span className={styles['brand-header__subtitle-desktop']}>Únete al futuro de la tecnología.</span>
+            <span className={styles['brand-header__subtitle-desktop']}>Úнете al futuro de la tecnología.</span>
           </p>
         </div>
 
@@ -111,7 +127,7 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({ onNavigate }) => {
               <label className={styles['form-field__label']} htmlFor="accountType">Tipo de Cuenta</label>
               <div className={styles['form-field__control']}>
                 <User size={18} className={styles['form-field__icon']} />
-                <select id="accountType" className={styles['form-field__select']} {...register('accountType')} defaultValue="">
+                <select id="accountType" className={styles['form-field__select']} {...register('accountType', { required: true })} defaultValue="">
                   <option value="" disabled hidden>SELECCIONAR</option>
                   <option value="espectador">Espectador</option>
                   <option value="organizador">Organizador</option>

@@ -1,19 +1,52 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom'; 
+import { mockUsuarios } from '../../data/mockData';
 import styles from './LoginCard.module.scss';
 import { Mail, Lock, LogIn } from 'lucide-react';
 
-interface LoginCardProps {
-  onNavigate?: () => void;
-}
-
-export const LoginCard: React.FC<LoginCardProps> = ({ onNavigate }) => {
+export const LoginCard: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('espectador');
+  const [error, setError] = useState('');
+
+  const navigate = useNavigate(); 
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Intento de inicio de sesión:', { email, password, role });
+    setError('');
+    console.clear(); 
+
+    const dbUser = mockUsuarios.find(
+      (u) => u.email.toLowerCase() === email.toLowerCase().trim()
+    );
+
+    if (!dbUser) {
+      setError('Usuario no encontrado');
+      return;
+    }
+
+    if (dbUser.password !== password) {
+      setError('Contraseña incorrecta');
+      return;
+    }
+
+    const userSession = {
+      id: dbUser.id,
+      email: dbUser.email,
+      name: dbUser.nombre,
+      role: role,
+      isAuthenticated: true
+    };
+
+    localStorage.setItem('logged_user', JSON.stringify(userSession));
+    console.log('SUCCESS_AUTH:', userSession);
+
+    if (role === 'administrador') {
+      navigate('/dashboard');
+    } else {
+      navigate('/home');
+    }
   };
 
   return (
@@ -24,6 +57,12 @@ export const LoginCard: React.FC<LoginCardProps> = ({ onNavigate }) => {
           <h1 className={styles.mainFormTitle}>Bienvenido de nuevo</h1>
           <p className={styles.subtitle}>Inicia sesión en tu cuenta de Code Crafters</p>
         </div>
+
+        {error && (
+          <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-medium p-3 rounded-xl text-center mb-4">
+            {error}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className={styles.form}>
           
@@ -50,7 +89,7 @@ export const LoginCard: React.FC<LoginCardProps> = ({ onNavigate }) => {
               <input
                 id="email"
                 type="email"
-                placeholder="dev@codecrafters.com"
+                placeholder="admin@codecrafters.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -80,15 +119,9 @@ export const LoginCard: React.FC<LoginCardProps> = ({ onNavigate }) => {
 
         <div className={styles.footerLink}>
           ¿No tienes cuenta?{' '}
-          <a
-            href="#register"
-            onClick={(e) => {
-              e.preventDefault();
-              onNavigate?.();
-            }}
-          >
+          <Link to="/register" className={styles.registerLink}>
             Regístrate
-          </a>
+          </Link>
         </div>
 
       </div>
