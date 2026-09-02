@@ -5,12 +5,12 @@ import styles from './Header.module.scss';
 import iconCode from '../../assets/icons/icon-code.svg'; 
 import iconProfile from '../../assets/icons/icon-profile.svg';
 import iconBell from '../../assets/icons/icon-bell.svg';
+import { LogOut } from 'lucide-react'; // Импортируем иконку выхода для мобилки
 
 interface HeaderProps {
   isAuthenticated?: boolean;
 }
 
-// Разделы сайта, доступные через поиск в шапке
 const SITE_PAGES = [
   { label: 'Explorar eventos', path: '/home' },
   { label: 'Crear evento', path: '/create-event' },
@@ -26,17 +26,17 @@ const Header: React.FC<HeaderProps> = ({ isAuthenticated = false }) => {
   const [isOpen, setIsOpen] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
 
-  // Проверяем, находится ли пользователь на странице создания события
-  const isCreateEventPage = location.pathname === '/create-event';
+  const savedUserRaw = localStorage.getItem('logged_user');
+  const user = savedUserRaw ? JSON.parse(savedUserRaw) : null;
+  const isUserLoggedIn = isAuthenticated || !!user;
 
-  // Динамически добавляем специальный класс для мобильного хедера события
+  const isCreateEventPage = location.pathname === '/create-event';
   const headerClass = `${styles.header} ${isCreateEventPage ? styles['header--event-mobile'] : ''}`;
 
   const results = query.trim()
     ? SITE_PAGES.filter(page => page.label.toLowerCase().includes(query.trim().toLowerCase()))
     : [];
 
-  // Закрываем выпадающий список при клике снаружи
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
@@ -48,7 +48,7 @@ const Header: React.FC<HeaderProps> = ({ isAuthenticated = false }) => {
   }, []);
 
   const handleLogoClick = () => {
-    navigate(isAuthenticated ? '/home' : '/login');
+    navigate('/home');
   };
 
   const goToPage = (path: string) => {
@@ -64,6 +64,13 @@ const Header: React.FC<HeaderProps> = ({ isAuthenticated = false }) => {
     if (e.key === 'Escape') {
       setIsOpen(false);
     }
+  };
+
+  // Функция выхода
+  const handleLogout = () => {
+    console.clear();
+    localStorage.removeItem('logged_user');
+    navigate('/login');
   };
 
   return (
@@ -84,7 +91,7 @@ const Header: React.FC<HeaderProps> = ({ isAuthenticated = false }) => {
         <span className={styles['header__logo-text']}>Code Crafters</span>
       </div>
 
-      {isAuthenticated && (
+      {isUserLoggedIn && (
         <div className={styles.header__content}>
           
           <div className={styles.header__search} ref={searchRef}>
@@ -97,7 +104,7 @@ const Header: React.FC<HeaderProps> = ({ isAuthenticated = false }) => {
                 strokeWidth="2" 
                 strokeLinecap="round" 
                 strokeLinejoin="round"
-                xmlns="http://www.w3.org/2000/svg"
+                xmlns="http://w3.org"
               >
                 <circle cx="11" cy="11" r="8" />
                 <line x1="21" y1="21" x2="16.65" y2="16.65" />
@@ -140,6 +147,16 @@ const Header: React.FC<HeaderProps> = ({ isAuthenticated = false }) => {
           </div>
           
           <div className={styles.header__actions}>
+            {/* Кнопка выхода для мобилок (на десктопе скроем через CSS) */}
+            <button 
+              className={styles.header__logoutMobile} 
+              onClick={handleLogout}
+              aria-label="Cerrar sesión"
+              title="Cerrar sesión"
+            >
+              <LogOut size={20} color="#f43f5e" />
+            </button>
+
             <div className={styles.header__profile} aria-label="Perfil">
               <img src={iconProfile} className={styles['header__action-img']} alt="Perfil" />
             </div>

@@ -8,7 +8,8 @@
   padding: 0 1rem; 
   background-color: rgba($bg-card, 0.8); 
   backdrop-filter: blur(12px); 
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+border-bottom: 1px solid rgba(99, 102, 241, 0.3);
+box-shadow: 0 4px 20px rgba(99, 102, 241, 0.15); 
   position: fixed;
   top: 0;
   left: 0;
@@ -46,7 +47,7 @@
 
   &__search {
     position: absolute; 
-     left: 50%;
+    left: 50%;
     transform: translateX(-50%); 
     width: 100%;
     max-width: 160px;
@@ -136,6 +137,22 @@
     flex-shrink: 0;
   }
 
+  &__logoutMobile {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.2rem;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: rgba(244, 63, 94, 0.1);
+    }
+  }
+
   &__profile {
     display: flex;
     align-items: center;
@@ -170,10 +187,14 @@
   }
 
   /* ==========================================================================
-     💻 
+     💻 DESKTOP MODE 
      ========================================================================== */
   @media (min-width: 769px) {
     padding: 0 2rem;
+
+    &__logoutMobile {
+      display: none;
+    }
 
     &__logo-block {
       gap: 0.75rem;
@@ -193,14 +214,15 @@
     }
 
     &__content {
-      margin-left: 1.5rem;
+      margin-left: 2rem;
+      width: 100%;
     }
 
     &__search {
       position: absolute; 
       left: 50%;
       transform: translateX(-50%);
-      max-width: 320px; 
+      max-width: 500px; 
       margin-right: 0;
     }
 
@@ -209,18 +231,18 @@
     }
 
     &__input {
-      padding: 0.6rem 1rem 0.6rem 2.5rem;
+      padding: 0.7rem 1rem 0.7rem 2.8rem;
       font-size: 0.9rem;
     }
 
     &__actions {
-      gap: 1rem;
+      gap: 1.25rem;
       padding: 0.4rem 1rem;
     }
 
     &__action-img {
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
     }
   }
 }
