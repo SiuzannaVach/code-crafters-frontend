@@ -13,13 +13,21 @@ interface RegisterFormData {
 }
 
 interface RegisterModalProps {
-  onNavigate?: () => void;
+  onClose?: () => void;
 }
 
-export const RegisterModal: React.FC<RegisterModalProps> = ({ onNavigate }) => {
+export const RegisterModal: React.FC<RegisterModalProps> = ({ onClose }) => {
   const [showPassword, setShowPassword] = useState(false);
   const { register, handleSubmit } = useForm<RegisterFormData>();
   const navigate = useNavigate();
+
+  const handleClose = () => {
+    if (onClose) {
+      onClose();
+    } else {
+      navigate(-1); // Возвращаем назад, если открыто как отдельный экран
+    }
+  };
 
   const onSubmit = (data: RegisterFormData) => {
     const userSession = {
@@ -32,6 +40,7 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({ onNavigate }) => {
 
     localStorage.setItem('logged_user', JSON.stringify(userSession));
 
+    // Разделение логики: организатор идет на дашборд, зритель — на главную
     if (data.accountType === 'organizador') {
       navigate('/dashboard');
     } else {
@@ -40,18 +49,20 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({ onNavigate }) => {
   };
 
   return (
-    <div className={styles['register-modal']} onClick={() => onNavigate?.()}>
-
+    <div className={styles['register-modal']} onClick={handleClose}>
       <div className={styles['register-modal__body']} onClick={(e) => e.stopPropagation()}>
-
+        
+        {/* Кнопка-крестик закрытия */}
         <button
+          type="button"
           className={styles['register-modal__close-btn']}
-          onClick={() => onNavigate?.()}
+          onClick={handleClose}
           aria-label="Cerrar"
         >
           <X size={20} />
         </button>
 
+        {/* Шапка бренда внутри карточки */}
         <div className={styles['brand-header']}>
           <div className={styles['brand-header__logo-box']}>
             <img
@@ -63,15 +74,15 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({ onNavigate }) => {
           <h1 className={styles['brand-header__title']}>Code Crafters</h1>
           <p className={styles['brand-header__subtitle']}>
             <span className={styles['brand-header__subtitle-mobile']}>Crea tu cuenta para empezar a construir.</span>
-            <span className={styles['brand-header__subtitle-desktop']}>Úнете al futuro de la tecnología.</span>
+            <span className={styles['brand-header__subtitle-desktop']}>Únete al futuro de la tecnología.</span>
           </p>
         </div>
 
+        {/* Форма регистрации */}
         <div className={styles['auth-card']}>
           <h2 className={styles['auth-card__title']}>Crear Cuenta</h2>
 
           <form onSubmit={handleSubmit(onSubmit)} className={styles['auth-card__form']} autoComplete="off">
-
             <div className={styles['form-field']}>
               <label className={styles['form-field__label']} htmlFor="fullName">Nombre Completo</label>
               <div className={styles['form-field__control']}>
@@ -142,37 +153,21 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({ onNavigate }) => {
             </button>
           </form>
 
+          {/* Редирект на логин */}
           <div className={styles['auth-card__redirect']}>
             ¿Ya tienes cuenta?{' '}
-            <a
-              href="/login"
+            <button
+              type="button"
               className={styles['auth-card__link']}
-              onClick={(e) => {
-                e.preventDefault();
-                onNavigate?.();
-              }}
+              style={{ background: 'none', border: 'none', padding: 0, font: 'inherit', cursor: 'pointer', color: 'inherit', textDecoration: 'underline' }}
+              onClick={() => navigate('/login')}
             >
               Inicia sesión aquí
-            </a>
+            </button>
           </div>
         </div>
 
       </div>
-
-      <footer className={styles['register-modal__footer']}>
-        <div className={styles['register-modal__footer-brand']}>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={styles['brand-header__logo-icon']}>
-            <rect x="2" y="3" width="20" height="18" rx="4" />
-            <path d="M7 9l3 3-3 3" />
-            <path d="M12 15h5" />
-          </svg>
-          <span>Code Crafters</span>
-        </div>
-        <div className={styles['register-modal__copyright']}>
-          © 2026 Code Crafters. Built for the future of tech.
-        </div>
-      </footer>
-
     </div>
   );
 };
