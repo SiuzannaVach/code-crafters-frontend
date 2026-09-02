@@ -578,24 +578,18 @@ $text-muted: #94a3b8;
         border-radius: 12px !important; 
         font-weight: 700 !important;
         cursor: pointer !important;
-        font-size: 0px !important;
+        font-size: 1rem !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
 
-        &::before {
-          content: 'Inscribirme Ahora →' !important; 
-          font-size: 1rem !important;
-          font-weight: 700 !important;
-          color: #ffffff !important;
-          display: inline-block !important;
-        }
-
         &:hover {
           opacity: 0.95 !important;
         }
+
+        &:disabled {
+          opacity: 0.6 !important;
+          cursor: not-allowed !important;
+        }
       }
     }
-   
-
-
