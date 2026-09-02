@@ -70,7 +70,7 @@ const Home: React.FC = () => {
               Ver Agenda
             </HomeOutlineButton>
           </div>
-        </div>?
+        </div>
       </section>
    
     <div id="events-section" className={styles.searchAndFilters}>
