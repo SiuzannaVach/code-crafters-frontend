@@ -1,6 +1,5 @@
 @use '../../styles/global.module.scss' as *;
 
-
 .footer {
   width: 100%;
   background-color: $bg-card;
@@ -11,17 +10,17 @@
 
   &__container {
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 0 0 0 auto;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    text-align: center;
+    align-items: flex-end;
+    justify-content: center; 
+    gap: 0.35rem;
+    text-align: right;
   }
 
   &__brand {
-    font-size: 1.5rem;
+    font-size: 1.35rem;
     font-weight: 700;
     color: $text-main;
     margin: 0;
@@ -33,11 +32,12 @@
     margin: 0;
   }
 
-  @media (min-width: 769px) {
+   @media (max-width: 768px) {
     &__container {
-      flex-direction: row;
-      justify-content: space-between;
-      text-align: left;
+      margin: 0 auto;
+      align-items: center;
+      text-align: center;
     }
   }
 }
+
