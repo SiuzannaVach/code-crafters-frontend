@@ -5,7 +5,7 @@
 }
 
 // ==========================================
-// DESKTOP MODE (СТИЛИ ДЛЯ КОМПЬЮТЕРОВ)
+// DESKTOP MODE 
 // ==========================================
 @media (min-width: 1024px) {
   .appSidebar {
@@ -23,14 +23,14 @@
     position: sticky;
     top: 0;
     
-    // 🔥 СОЧНЫЙ ВЕРТИКАЛЬНЫЙ НЕОН: Свечение строго по правому краю
+    
     &::after {
       content: '';
       position: absolute;
       top: 0;
       right: 0;
       width: 1px;
-      height: 100%; // На всю высоту Сайдбара
+      height: 100%; 
       background: linear-gradient(to bottom, rgba(139, 92, 246, 0.5), rgba(99, 102, 241, 0.2));
       box-shadow: -2px 0 15px rgba(139, 92, 246, 0.6), -4px 0 25px rgba(99, 102, 241, 0.3);
       z-index: 10;

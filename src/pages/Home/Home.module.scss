@@ -445,8 +445,7 @@
        z-index: 1 !important;
       border-radius: 16px !important; 
       overflow: hidden !important;
-        
-
+      
     }
 
     &__bg {
@@ -515,7 +514,7 @@
 
     &__btn {
       width: auto !important;
-      padding: 0.85rem 2rem !important;
+      padding: 0.85rem 1rem !important;
       font-size: 1rem !important;
       border-radius: 8px !important;
       white-space: nowrap;
@@ -608,6 +607,7 @@
       flex-shrink: 0;
       margin: 0 !important;
       padding: 0 !important;
+      height: 200px !important;
     }
 
     &__img {
