@@ -4,12 +4,10 @@ export interface Evento {
   descripcion: string;
   fecha: string;
   imagen: string;
-  modalidad: 'online' | 'presencial';
+  modalidad: "online" | "presencial";
   ubicacion: string;
   categoria: string;
   organizadorId: string;
   vistas: number;
   status?: string;
-
 }
-
