@@ -7,22 +7,26 @@ import Home from "../pages/Home/Home";
 import AuthenticatedLayout from "../components/AuthenticatedLayout/AuthenticatedLayout";
 import EventDetail from "../pages/EventDetail/EventDetail";
 import { Dashboard } from "../pages/Dashboard/Dashboard";
+
 const AppRoutes: React.FC = () => {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/home" replace />} />
+      {/* При открытии localhost сразу перенаправляем на страницу логина */}
+      <Route path="/" element={<Navigate to="/login" replace />} />
+
       <Route path="/login" element={<LoginCard />} />
       <Route path="/register" element={<RegisterModal />} />
 
+      {/* Все основные страницы внутри базовой разметки */}
       <Route element={<AuthenticatedLayout />}>
         <Route path="/home" element={<Home />} />
         <Route path="/events/:id" element={<EventDetail />} />
         <Route path="/create-event" element={<CreateEvent />} />
-
         <Route path="/dashboard" element={<Dashboard />} />
       </Route>
 
-      <Route path="*" element={<Navigate to="/home" replace />} />
+      {/* Если вбили странный адрес — возвращаем на логин */}
+      <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   );
 };
