@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import styles from "./Sidebar.module.scss";
 import explorerIcon from "../../assets/icons/explorer.svg";
@@ -6,23 +6,46 @@ import gestionIcon from "../../assets/icons/gestión.svg";
 import organizerAvatar from "../../assets/icons/organizador.svg";
 import { LogOut, User } from "lucide-react";
 
+interface SidebarUser {
+  id: string;
+  name: string;
+  email: string;
+  password?: string;
+  role?: string;
+}
+
 export const Sidebar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const savedUserRaw = localStorage.getItem("logged_user");
-  const user = savedUserRaw ? JSON.parse(savedUserRaw) : null;
-  const isAuthenticated = !!user;
+  const [user, setUser] = useState<SidebarUser | null>(null);
+  useEffect(() => {
+    const savedUserRaw = localStorage.getItem("logged_user");
+    if (savedUserRaw) {
+      try {
+        const parsedUser = JSON.parse(savedUserRaw) as SidebarUser;
+        setUser(parsedUser);
+      } catch (e) {
+        console.error("Error al parsear logged_user в Sidebar:", e);
+      }
+    }
+  }, [location.pathname]);
 
-  const currentName = user ? user.name : "Invitado";
+  const isAuthenticated = user !== null;
+  const currentName = user?.name ?? "Invitado";
+
+  // Безопасный перевод роли в нижний регистр
+  const userRoleLower = user && user.role ? user.role.toLowerCase() : "";
+  const isOrganizer =
+    userRoleLower === "organizador" ||
+    userRoleLower === "administrador" ||
+    userRoleLower === "admin";
+
   const currentRole = user
-    ? user.role === "administrador" || user.role === "organizador"
+    ? isOrganizer
       ? "Organizador"
       : "Espectador"
     : "Visitante";
-
-  const isOrganizer =
-    user?.role === "administrador" || user?.role === "organizador";
 
   const getInitials = (name: string) => {
     if (!name) return "";
@@ -30,7 +53,6 @@ export const Sidebar: React.FC = () => {
     if (parts.length > 1) {
       return (parts[0][0] + parts[1][0]).toUpperCase();
     }
-
     return name.slice(0, 2).toUpperCase();
   };
 
@@ -76,10 +98,16 @@ export const Sidebar: React.FC = () => {
           <span>EXPLORAR</span>
         </button>
 
+        {/* 🛠 МЕНЯЕМ ТОЛЬКО ЭТУ КНОПКУ: теперь она ведет на /dashboard */}
         <button
           type="button"
-          className={`${styles.navButton} ${location.pathname === "/create-event" ? styles.navButtonActive : ""}`}
-          onClick={() => navigate("/create-event")}
+          className={`${styles.navButton} ${
+            location.pathname === "/dashboard" ||
+            location.pathname === "/create-event"
+              ? styles.navButtonActive
+              : ""
+          }`}
+          onClick={() => navigate("/dashboard")}
         >
           <img
             src={gestionIcon}
