@@ -1,28 +1,22 @@
-import React from 'react';
-import DatePicker, { registerLocale } from 'react-datepicker';
-import { es } from 'date-fns/locale/es';
-import { Wifi, MapPin, UploadCloud } from 'lucide-react';
+import React from "react";
+import DatePicker, { registerLocale } from "react-datepicker";
+import { es } from "date-fns/locale/es";
+import { Wifi, MapPin, UploadCloud } from "lucide-react";
+import { useCreateEvent } from "../../hooks/useCreateEvent/useCreateEvent";
+import {
+  CreateEventFormGroup,
+  CreateEventInputField,
+  CreateEventModalityButton,
+} from "../../components/CreateEvent/CreateEventForm";
+import {
+  CreateEventDraftButton,
+  CreateEventPublishButton,
+} from "../../components/CreateEvent/CreateEventButton";
 
-// Импорт бизнес-логики (Кастомный хук)
-import { useCreateEvent } from '../../hooks/useCreateEvent/useCreateEvent';
-
-// Импорт элементов формы (Кирпичики)
-import { 
-  CreateEventFormGroup, 
-  CreateEventInputField, 
-  CreateEventModalityButton 
-} from '../../components/CreateEvent/CreateEventForm';
-
-// Импорт кнопок управления (Кирпичики)
-import { 
-  CreateEventDraftButton, 
-  CreateEventPublishButton 
-} from '../../components/CreateEvent/CreateEventButton';
-
-import styles from './CreateEvent.module.scss';
+import styles from "./CreateEvent.module.scss";
 import "react-datepicker/dist/react-datepicker.css";
 
-registerLocale('es', es);
+registerLocale("es", es);
 
 const CreateEvent: React.FC = () => {
   const {
@@ -32,22 +26,21 @@ const CreateEvent: React.FC = () => {
     handleDateChange,
     handleModalityChange,
     handleImageChange,
-    handleSubmit
+    handleSaveDraft,
+    handleSubmit,
   } = useCreateEvent();
 
   return (
     <div className={styles.createEvent}>
       <header className={styles.header}>
         <h1 className={styles.title}>Crear Evento</h1>
-        <p className={styles.subtitle}>Configura los detalles de tu próximo encuentro tecnológico.</p>
+        <p className={styles.subtitle}>
+          Configura los detalles de tu próximo encuentro tecnológico.
+        </p>
       </header>
 
       <form onSubmit={handleSubmit} className={styles.formCard}>
-
-        {/* ЛЕВАЯ КОЛОНКА (Данные формы) */}
         <div className={styles.leftColumn}>
-          
-          {/* Секция 1: Основная информация */}
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>Datos básicos</h2>
 
@@ -84,7 +77,9 @@ const CreateEvent: React.FC = () => {
                 onChange={handleChange}
                 required
               >
-                <option value="" disabled>Selecciona una categoría</option>
+                <option value="" disabled>
+                  Selecciona una categoría
+                </option>
                 <option value="frontend">Frontend</option>
                 <option value="backend">Backend</option>
                 <option value="ai">AI &amp; Data Science</option>
@@ -103,10 +98,9 @@ const CreateEvent: React.FC = () => {
             </div>
           </section>
 
-          {/* Секция 2: Время и место проведения */}
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>Fecha y ubicación</h2>
-             
+
             <div className={styles.formRow}>
               <CreateEventFormGroup label="Fecha" id="date">
                 <DatePicker
@@ -134,15 +128,17 @@ const CreateEvent: React.FC = () => {
 
             <div className={styles.formGroup}>
               <label>Modalidad del evento</label>
+
               <div className={styles.modalityGroup}>
-                <CreateEventModalityButton 
-                  active={formData.isOnline} 
+                <CreateEventModalityButton
+                  active={formData.isOnline}
                   onClick={() => handleModalityChange(true)}
                   icon={<Wifi size={20} />}
                   text="Online / Virtual"
                 />
-                <CreateEventModalityButton 
-                  active={!formData.isOnline} 
+
+                <CreateEventModalityButton
+                  active={!formData.isOnline}
                   onClick={() => handleModalityChange(false)}
                   icon={<MapPin size={20} />}
                   text="Presencial"
@@ -155,7 +151,9 @@ const CreateEvent: React.FC = () => {
               id="linkOrAddress"
               name="linkOrAddress"
               type="text"
-              placeholder={formData.isOnline ? "https://zoom.us..." : "Ej. 123 Tech St."}
+              placeholder={
+                formData.isOnline ? "https://zoom.us..." : "Ej. 123 Tech St."
+              }
               value={formData.linkOrAddress}
               onChange={handleChange}
               required
@@ -163,10 +161,8 @@ const CreateEvent: React.FC = () => {
           </section>
         </div>
 
-        {/* ПРАВАЯ КОЛОНКА (Загрузка изображения и действия) */}
         <div className={styles.rightColumn}>
           <section className={`${styles.section} ${styles.bannerSection}`}>
-            
             <CreateEventFormGroup label="Imagen de evento" id="bannerUpload">
               <div className={styles.uploadBox}>
                 <input
@@ -176,35 +172,43 @@ const CreateEvent: React.FC = () => {
                   onChange={handleImageChange}
                   className={styles.uploadInput}
                 />
+
                 <label htmlFor="bannerUpload" className={styles.uploadLabel}>
                   {imagePreview ? (
-                    <img 
-                      src={imagePreview} 
-                      alt="Preview" 
-                      style={{ maxWidth: '100%', maxHeight: '150px', borderRadius: '8px', objectFit: 'cover' }} 
+                    <img
+                      src={imagePreview}
+                      alt="Vista previa del evento"
+                      style={{
+                        maxWidth: "100%",
+                        maxHeight: "150px",
+                        borderRadius: "8px",
+                        objectFit: "cover",
+                      }}
                     />
                   ) : (
                     <UploadCloud size={28} />
                   )}
+
                   <span className={styles.uploadText}>
-                    {formData.image ? formData.image.name : 'Seleccionar archivo'}
+                    {formData.image
+                      ? formData.image.name
+                      : "Seleccionar archivo"}
                   </span>
                 </label>
               </div>
             </CreateEventFormGroup>
 
             <div className={styles.actions}>
-              <CreateEventDraftButton onClick={() => console.log('Borrador guardado:', formData)}>
+              <CreateEventDraftButton onClick={handleSaveDraft}>
                 GUARDAR BORRADOR
               </CreateEventDraftButton>
+
               <CreateEventPublishButton>
                 PUBLICAR EVENTO
               </CreateEventPublishButton>
             </div>
-
           </section>
         </div>
-
       </form>
     </div>
   );
