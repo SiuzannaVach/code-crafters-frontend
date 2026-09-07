@@ -1,33 +1,38 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; 
-import { mockUsuarios } from '../../data/mockData';
-import styles from './LoginCard.module.scss';
-import { Mail, Lock, LogIn } from 'lucide-react';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { mockUsuarios } from "../../data/mockData";
+import styles from "./LoginCard.module.scss";
+import { Mail, Lock, LogIn } from "lucide-react";
 
 export const LoginCard: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [role, setRole] = useState('espectador');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [role, setRole] = useState("espectador");
+  const [error, setError] = useState("");
 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-    console.clear(); 
+    setError("");
+    console.clear();
 
-    const dbUser = mockUsuarios.find(
-      (u) => u.email.toLowerCase() === email.toLowerCase().trim()
-    );
+    const cleanEmail = email.toLowerCase().trim();
+
+    let dbUser = mockUsuarios.find((u) => u.email.toLowerCase() === cleanEmail);
 
     if (!dbUser) {
-      setError('Usuario no encontrado');
-      return;
-    }
+      const parts = cleanEmail.split("@");
+      const generatedName = parts[0].toUpperCase();
 
-    if (dbUser.password !== password) {
-      setError('Contraseña incorrecta');
+      dbUser = {
+        id: String(Date.now()),
+        email: cleanEmail,
+        nombre: generatedName,
+        password: password,
+      };
+    } else if (dbUser.password !== password) {
+      setError("Contraseña incorrecta");
       return;
     }
 
@@ -36,26 +41,27 @@ export const LoginCard: React.FC = () => {
       email: dbUser.email,
       name: dbUser.nombre,
       role: role,
-      isAuthenticated: true
+      isAuthenticated: true,
     };
 
-    localStorage.setItem('logged_user', JSON.stringify(userSession));
-    console.log('SUCCESS_AUTH:', userSession);
+    localStorage.setItem("logged_user", JSON.stringify(userSession));
+    console.log("SUCCESS_AUTH:", userSession);
 
-    if (role === 'administrador') {
-      navigate('/dashboard');
+    if (role === "administrador") {
+      navigate("/dashboard");
     } else {
-      navigate('/home');
+      navigate("/home");
     }
   };
 
   return (
     <div className={styles.loginContainer}>
       <div className={styles.loginCard}>
-        
         <div className={styles.titleBlock}>
           <h1 className={styles.mainFormTitle}>Bienvenido de nuevo</h1>
-          <p className={styles.subtitle}>Inicia sesión en tu cuenta de Code Crafters</p>
+          <p className={styles.subtitle}>
+            Inicia sesión en tu cuenta de Code Crafters
+          </p>
         </div>
 
         {error && (
@@ -65,7 +71,6 @@ export const LoginCard: React.FC = () => {
         )}
 
         <form onSubmit={handleSubmit} className={styles.form}>
-          
           <div className={styles.inputGroup}>
             <label htmlFor="role">SELECT</label>
             <div className={styles.inputWrapper}>
@@ -118,12 +123,11 @@ export const LoginCard: React.FC = () => {
         </form>
 
         <div className={styles.footerLink}>
-          ¿No tienes cuenta?{' '}
+          ¿No tienes cuenta?{" "}
           <Link to="/register" className={styles.registerLink}>
             Regístrate
           </Link>
         </div>
-
       </div>
     </div>
   );
