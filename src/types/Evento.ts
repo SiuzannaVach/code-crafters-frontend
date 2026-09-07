@@ -9,5 +9,7 @@ export interface Evento {
   categoria: string;
   organizadorId: string;
   vistas: number;
+  status?: string;
+
 }
 
