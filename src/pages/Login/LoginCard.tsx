@@ -1,57 +1,86 @@
-import React, { useState } from "react";
+import React, { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { mockUsuarios } from "../../data/mockData";
-import styles from "./LoginCard.module.scss";
 import { Mail, Lock, LogIn } from "lucide-react";
+
+import { mockUsuarios } from "../../data/mockData";
+import {
+  findUserByEmail,
+  saveNewUser,
+  type StoredUser,
+} from "../../utils/authStorage";
+import styles from "./LoginCard.module.scss";
+
+type Role = "espectador" | "organizador";
 
 export const LoginCard: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("espectador");
+  const [role, setRole] = useState<Role>("espectador");
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     setError("");
-    console.clear();
 
-    const cleanEmail = email.toLowerCase().trim();
+    const cleanEmail = email.trim().toLowerCase();
 
-    let dbUser = mockUsuarios.find((u) => u.email.toLowerCase() === cleanEmail);
+    // 1. Сначала ищем зарегистрированного пользователя из LocalStorage
+    const registeredUser = findUserByEmail(cleanEmail);
 
-    if (!dbUser) {
-      const parts = cleanEmail.split("@");
-      const generatedName = parts[0].toUpperCase();
+    // 2. Если его нет в LocalStorage — ищем админа в mockData
+    const mockUser = mockUsuarios.find(
+      (user) => user.email.toLowerCase() === cleanEmail,
+    );
 
+    let dbUser: StoredUser | undefined = registeredUser;
+
+    if (!dbUser && mockUser) {
       dbUser = {
-        id: String(Date.now()),
-        email: cleanEmail,
-        nombre: generatedName,
-        password: password,
+        id: mockUser.id,
+        email: mockUser.email,
+        name: mockUser.nombre,
+        password: mockUser.password,
+        role: mockUser.role === "organizador" ? "organizador" : "espectador",
       };
+    }
+
+    // 3. Если пользователя ещё нет — создаём его и сохраняем
+    if (!dbUser) {
+      dbUser = {
+        id: `user-${Date.now()}`,
+        email: cleanEmail,
+        name: cleanEmail.split("@")[0].toUpperCase(),
+        password,
+        role,
+      };
+
+      saveNewUser(dbUser);
     } else if (dbUser.password !== password) {
       setError("Contraseña incorrecta");
       return;
     }
 
-    const userSession = {
-      id: dbUser.id,
-      email: dbUser.email,
-      name: dbUser.nombre,
-      role: role,
-      isAuthenticated: true,
-    };
+    // Роль берём из сохранённого пользователя.
+    // Для тестового админа роль всегда organizador.
+    const finalRole: Role =
+      dbUser.email === "admin@codecrafters.com" ? "organizador" : dbUser.role;
 
-    localStorage.setItem("logged_user", JSON.stringify(userSession));
-    console.log("SUCCESS_AUTH:", userSession);
+    // 4. Сохраняем текущую сессию
+    localStorage.setItem(
+      "logged_user",
+      JSON.stringify({
+        id: dbUser.id,
+        email: dbUser.email,
+        name: dbUser.name,
+        role: finalRole,
+        isAuthenticated: true,
+      }),
+    );
 
-    if (role === "administrador") {
-      navigate("/dashboard");
-    } else {
-      navigate("/home");
-    }
+    // 5. Перенаправляем по роли
+    navigate(finalRole === "organizador" ? "/dashboard" : "/home");
   };
 
   return (
@@ -64,39 +93,39 @@ export const LoginCard: React.FC = () => {
           </p>
         </div>
 
-        {error && (
-          <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-medium p-3 rounded-xl text-center mb-4">
-            {error}
-          </div>
-        )}
+        {error && <div className={styles.error}>{error}</div>}
 
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.inputGroup}>
             <label htmlFor="role">SELECT</label>
+
             <div className={styles.inputWrapper}>
               <select
                 id="role"
                 value={role}
-                onChange={(e) => setRole(e.target.value)}
+                onChange={(event) => setRole(event.target.value as Role)}
                 className={styles.selectInput}
               >
                 <option value="espectador">Espectador</option>
-                <option value="administrador">Administrador</option>
+                <option value="organizador">Administrador</option>
               </select>
+
               <span className={styles.selectArrow}>▼</span>
             </div>
           </div>
 
           <div className={styles.inputGroup}>
             <label htmlFor="email">DIRECCIÓN DE EMAIL</label>
+
             <div className={styles.inputWrapper}>
               <Mail size={18} className={styles.inputIcon} />
+
               <input
                 id="email"
                 type="email"
-                placeholder="admin@codecrafters.com"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(event) => setEmail(event.target.value)}
+                placeholder="admin@codecrafters.com"
                 required
               />
             </div>
@@ -104,14 +133,16 @@ export const LoginCard: React.FC = () => {
 
           <div className={styles.inputGroup}>
             <label htmlFor="password">CONTRASEÑA</label>
+
             <div className={styles.inputWrapper}>
               <Lock size={18} className={styles.inputIcon} />
+
               <input
                 id="password"
                 type="password"
-                placeholder="••••••••"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(event) => setPassword(event.target.value)}
+                placeholder="••••••••"
                 required
               />
             </div>
@@ -132,3 +163,5 @@ export const LoginCard: React.FC = () => {
     </div>
   );
 };
+
+export default LoginCard;
