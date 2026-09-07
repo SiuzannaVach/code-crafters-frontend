@@ -14,6 +14,9 @@ import {
 import styles from "./RegisterModal.module.scss";
 import logoIcon from "../../assets/icons/icon-code.svg";
 
+// Импортируем функцию сохранения пользователя в общую базу данных LocalStorage
+import { saveNewUser } from "../../utils/authStorage";
+
 interface RegisterFormData {
   fullName: string;
   email: string;
@@ -39,17 +42,31 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({ onClose }) => {
   };
 
   const onSubmit = (data: RegisterFormData) => {
-    const userSession = {
+    const finalRole = data.accountType || "espectador";
+
+    const newUser = {
       id: `user-${Date.now()}`,
-      email: data.email,
+      email: data.email.trim().toLowerCase(),
       name: data.fullName,
-      role: data.accountType || "espectador",
-      isAuthenticated: true,
+      password: data.password,
+      role: finalRole as "espectador" | "organizador",
     };
 
-    localStorage.setItem("logged_user", JSON.stringify(userSession));
+    saveNewUser(newUser);
 
-    if (data.accountType === "organizador") {
+    localStorage.setItem(
+      "logged_user",
+      JSON.stringify({
+        id: newUser.id,
+        email: newUser.email,
+        name: newUser.name,
+        role: finalRole,
+        isAuthenticated: true,
+      }),
+    );
+
+    // 3. Перенаправляем пользователя в зависимости от выбранной роли
+    if (finalRole === "organizador") {
       navigate("/dashboard");
     } else {
       navigate("/home");
@@ -215,3 +232,5 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({ onClose }) => {
     </div>
   );
 };
+
+export default RegisterModal;
