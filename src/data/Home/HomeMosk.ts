@@ -9,7 +9,7 @@ import imgServerless from '../../assets/images/event-serverless-architecture.png
 import imgHackathonFintech from '../../assets/images/event-hackathon-fintech.png';
 
 export interface EventItem {
-  id: number;
+  id: number | string;
   title: string;
   category: string;
   modality: string;
@@ -38,7 +38,7 @@ export const categories: string[] = [
 
 ];
 
-// 💻 ДЕСКТОПНЫЕ СОБЫТИЯ (КАРТА И СЛОВО ОНЛАЙН СТОЯТ ДЛЯ КАЖДОГО ID)
+// Desktop events.
 export const desktopEvents: EventItem[] = [
   {
     id: 11,
@@ -106,7 +106,7 @@ export const desktopEvents: EventItem[] = [
   }
 ];
 
-// 📱 МОБИЛЬНЫЕ СОБЫТИЯ
+// Mobile events.
 export const mobileEvents: EventItem[] = [
   {
     id: 2,

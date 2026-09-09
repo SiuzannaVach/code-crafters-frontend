@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import type { EventItem } from "../../data/Home/HomeMosk";
+import type { Evento } from "../../types/Evento";
+import { readCreatedEvents } from "../../utils/eventStorage";
 
 export const useHome = (
   desktopEvents: EventItem[],
@@ -20,6 +22,18 @@ export const useHome = (
   }, []);
 
   const currentEvents = isDesktop ? desktopEvents : mobileEvents;
+  const createdEvents = readCreatedEvents().map<EventItem>((event: Evento) => ({
+    id: event.id,
+    title: event.titulo,
+    category: event.categoria,
+    modality: event.modalidad,
+    location: event.ubicacion,
+    date: event.fecha,
+    image: event.imagen,
+    description: event.descripcion,
+    views: event.vistas,
+  }));
+  const allEvents = [...currentEvents, ...createdEvents];
   const searchQuery = (searchParams.get("search") || "").toLowerCase();
 
   const handleSearchChange = (val: string) => {
@@ -37,11 +51,11 @@ export const useHome = (
     navigate("/events/1");
   };
 
-  const handleEventClick = (id: number) => {
+  const handleEventClick = (id: number | string) => {
     navigate(`/events/${id}`);
   };
 
-  const filteredEvents = currentEvents.filter((event) => {
+  const filteredEvents = allEvents.filter((event) => {
     const matchesCategory =
       activeCategory === "Todos" ||
       activeCategory === "Todos los eventos" ||

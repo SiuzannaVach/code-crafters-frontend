@@ -8,10 +8,7 @@ import {
   CreateEventInputField,
   CreateEventModalityButton,
 } from "../../components/CreateEvent/CreateEventForm";
-import {
-  CreateEventDraftButton,
-  CreateEventPublishButton,
-} from "../../components/CreateEvent/CreateEventButton";
+import { CreateEventPublishButton } from "../../components/CreateEvent/CreateEventButton";
 
 import styles from "./CreateEvent.module.scss";
 import "react-datepicker/dist/react-datepicker.css";
@@ -26,7 +23,7 @@ const CreateEvent: React.FC = () => {
     handleDateChange,
     handleModalityChange,
     handleImageChange,
-    handleSaveDraft,
+
     handleSubmit,
   } = useCreateEvent();
 
@@ -199,10 +196,6 @@ const CreateEvent: React.FC = () => {
             </CreateEventFormGroup>
 
             <div className={styles.actions}>
-              <CreateEventDraftButton onClick={handleSaveDraft}>
-                GUARDAR BORRADOR
-              </CreateEventDraftButton>
-
               <CreateEventPublishButton>
                 PUBLICAR EVENTO
               </CreateEventPublishButton>
