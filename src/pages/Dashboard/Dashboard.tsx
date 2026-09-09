@@ -143,7 +143,7 @@ export const Dashboard: React.FC = () => {
 
                 <div className={styles.eventCardMobile__actions}>
                   <ActionButton
-                    onClick={() => navigate(`/edit-event/${evento.id}`)}
+                    onClick={() => navigate("/create-event")}
                   >
                     Editar
                   </ActionButton>
@@ -232,18 +232,16 @@ export const Dashboard: React.FC = () => {
         </section>
 
         <section className={styles.desktopLayout__mainWrapper}>
-          {(() => {
-            const evento = eventos?.find((e: Evento) => e.id === "4");
-            if (!evento) return null;
-
-            return (
+          {eventos.map((evento: Evento) => (
               <div
                 key={String(evento.id)}
                 className={`baseCard ${styles.eventCardDesktop}`}
               >
                 <div className={styles["eventCardDesktop__image-wrapper"]}>
                   <span className={styles["eventCardDesktop__status-badge"]}>
-                    {evento.status === "activo" ? "Activo" : "Borrador"}
+                    {(evento.estado ?? evento.status) === "activo"
+                      ? "Activo"
+                      : "Borrador"}
                   </span>
                   <img
                     src={evento.imagen}
@@ -263,7 +261,7 @@ export const Dashboard: React.FC = () => {
 
                   <div className={styles.eventCardDesktop__footerActions}>
                     <ActionButton
-                      onClick={() => navigate(`/edit-event/${evento.id}`)}
+                      onClick={() => navigate("/create-event")}
                     >
                       Editar
                     </ActionButton>
@@ -274,8 +272,7 @@ export const Dashboard: React.FC = () => {
                   </div>
                 </div>
               </div>
-            );
-          })()}
+          ))}
         </section>
       </div>
     </div>
