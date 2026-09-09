@@ -3,6 +3,13 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import type { EventItem } from "../../data/Home/HomeMosk";
 import type { Evento } from "../../types/Evento";
 import { readCreatedEvents } from "../../utils/eventStorage";
+import { getSession } from "../../utils/authStorage";
+import {
+  isEventRegistered,
+  LOCAL_STORAGE_UPDATE_EVENT,
+  REGISTRATION_CHANGED_EVENT,
+} from "../../utils/eventRegistration";
+import { AUTH_SESSION_CHANGED_EVENT } from "../../utils/sessionEvents";
 
 export const useHome = (
   desktopEvents: EventItem[],
@@ -11,7 +18,9 @@ export const useHome = (
   const [activeCategory, setActiveCategory] = useState("Todos");
   const [searchParams, setSearchParams] = useSearchParams();
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 769);
+  const [, setRegistrationVersion] = useState(0);
   const navigate = useNavigate();
+  const isGuest = getSession() === null;
 
   useEffect(() => {
     const handleResize = () => {
@@ -19,6 +28,39 @@ export const useHome = (
     };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    const handleStorageChange = (event: StorageEvent) => {
+      if (event.key?.startsWith("code_crafters_event_inscribed_") || event.key === null) {
+        setRegistrationVersion((version) => version + 1);
+      }
+    };
+
+    const checkRegistrationStatus = () => {
+      setRegistrationVersion((version) => version + 1);
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    window.addEventListener(REGISTRATION_CHANGED_EVENT, checkRegistrationStatus);
+    window.addEventListener(LOCAL_STORAGE_UPDATE_EVENT, checkRegistrationStatus);
+    window.addEventListener(AUTH_SESSION_CHANGED_EVENT, checkRegistrationStatus);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener(
+        REGISTRATION_CHANGED_EVENT,
+        checkRegistrationStatus,
+      );
+      window.removeEventListener(
+        LOCAL_STORAGE_UPDATE_EVENT,
+        checkRegistrationStatus,
+      );
+      window.removeEventListener(
+        AUTH_SESSION_CHANGED_EVENT,
+        checkRegistrationStatus,
+      );
+    };
   }, []);
 
   const currentEvents = isDesktop ? desktopEvents : mobileEvents;
@@ -92,5 +134,7 @@ export const useHome = (
     handleRegisterClick,
     handleAgendaClick,
     handleEventClick,
+    isEventRegistered,
+    isGuest,
   };
 };
