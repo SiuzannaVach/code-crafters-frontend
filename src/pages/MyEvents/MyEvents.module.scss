@@ -1,0 +1,205 @@
+@use "../../styles/global.module.scss" as *;
+
+.page {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: $page-padding-top $page-padding-inline $page-padding-bottom;
+  background:
+    radial-gradient(
+      circle at 12% 18%,
+      rgba($color-primary, 0.45),
+      transparent 42%
+    ),
+    radial-gradient(
+      circle at 88% 22%,
+      rgba($color-electric, 0.28),
+      transparent 38%
+    ),
+    radial-gradient(
+      circle at 50% 100%,
+      rgba($color-primary-hover, 0.3),
+      transparent 52%
+    ),
+    $bg-main;
+}
+
+.page::before,
+.page::after {
+  position: absolute;
+  z-index: -1;
+  width: 22rem;
+  height: 22rem;
+  border-radius: 50%;
+  content: "";
+  filter: blur(120px);
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.page::before {
+  top: 8%;
+  left: -6rem;
+  background: $color-primary;
+  box-shadow: 0 0 12rem rgba($color-primary-hover, 0.8);
+}
+
+.page::after {
+  right: -6rem;
+  bottom: 4%;
+  background: $color-electric;
+  box-shadow: 0 0 12rem rgba($color-electric, 0.8);
+}
+
+.page > * {
+  position: relative;
+  z-index: 1;
+}
+
+.title {
+  margin: 0;
+}
+
+.list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: $layout-gap;
+  margin-top: $layout-gap;
+  padding-bottom: $page-padding-bottom;
+}
+
+.guestPlaceholder {
+  display: flex;
+  max-width: 32rem;
+  flex-direction: column;
+  gap: $layout-gap;
+  align-items: center;
+  margin: $layout-gap auto 0;
+  padding: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: $control-radius;
+  background: rgba($bg-card, 0.72);
+  box-shadow: 0 0 20px rgba($color-primary-hover, 0.3);
+  backdrop-filter: blur(10px);
+  color: $text-main;
+  text-align: center;
+}
+
+.guestPlaceholder h2,
+.guestPlaceholder p {
+  margin: 0;
+}
+
+.guestPlaceholder p {
+  color: $text-muted;
+}
+
+.loginButton {
+  border: 0;
+  border-radius: $control-radius;
+  padding: $control-padding-y $control-padding-x;
+  background: $color-primary;
+  color: $text-main;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.loginButton:hover {
+  background: $color-primary-hover;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  gap: $layout-gap;
+  overflow: hidden;
+  cursor: pointer;
+  border-radius: 16px;
+  background: linear-gradient(
+    135deg,
+    rgba($color-primary, 0.72),
+    rgba($color-primary-hover, 0.28) 42%,
+    $bg-main
+  );
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 20px rgba($color-primary-hover, 0.35);
+  backdrop-filter: blur(10px);
+}
+
+.imageWrapper {
+  width: $card-image-size;
+  min-height: $card-image-size;
+  flex-shrink: 0;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.25rem 1.25rem 1.25rem 0;
+}
+
+.meta {
+  color: $text-muted;
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  gap: $layout-gap;
+  margin-top: auto;
+}
+
+.detailsButton,
+.cancelButton {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: $control-radius;
+  padding: $control-padding-y $control-padding-x;
+  cursor: pointer;
+}
+
+.detailsButton {
+  background: $color-primary;
+  color: $text-main;
+  font-weight: 600;
+}
+
+.cancelButton {
+  background: $color-danger-muted;
+  color: $color-danger;
+  font-weight: 600;
+}
+
+.cancelButton:hover {
+  background: rgba($color-danger, 0.24);
+}
+
+@include mobile {
+  .page {
+    padding: $page-padding-top $page-padding-inline-mobile $page-padding-bottom;
+  }
+
+  .card {
+    flex-direction: column;
+  }
+
+  .imageWrapper {
+    width: 100%;
+    height: $card-image-size;
+  }
+
+  .content {
+    padding: 0 1rem 1rem;
+  }
+}

@@ -149,7 +149,7 @@ $text-brand: #c3c0ff;
 }
 
 // ==========================================================================
-// 📱 4. МОБИЛЬНЫЙ БЛОК СТИЛЕЙ (MOBILE ВЕРСИЯ - СВЕРХУ)
+// Mobile styles.
 // ==========================================================================
 .mobileLayout {
   display: none !important;
@@ -180,12 +180,29 @@ $text-brand: #c3c0ff;
   gap: 1rem;
 }
 
-.mobileLayout__avatar {
+.mobileLayout__avatarInitials {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  object-fit: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba($color-primary, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 0 18px rgba($color-primary, 0.35);
+  color: $text-main;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.mobileLayout__avatar {
+  width: 56px;
+  height: 56px;
   border: 2px solid $color-primary;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 18px rgba($color-primary, 0.35);
 }
 
 .mobileLayout__profileInfo {
@@ -347,6 +364,7 @@ $text-brand: #c3c0ff;
 }
 
 .eventCardMobile {
+  margin-bottom: 16px;
   background-color: #0d1224 !important;
   border-radius: 16px !important;
   border: 1px solid rgba(255, 255, 255, 0.05) !important;
@@ -699,6 +717,7 @@ $text-brand: #c3c0ff;
 }
 
 .desktopLayout__mainWrapper {
+  gap: 24px;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -753,7 +772,7 @@ $text-brand: #c3c0ff;
     background-color: rgba(15, 23, 42, 0.6) !important;
     backdrop-filter: blur(4px) !important;
     -webkit-backdrop-filter: blur(4px) !important;
-    color: #94a3b8 !important;
+    color: #60a5fa !important;
     font-size: 10px !important;
     font-weight: 700 !important;
     padding: 4px 8px !important;

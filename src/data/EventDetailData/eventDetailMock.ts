@@ -162,7 +162,7 @@ export const mockEvents = [
     points: [
       'AWS Lambda & DynamoDB: Despliega funciones serverless.',
       'Arquitecturas de Eventos: Uso de colas y mensajería.',
-      'Costos Optimizados: Infraestructura con оплатой por milisegundos.'
+      'Costos Optimizados: Infraestructura con pago por milisegundos.'
     ]
   },
   {

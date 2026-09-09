@@ -8,6 +8,7 @@ import {
   saveNewUser,
   type StoredUser,
 } from "../../utils/authStorage";
+import { notifySessionChange } from "../../utils/sessionEvents";
 import styles from "./LoginCard.module.scss";
 
 type Role = "espectador" | "organizador";
@@ -26,10 +27,10 @@ export const LoginCard: React.FC = () => {
 
     const cleanEmail = email.trim().toLowerCase();
 
-    // 1. Сначала ищем зарегистрированного пользователя из LocalStorage
+    // 1. Look for a registered user in localStorage.
     const registeredUser = findUserByEmail(cleanEmail);
 
-    // 2. Если его нет в LocalStorage — ищем админа в mockData
+    // 2. If none exists, look for the admin in mockData.
     const mockUser = mockUsuarios.find(
       (user) => user.email.toLowerCase() === cleanEmail,
     );
@@ -46,7 +47,7 @@ export const LoginCard: React.FC = () => {
       };
     }
 
-    // 3. Если пользователя ещё нет — создаём его и сохраняем
+    // 3. Create and persist the user when necessary.
     if (!dbUser) {
       dbUser = {
         id: `user-${Date.now()}`,
@@ -62,12 +63,12 @@ export const LoginCard: React.FC = () => {
       return;
     }
 
-    // Роль берём из сохранённого пользователя.
-    // Для тестового админа роль всегда organizador.
+    // Read the role from the saved user.
+    // The test admin always has the organizador role.
     const finalRole: Role =
       dbUser.email === "admin@codecrafters.com" ? "organizador" : dbUser.role;
 
-    // 4. Сохраняем текущую сессию
+    // 4. Save the current session.
     localStorage.setItem(
       "logged_user",
       JSON.stringify({
@@ -78,8 +79,9 @@ export const LoginCard: React.FC = () => {
         isAuthenticated: true,
       }),
     );
+    notifySessionChange();
 
-    // 5. Перенаправляем по роли
+    // 5. Redirect based on the role.
     navigate(finalRole === "organizador" ? "/dashboard" : "/home");
   };
 
