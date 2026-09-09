@@ -1,8 +1,9 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Evento } from "../../types/Evento";
-import { useNotificationContext } from "../../context/NotificationContext";
-import { useEventContext } from "../../context/EventContext";
+import { useNotificationContext } from "../useNotificationContext/useNotificationContext";
+import { useEventContext } from "../useEventContext/useEventContext";
+import { clearSession, getSession } from "../../utils/authStorage";
 
 export const useDashboard = () => {
   const navigate = useNavigate();
@@ -13,8 +14,7 @@ export const useDashboard = () => {
   const { addNotification } = useNotificationContext();
   const { eventos, deleteEvent } = useEventContext();
 
-  const savedUserRaw = localStorage.getItem("logged_user");
-  const user = savedUserRaw ? JSON.parse(savedUserRaw) : null;
+  const user = getSession();
   const currentName = user ? user.name : "Invitado";
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,7 +41,7 @@ export const useDashboard = () => {
 
   const handleLogout = () => {
     console.clear();
-    localStorage.removeItem("logged_user");
+    clearSession();
     navigate("/login");
   };
 

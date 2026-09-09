@@ -1,31 +1,33 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import type { Evento } from "../types/Evento";
 import { mockEventosCreados } from "../data/Dashboard/moskDashboard";
 import {
   CREATED_EVENTS_KEY,
   readCreatedEvents,
 } from "../utils/eventStorage";
-
-type EventContextType = {
-  eventos: Evento[];
-  addEvent: (evento: Evento) => void;
-  updateEvent: (id: string, data: Partial<Evento>) => void;
-  deleteEvent: (id: string) => void;
-};
-
-const EventContext = createContext<EventContextType | null>(null);
+import { EventContext } from "./EventContextValue";
 
 export const EventProvider = ({ children }: { children: React.ReactNode }) => {
   const [eventos, setEventos] = useState<Evento[]>(() => {
-    return [...mockEventosCreados, ...readCreatedEvents()];
+    const storedEvents = readCreatedEvents();
+    const storedById = new Map(storedEvents.map((evento) => [evento.id, evento]));
+    return mockEventosCreados.map((evento) => storedById.get(evento.id) ?? evento)
+      .concat(
+        storedEvents.filter(
+          (evento) => !mockEventosCreados.some((mock) => mock.id === evento.id),
+        ),
+      );
   });
 
   useEffect(() => {
-    const defaultEventIds = new Set(mockEventosCreados.map((evento) => evento.id));
-    const createdEvents = eventos.filter(
-      (evento) => !defaultEventIds.has(evento.id),
+    const defaultEventsById = new Map(
+      mockEventosCreados.map((evento) => [evento.id, evento]),
     );
-    localStorage.setItem(CREATED_EVENTS_KEY, JSON.stringify(createdEvents));
+    const persistedEvents = eventos.filter((evento) => {
+      const defaultEvent = defaultEventsById.get(evento.id);
+      return !defaultEvent || JSON.stringify(defaultEvent) !== JSON.stringify(evento);
+    });
+    localStorage.setItem(CREATED_EVENTS_KEY, JSON.stringify(persistedEvents));
   }, [eventos]);
 
   const addEvent = (evento: Evento) => {
@@ -50,13 +52,4 @@ export const EventProvider = ({ children }: { children: React.ReactNode }) => {
       {children}
     </EventContext.Provider>
   );
-};
-
-// Hook for accessing the event context.
-export const useEventContext = () => {
-  const ctx = useContext(EventContext);
-  if (!ctx) {
-    throw new Error("useEventContext must be used inside EventProvider");
-  }
-  return ctx;
 };

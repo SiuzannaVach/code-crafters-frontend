@@ -1,19 +1,8 @@
-import { createContext, useContext, useState, useEffect } from "react";
-
-export type NotificationItem = {
-  id: string;
-  title: string;
-  message: string;
-  isRead: boolean;
-};
-
-type NotificationContextType = {
-  notifications: NotificationItem[];
-  unreadCount: number;
-  addNotification: (title: string, message: string) => void;
-  markAllAsRead: () => void;
-  clearAll: () => void;
-};
+import { useState, useEffect } from "react";
+import {
+  NotificationContext,
+  type NotificationItem,
+} from "./NotificationContextValue";
 
 const DEFAULT_NOTIFICATIONS: NotificationItem[] = [
   {
@@ -29,8 +18,6 @@ const DEFAULT_NOTIFICATIONS: NotificationItem[] = [
     isRead: false,
   },
 ];
-
-const NotificationContext = createContext<NotificationContextType | null>(null);
 
 export const NotificationProvider = ({
   children,
@@ -81,10 +68,4 @@ export const NotificationProvider = ({
       {children}
     </NotificationContext.Provider>
   );
-};
-
-export const useNotificationContext = () => {
-  const ctx = useContext(NotificationContext);
-  if (!ctx) throw new Error("Error: NotificationProvider missing");
-  return ctx;
-};
+}

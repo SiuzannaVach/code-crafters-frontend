@@ -1,7 +1,10 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
+import { useSearchParams } from "react-router-dom";
 import type { Evento } from "../../types/Evento";
-import { useEventContext } from "../../context/EventContext";
-import { useNotificationContext } from "../../context/NotificationContext";
+import { mockEventosCreados } from "../../data/Dashboard/moskDashboard";
+import { readCreatedEvents } from "../../utils/eventStorage";
+import { useEventContext } from "../useEventContext/useEventContext";
+import { useNotificationContext } from "../useNotificationContext/useNotificationContext";
 
 export interface EventFormState {
   title: string;
@@ -56,11 +59,43 @@ const toEventDate = (date: Date, time: string): string => {
   return eventDate.toISOString();
 };
 
+const getEditableDate = (value: string): Date => {
+  const parsedDate = new Date(value);
+  return Number.isNaN(parsedDate.getTime()) ? new Date() : parsedDate;
+};
+
 export const useCreateEvent = () => {
-  const [formData, setFormData] = useState<EventFormState>(INITIAL_STATE);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const { addEvent } = useEventContext();
+  const [searchParams] = useSearchParams();
+  const editEventId = searchParams.get("edit");
+  const { eventos, addEvent, updateEvent } = useEventContext();
   const { addNotification } = useNotificationContext();
+
+  const editingEvent =
+    eventos.find((event) => event.id === editEventId) ??
+    readCreatedEvents().find((event) => event.id === editEventId) ??
+    mockEventosCreados.find((event) => event.id === editEventId);
+  const initialFormData: EventFormState = editingEvent
+    ? (() => {
+    const eventDate = getEditableDate(editingEvent.fecha);
+    const hours = String(eventDate.getHours()).padStart(2, "0");
+    const minutes = String(eventDate.getMinutes()).padStart(2, "0");
+      return {
+        title: editingEvent.titulo,
+        description: editingEvent.descripcion,
+        category: editingEvent.categoria,
+        maxCapacity: "",
+        date: eventDate,
+        time: `${hours}:${minutes}`,
+        isOnline: editingEvent.modalidad === "online",
+        linkOrAddress: editingEvent.ubicacion,
+        image: null,
+      };
+    })()
+    : INITIAL_STATE;
+  const [formData, setFormData] = useState<EventFormState>(initialFormData);
+  const [imagePreview, setImagePreview] = useState<string | null>(
+    editingEvent?.imagen || null,
+  );
 
   const handleChange = (
     event: ChangeEvent<
@@ -115,12 +150,15 @@ export const useCreateEvent = () => {
       return;
     }
 
+    const image = formData.image
+      ? await readImageAsDataUrl(formData.image)
+      : editingEvent?.imagen ?? "";
     const savedEvent: Evento = {
-      id: `event-${Date.now()}`,
+      id: editingEvent?.id ?? `event-${Date.now()}`,
       titulo: formData.title.trim(),
       descripcion: formData.description.trim(),
       fecha: toEventDate(formData.date, formData.time),
-      imagen: await readImageAsDataUrl(formData.image),
+      imagen: image,
       modalidad: formData.isOnline ? "online" : "presencial",
       ubicacion: formData.linkOrAddress.trim(),
       categoria: formData.category,
@@ -129,10 +167,16 @@ export const useCreateEvent = () => {
       estado: "activo",
     };
 
-    addEvent(savedEvent);
+    if (editingEvent) {
+      updateEvent(savedEvent.id, savedEvent);
+    } else {
+      addEvent(savedEvent);
+    }
     addNotification(
       "Centro de notificaciones",
-      `Se ha creado el nuevo evento: ${savedEvent.titulo}`,
+      editingEvent
+        ? `Se ha actualizado el evento: ${savedEvent.titulo}`
+        : `Se ha creado el nuevo evento: ${savedEvent.titulo}`,
     );
     window.alert("¡Evento guardado correctamente!");
     setFormData(INITIAL_STATE);
@@ -157,5 +201,6 @@ export const useCreateEvent = () => {
     handleImageChange,
     handleSaveDraft,
     handleSubmit,
+    isEditing: editingEvent !== undefined,
   };
 };
