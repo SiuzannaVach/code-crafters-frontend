@@ -1,6 +1,6 @@
 # 🚀 Code Crafters
 
-[![Ver Demo en vivo](https://shields.io)](https://github.io)
+[Demo](https://siuzannavach.github.io/code-crafters-frontend/)
 
 Plataforma web para descubrir, crear y gestionar eventos tecnológicos — online y presenciales. Proyecto final individual del bootcamp **Factoría F5 (FemCoders BCN, Promoción 9)**.
 
@@ -333,7 +333,7 @@ Proyecto desarrollado siguiendo **Scrum** de forma individual:
 
 ## 🚀 Despliegue y Demo
 
-[![Ver Demo en vivo](https://shields.io)](https://github.io)
+[Demo](https://siuzannavach.github.io/code-crafters-frontend/)
 
 El proyecto está preparado para desplegarse en **GitHub Pages** y funciona completamente con `localStorage` del navegador actual. Los datos de la sesión, eventos, inscripciones y notificaciones se mantienen de forma local en ese navegador.
 
