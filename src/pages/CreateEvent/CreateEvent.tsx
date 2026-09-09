@@ -23,8 +23,8 @@ const CreateEvent: React.FC = () => {
     handleDateChange,
     handleModalityChange,
     handleImageChange,
-
     handleSubmit,
+    isEditing,
   } = useCreateEvent();
 
   return (
@@ -197,7 +197,7 @@ const CreateEvent: React.FC = () => {
 
             <div className={styles.actions}>
               <CreateEventPublishButton>
-                PUBLICAR EVENTO
+                {isEditing ? "GUARDAR CAMBIOS" : "PUBLICAR EVENTO"}
               </CreateEventPublishButton>
             </div>
           </section>

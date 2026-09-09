@@ -1,34 +1,95 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './EventDetail.module.scss';
 import { EventDetailButton } from '../../components/EventDetailButton/EventDetailButton';
 import { useEventDetail } from '../../hooks/useEventDetail/useEventDetail';
-import { getItem, setItem } from '../../utils/storage'; 
+import { setItem } from '../../utils/storage';
 import bannerDesktopDefault from '../../assets/images/detalle-banner.png';
 import bannerMobileDefault from '../../assets/images/event-hero-stage.png';
 import { eventIcons } from '../../data/EventDetailData/eventDetailMock';
+import { useNotificationContext } from '../../hooks/useNotificationContext/useNotificationContext';
+import {
+  getRegistrationKey,
+  isEventRegistered,
+  LOCAL_STORAGE_UPDATE_EVENT,
+  REGISTRATION_CHANGED_EVENT,
+  notifyRegistrationChange,
+} from '../../utils/eventRegistration';
+import { getSession } from '../../utils/authStorage';
+import { AUTH_SESSION_CHANGED_EVENT } from '../../utils/sessionEvents';
 
 const EventDetail: React.FC = () => {
  const { event, mapUrl } = useEventDetail();
+ const { addNotification } = useNotificationContext();
+ const isGuest = getSession() === null;
 
-    if (!event) {
+ const storageKey = event ? getRegistrationKey(event.id) : '';
+ const [isInscribed, setIsInscribed] = useState(() =>
+   event ? isEventRegistered(event.id) : false,
+ );
+
+ useEffect(() => {
+   const syncRegistrationState = () => {
+     setIsInscribed(event ? isEventRegistered(event.id) : false);
+   };
+
+   const handleStorageChange = (storageEvent: StorageEvent) => {
+     if (storageKey !== null && storageEvent.key === storageKey) {
+       syncRegistrationState();
+     }
+    };
+    const checkRegistrationStatus = () => {
+      syncRegistrationState();
+    };
+    const handleRegistrationChange = (customEvent: Event) => {
+      const eventId = (customEvent as CustomEvent<{ eventId: number | string }>)
+        .detail?.eventId;
+      if (event && String(eventId) === String(event.id)) {
+        checkRegistrationStatus();
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    window.addEventListener(REGISTRATION_CHANGED_EVENT, handleRegistrationChange);
+    window.addEventListener(LOCAL_STORAGE_UPDATE_EVENT, checkRegistrationStatus);
+    window.addEventListener(AUTH_SESSION_CHANGED_EVENT, checkRegistrationStatus);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener(
+        REGISTRATION_CHANGED_EVENT,
+        handleRegistrationChange,
+      );
+      window.removeEventListener(
+        LOCAL_STORAGE_UPDATE_EVENT,
+        checkRegistrationStatus,
+      );
+      window.removeEventListener(
+        AUTH_SESSION_CHANGED_EVENT,
+        checkRegistrationStatus,
+      );
+    };
+  }, [event, storageKey]);
+
+  if (!event) {
     return <div className={styles['detail']}>Cargando...</div>;
   }
-
-    const storageKey = `code_crafters_event_inscribed_${event?.id || 1}`;
-
-
-  const [isInscribed, setIsInscribed] = useState<boolean>(() => {
-    if (!event?.id) return false;
-    return getItem<boolean>(storageKey, false);
-  });
    const handleEnrollmentFlow = (e?: React.MouseEvent) => {
     if (e) e.preventDefault();
     
     const confirmEnrollment = window.confirm('¿Estás seguro de que deseas inscribirte a este evento?');
 
     if (confirmEnrollment) {
+      if (!storageKey) {
+        return;
+      }
       setItem<boolean>(storageKey, true);
       setIsInscribed(true);
+      notifyRegistrationChange(event.id);
+      window.dispatchEvent(new Event(LOCAL_STORAGE_UPDATE_EVENT));
+      addNotification(
+        "Centro de notificaciones",
+        `Un usuario se ha inscrito en el evento: ${event.title}`,
+      );
     }
   };
 
@@ -127,6 +188,7 @@ alt="Organizer" className={styles['detail__organizerAvatar']} />
   eventId={event.id} 
   onClick={() => handleEnrollmentFlow()}
   isInscribed={isInscribed} 
+  isGuest={isGuest}
 />
  </div>
 
@@ -246,6 +308,7 @@ alt="Organizer" className={styles['detail__organizerAvatar']} />
     eventId={event.id}
     onClick={() => handleEnrollmentFlow()}
     isInscribed={isInscribed}
+    isGuest={isGuest}
     isDesktop={true}
   />
 </div>
