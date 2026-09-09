@@ -8,6 +8,7 @@ import {
   saveNewUser,
   type StoredUser,
 } from "../../utils/authStorage";
+import { notifySessionChange } from "../../utils/sessionEvents";
 import styles from "./LoginCard.module.scss";
 
 type Role = "espectador" | "organizador";
@@ -78,6 +79,7 @@ export const LoginCard: React.FC = () => {
         isAuthenticated: true,
       }),
     );
+    notifySessionChange();
 
     // 5. Redirect based on the role.
     navigate(finalRole === "organizador" ? "/dashboard" : "/home");

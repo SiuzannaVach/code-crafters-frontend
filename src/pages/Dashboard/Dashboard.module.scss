@@ -180,12 +180,29 @@ $text-brand: #c3c0ff;
   gap: 1rem;
 }
 
-.mobileLayout__avatar {
+.mobileLayout__avatarInitials {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  object-fit: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba($color-primary, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 0 18px rgba($color-primary, 0.35);
+  color: $text-main;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.mobileLayout__avatar {
+  width: 56px;
+  height: 56px;
   border: 2px solid $color-primary;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 18px rgba($color-primary, 0.35);
 }
 
 .mobileLayout__profileInfo {
