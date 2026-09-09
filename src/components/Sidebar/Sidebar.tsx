@@ -26,7 +26,7 @@ export const Sidebar: React.FC = () => {
         const parsedUser = JSON.parse(savedUserRaw) as SidebarUser;
         setUser(parsedUser);
       } catch (e) {
-        console.error("Error al parsear logged_user в Sidebar:", e);
+        console.error("Error al parsear logged_user en Sidebar:", e);
       }
     }
   }, [location.pathname]);
@@ -34,7 +34,7 @@ export const Sidebar: React.FC = () => {
   const isAuthenticated = user !== null;
   const currentName = user?.name ?? "Invitado";
 
-  // Безопасный перевод роли в нижний регистр
+  // Normalize the role before comparing it.
   const userRoleLower = user && user.role ? user.role.toLowerCase() : "";
   const isOrganizer =
     userRoleLower === "organizador" ||
@@ -98,7 +98,7 @@ export const Sidebar: React.FC = () => {
           <span>EXPLORAR</span>
         </button>
 
-        {/* 🛠 МЕНЯЕМ ТОЛЬКО ЭТУ КНОПКУ: теперь она ведет на /dashboard */}
+        {/* The management button opens the dashboard. */}
         <button
           type="button"
           className={`${styles.navButton} ${

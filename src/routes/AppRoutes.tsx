@@ -11,13 +11,13 @@ import { Dashboard } from "../pages/Dashboard/Dashboard";
 const AppRoutes: React.FC = () => {
   return (
     <Routes>
-      {/* При открытии localhost сразу перенаправляем на страницу логина */}
+      {/* Redirect the root route to login. */}
       <Route path="/" element={<Navigate to="/login" replace />} />
 
       <Route path="/login" element={<LoginCard />} />
       <Route path="/register" element={<RegisterModal />} />
 
-      {/* Все основные страницы внутри базовой разметки */}
+      {/* Main pages share the authenticated layout. */}
       <Route element={<AuthenticatedLayout />}>
         <Route path="/home" element={<Home />} />
         <Route path="/events/:id" element={<EventDetail />} />
@@ -25,7 +25,7 @@ const AppRoutes: React.FC = () => {
         <Route path="/dashboard" element={<Dashboard />} />
       </Route>
 
-      {/* Если вбили странный адрес — возвращаем на логин */}
+      {/* Unknown routes return to login. */}
       <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   );

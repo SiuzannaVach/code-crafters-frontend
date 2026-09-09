@@ -119,9 +119,7 @@ export const Dashboard: React.FC = () => {
         </div>
 
         <section className={styles.mobileLayout__eventsSection}>
-          {eventos
-            ?.filter((e: Evento) => e.id !== "4")
-            .map((evento: Evento) => (
+          {eventos.map((evento: Evento) => (
               <div key={evento.id} className={styles.eventCardMobile}>
                 <div className={styles.eventCardMobile__imageBox}>
                   <img src={evento.imagen} alt={evento.titulo} />
@@ -239,9 +237,7 @@ export const Dashboard: React.FC = () => {
               >
                 <div className={styles["eventCardDesktop__image-wrapper"]}>
                   <span className={styles["eventCardDesktop__status-badge"]}>
-                    {(evento.estado ?? evento.status) === "activo"
-                      ? "Activo"
-                      : "Borrador"}
+                    ACTIVO
                   </span>
                   <img
                     src={evento.imagen}

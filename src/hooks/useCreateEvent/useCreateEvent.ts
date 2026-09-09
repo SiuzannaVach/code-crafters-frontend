@@ -1,9 +1,7 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import type { Evento } from "../../types/Evento";
-import {
-  CREATED_EVENTS_KEY,
-  readCreatedEvents,
-} from "../../utils/eventStorage";
+import { useEventContext } from "../../context/EventContext";
+import { useNotificationContext } from "../../context/NotificationContext";
 
 export interface EventFormState {
   title: string;
@@ -61,6 +59,8 @@ const toEventDate = (date: Date, time: string): string => {
 export const useCreateEvent = () => {
   const [formData, setFormData] = useState<EventFormState>(INITIAL_STATE);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const { addEvent } = useEventContext();
+  const { addNotification } = useNotificationContext();
 
   const handleChange = (
     event: ChangeEvent<
@@ -129,9 +129,10 @@ export const useCreateEvent = () => {
       estado: "activo",
     };
 
-    localStorage.setItem(
-      CREATED_EVENTS_KEY,
-      JSON.stringify([...readCreatedEvents(), savedEvent]),
+    addEvent(savedEvent);
+    addNotification(
+      "Centro de notificaciones",
+      `Se ha creado el nuevo evento: ${savedEvent.titulo}`,
     );
     window.alert("¡Evento guardado correctamente!");
     setFormData(INITIAL_STATE);

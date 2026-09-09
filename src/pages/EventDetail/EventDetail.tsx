@@ -141,10 +141,10 @@ alt="Organizer" className={styles['detail__organizerAvatar']} />
             <div className={styles['detail__desktopBannerOverlay']} />
           </div>
 
-          {/* Двухколоночный грид контента (Левая часть + Сайдбар карточки события) */}
+          {/* Two-column content grid with the event sidebar. */}
           <div className={styles['detail__desktopGrid']}>
             
-            {/* Левая колонка контента */}
+            {/* Main content column. */}
             <main className={styles['detail__desktopLeft']}>
               <section className={styles['detail__desktopCardBox']}>
                 <h2>📄 Acerca del Evento</h2>
@@ -163,7 +163,7 @@ alt="Organizer" className={styles['detail__organizerAvatar']} />
 
                 <div className={styles['detail__desktopPointsGrid']}>
 
-                  {/* Карточка 1 */}
+                  {/* Card 1. */}
                   <div className={styles['detail__highlightCard']}>
                     <div className={styles['detail__highlightIconBox']}>
                       <img src={eventIcons.speaker} alt="Speaker" />
@@ -172,7 +172,7 @@ alt="Organizer" className={styles['detail__organizerAvatar']} />
                     <p>{event.points?.[0]?.includes(': ') ? event.points[0].split(': ')[1] : event.points?.[0]}</p>
                   </div>
 
-                  {/* Карточка 2 */}
+                  {/* Card 2. */}
                   <div className={styles['detail__highlightCard']}>
                     <div className={styles['detail__highlightIconBox']}>
                       <img src={eventIcons.tools} alt="Tools" />
@@ -181,7 +181,7 @@ alt="Organizer" className={styles['detail__organizerAvatar']} />
                     <p>{event.points?.[1]?.includes(': ') ? event.points[1].split(': ')[1] : event.points?.[1]}</p>
                   </div>
 
-                  {/* Карточка 3 (Нижняя длинная) */}
+                  {/* Card 3. */}
                   <div className={`${styles['detail__highlightCard']} ${styles['detail__highlightCard--full']}`}>
                     <div className={styles['detail__highlightIconBox']}>
                       <img src={eventIcons.networking} alt="Networking" />
@@ -194,7 +194,7 @@ alt="Organizer" className={styles['detail__organizerAvatar']} />
               </section>
             </main>
             
-            {/* Правая колонка контента (Сайдбар) */}
+            {/* Event sidebar column. */}
             <aside className={styles['detail__desktopRightSidebar']}>
               <div className={styles['detail__sidebarStickyBlock']}>
                 

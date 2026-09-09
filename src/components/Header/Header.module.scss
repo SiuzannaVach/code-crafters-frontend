@@ -157,6 +157,47 @@ box-shadow: 0 4px 20px rgba(99, 102, 241, 0.15);
     display: flex;
     align-items: center;
     cursor: pointer;
+    position: relative;
+  }
+
+  &__profile-dropdown {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 190px;
+    padding: 0.85rem;
+    background-color: $bg-card;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.45);
+    z-index: 300;
+    color: $text-main;
+
+    span {
+      color: $text-muted;
+      font-size: 0.8rem;
+    }
+  }
+
+  &__profile-logout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+    padding: 0.55rem 0.7rem;
+    border: 0;
+    border-radius: 8px;
+    background-color: rgba(244, 63, 94, 0.12);
+    color: #fda4af;
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgba(244, 63, 94, 0.22);
+    }
   }
 
   &__divider {
@@ -172,6 +213,73 @@ box-shadow: 0 4px 20px rgba(99, 102, 241, 0.15);
     padding: 0;
     display: flex;
     align-items: center;
+  }
+
+  &__notification-wrapper {
+    position: relative;
+  }
+
+  &__notification-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background-color: #ef4444;
+    border: 2px solid $bg-input;
+  }
+
+  &__notification-dropdown {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    width: min(320px, calc(100vw - 2rem));
+    padding: 0.75rem;
+    background-color: $bg-card;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.45);
+    z-index: 300;
+  }
+
+  &__notification-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.25rem 0.25rem 0.6rem;
+    color: $text-main;
+
+    button {
+      border: 0;
+      background: transparent;
+      color: $text-muted;
+      cursor: pointer;
+      font-size: 0.75rem;
+    }
+  }
+
+  &__notification-list {
+    display: grid;
+    gap: 0.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__notification-item,
+  &__notification-empty {
+    margin: 0;
+    padding: 0.65rem 0.75rem;
+    border-radius: 8px;
+    background-color: $bg-input;
+    color: $text-main;
+    font-size: 0.8rem;
+    line-height: 1.35;
+  }
+
+  &__notification-empty {
+    color: $text-muted;
   }
 
   &__action-img {

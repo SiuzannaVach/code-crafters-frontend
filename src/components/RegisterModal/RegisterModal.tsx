@@ -14,7 +14,7 @@ import {
 import styles from "./RegisterModal.module.scss";
 import logoIcon from "../../assets/icons/icon-code.svg";
 
-// Импортируем функцию сохранения пользователя в общую базу данных LocalStorage
+// Import the shared localStorage user persistence helper.
 import { saveNewUser } from "../../utils/authStorage";
 
 interface RegisterFormData {
@@ -65,7 +65,7 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({ onClose }) => {
       }),
     );
 
-    // 3. Перенаправляем пользователя в зависимости от выбранной роли
+    // 3. Redirect based on the selected role.
     if (finalRole === "organizador") {
       navigate("/dashboard");
     } else {

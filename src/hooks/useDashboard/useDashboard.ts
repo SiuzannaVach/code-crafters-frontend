@@ -1,12 +1,8 @@
-import { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Evento } from "../../types/Evento";
-import { readCreatedEvents } from "../../utils/eventStorage";
-import {
-  mockEventosCreados,
-} from "../../data/Dashboard/moskDashboard";
-
 import { useNotificationContext } from "../../context/NotificationContext";
+import { useEventContext } from "../../context/EventContext";
 
 export const useDashboard = () => {
   const navigate = useNavigate();
@@ -14,12 +10,8 @@ export const useDashboard = () => {
   const [activeFilter, setActiveFilter] = useState<
     "todos" | "proximos" | "borradores"
   >("todos");
-  const [eventos, setEventos] = useState<Evento[]>(() => [
-    ...mockEventosCreados,
-    ...readCreatedEvents(),
-  ]);
-
   const { addNotification } = useNotificationContext();
+  const { eventos, deleteEvent } = useEventContext();
 
   const savedUserRaw = localStorage.getItem("logged_user");
   const user = savedUserRaw ? JSON.parse(savedUserRaw) : null;
@@ -29,20 +21,20 @@ export const useDashboard = () => {
     setSearchTerm(e.target.value);
   };
 
-  // 🔥 Безопасное удаление: отправляет уведомление и не ломает родителя
+  // Safe deletion also sends a notification without breaking the parent.
   const handleDeleteEvent = (id: string) => {
-    // Находим имя события до удаления для красивого текста
+    // Capture the event name before deletion for the notification.
     const targetEvent = eventos.find((event) => event.id === id);
     const eventTitle = targetEvent ? targetEvent.titulo : "Evento";
 
     if (confirm("¿Estás seguro de que deseas eliminar este evento?")) {
-      // 1. Удаляем из локального стейта, как и просит твой дашборд
-      setEventos((prev) => prev.filter((event) => event.id !== id));
+      // Remove the event from the shared state.
+      deleteEvent(id);
 
-      // 2. В один клик шлем испанский текст в колокольчик shadcn
+      // Send the Spanish notification to the bell.
       addNotification(
-        "Evento eliminado 🗑️",
-        `El evento "${eventTitle}" ha sido eliminado correctamente de tu panel.`,
+        "Centro de notificaciones",
+        `El evento ${eventTitle} ha sido eliminado correctamente`,
       );
     }
   };
