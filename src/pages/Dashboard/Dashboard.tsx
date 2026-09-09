@@ -37,9 +37,7 @@ export const Dashboard: React.FC = () => {
           .map((part) => part[0] ?? "")
           .join("")
           .toUpperCase();
-  const isOrganizer =
-    currentUser?.role === "administrador" ||
-    currentUser?.role === "organizador";
+  const isOrganizer = currentUser?.role === "organizador";
 
   return (
     <div className={`pageLayout ${styles.dashboardContainer}`}>
@@ -175,9 +173,7 @@ export const Dashboard: React.FC = () => {
 
           <Button
             className={styles.desktopLayout__btnCreate}
-            onClick={() =>
-              navigate(`/create-event?edit=${encodeURIComponent(evento.id)}`)
-            }
+            onClick={() => navigate("/create-event")}
           >
             <Plus size={16} /> Crear Evento
           </Button>
