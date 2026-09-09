@@ -42,28 +42,28 @@ Es un proyecto **100% frontend**, sin backend — toda la persistencia de datos 
 
 ## 🛠 Stack tecnológico
 
-| Tecnología | Uso |
-|---|---|
-| **React** | Librería principal de UI |
-| **TypeScript** | Tipado estático en todo el proyecto |
-| **Vite** | Bundler y servidor de desarrollo |
-| **SCSS Modules** | Estilos con alcance local por componente |
-| **React Router** | Navegación entre páginas |
+| Tecnología            | Uso                                                      |
+| --------------------- | -------------------------------------------------------- |
+| **React**             | Librería principal de UI                                 |
+| **TypeScript**        | Tipado estático en todo el proyecto                      |
+| **Vite**              | Bundler y servidor de desarrollo                         |
+| **SCSS Modules**      | Estilos con alcance local por componente                 |
+| **React Router**      | Navegación entre páginas                                 |
 | **React Context API** | Gestión de estado global (Auth, Eventos, Notificaciones) |
-| **localStorage** | Persistencia de datos sin backend |
+| **localStorage**      | Persistencia de datos sin backend                        |
 
 ---
 
 ## 🧰 Herramientas y flujo de trabajo
 
-| Fase | Herramienta | Uso |
-|---|---|---|
-| Gestión ágil | **Jira** | Backlog de 17 user stories organizadas en 3 sprints (Scrum) |
-| Diseño UI (borrador) | **Google Stitch** | Generación inicial de wireframes a partir de prompts |
-| Diseño UI (final) | **Figma** | Refinamiento de mockups, design system, versiones desktop/mobile |
-| Control de versiones | **Git + GitHub** | Historial de commits, control de ramas |
-| Entorno de desarrollo | **Visual Studio Code** | Editor principal, con ESLint + Prettier |
-| Documentación | **Markdown** | README, historias de usuario y arquitectura documentados |
+| Fase                  | Herramienta            | Uso                                                              |
+| --------------------- | ---------------------- | ---------------------------------------------------------------- |
+| Gestión ágil          | **Jira**               | Backlog de 17 user stories organizadas en 3 sprints (Scrum)      |
+| Diseño UI (borrador)  | **Google Stitch**      | Generación inicial de wireframes a partir de prompts             |
+| Diseño UI (final)     | **Figma**              | Refinamiento de mockups, design system, versiones desktop/mobile |
+| Control de versiones  | **Git + GitHub**       | Historial de commits, control de ramas                           |
+| Entorno de desarrollo | **Visual Studio Code** | Editor principal, con ESLint + Prettier                          |
+| Documentación         | **Markdown**           | README, historias de usuario y arquitectura documentados         |
 
 ---
 
@@ -155,7 +155,7 @@ interface Usuario {
   name: string;
   email: string;
   password: string;
-  role: 'espectador' | 'organizador';
+  role: "espectador" | "organizador";
 }
 
 interface Evento {
@@ -164,7 +164,7 @@ interface Evento {
   descripcion: string;
   fecha: string;
   imagen: string;
-  modalidad: 'online' | 'presencial';
+  modalidad: "online" | "presencial";
   ubicacion: string;
   categoria: string;
   organizadorId: string;
@@ -181,7 +181,7 @@ interface Inscripcion {
 interface Notificacion {
   id: string;
   usuarioId: string;
-  tipo: 'cambio_evento' | 'recordatorio' | 'nuevo_evento';
+  tipo: "cambio_evento" | "recordatorio" | "nuevo_evento";
   mensaje: string;
   leida: boolean;
   fecha: string;
@@ -193,12 +193,14 @@ interface Notificacion {
 ## ✨ Funcionalidades
 
 ### Rol Organizador
+
 - ✅ Crear, editar y eliminar eventos
 - ✅ Consultar estadísticas dinámicas del Dashboard
 - ✅ Editar eventos creados y sobrescribir eventos mock
 - ✅ Gestionar el catálogo de eventos desde la vista administrativa
 
 ### Rol Espectador
+
 - ✅ Buscar y filtrar eventos por categoría, modalidad, fecha o tecnología
 - ✅ Ver el detalle completo de un evento
 - ✅ Inscribirse y cancelar inscripción
