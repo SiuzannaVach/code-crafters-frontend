@@ -3,12 +3,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./Header.module.scss";
 
 // Import the notification context hook.
-import { useNotificationContext } from "../../context/NotificationContext";
+import { useNotificationContext } from "../../hooks/useNotificationContext/useNotificationContext";
 
 import iconCode from "../../assets/icons/icon-code.svg";
-import iconProfile from "../../assets/icons/icon-profile.svg";
 import iconBell from "../../assets/icons/icon-bell.svg";
+import organizerAvatar from "../../assets/icons/organizador.svg";
+import profileIcon from "../../assets/icons/icon-profile.svg";
 import { LogOut } from "lucide-react";
+import { clearSession, getSession } from "../../utils/authStorage";
 
 interface HeaderProps {
   isAuthenticated?: boolean;
@@ -30,6 +32,7 @@ const Header: React.FC<HeaderProps> = ({ isAuthenticated = false }) => {
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
+  const notificationRef = useRef<HTMLDivElement>(null);
 
   // Read the unread count and mark-as-read action.
   const {
@@ -39,9 +42,16 @@ const Header: React.FC<HeaderProps> = ({ isAuthenticated = false }) => {
     clearAll,
   } = useNotificationContext();
 
-  const savedUserRaw = localStorage.getItem("logged_user");
-  const user = savedUserRaw ? JSON.parse(savedUserRaw) : null;
+  const user = getSession();
   const isUserLoggedIn = isAuthenticated || !!user;
+  const userRole = user?.role?.toLowerCase();
+  const isOrganizer =
+    userRole === "organizador" || userRole === "administrador";
+  const currentRole = user
+    ? userRole === "organizador" || userRole === "administrador"
+      ? "Organizador"
+      : "Espectador"
+    : "Visitante";
 
   const isCreateEventPage = location.pathname === "/create-event";
   const headerClass = `${styles.header} ${isCreateEventPage ? styles["header--event-mobile"] : ""}`;
@@ -60,6 +70,21 @@ const Header: React.FC<HeaderProps> = ({ isAuthenticated = false }) => {
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    const handleNotificationClickOutside = (e: MouseEvent) => {
+      if (
+        notificationRef.current &&
+        !notificationRef.current.contains(e.target as Node)
+      ) {
+        setIsNotificationsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleNotificationClickOutside);
+    return () =>
+      document.removeEventListener("mousedown", handleNotificationClickOutside);
   }, []);
 
   const handleLogoClick = () => {
@@ -83,7 +108,7 @@ const Header: React.FC<HeaderProps> = ({ isAuthenticated = false }) => {
 
   const handleLogout = () => {
     console.clear();
-    localStorage.removeItem("logged_user");
+    clearSession();
     navigate("/login");
   };
 
@@ -104,9 +129,9 @@ const Header: React.FC<HeaderProps> = ({ isAuthenticated = false }) => {
         <span className={styles["header__logo-text"]}>Code Crafters</span>
       </div>
 
-      {isUserLoggedIn && (
-        <div className={styles.header__content}>
-          <div className={styles.header__search} ref={searchRef}>
+      <div className={styles.header__content}>
+          {isUserLoggedIn && (
+            <div className={styles.header__search} ref={searchRef}>
             <span className={styles["header__search-icon-wrapper"]}>
               <svg
                 className={styles["header__search-icon"]}
@@ -158,17 +183,20 @@ const Header: React.FC<HeaderProps> = ({ isAuthenticated = false }) => {
                 </li>
               </ul>
             )}
-          </div>
+            </div>
+          )}
 
           <div className={styles.header__actions}>
-            <button
-              className={styles.header__logoutMobile}
-              onClick={handleLogout}
-              aria-label="Cerrar sesión"
-              title="Cerrar sesión"
-            >
-              <LogOut size={20} color="#f43f5e" />
-            </button>
+            {isUserLoggedIn && (
+              <button
+                className={styles.header__logoutMobile}
+                onClick={handleLogout}
+                aria-label="Cerrar sesión"
+                title="Cerrar sesión"
+              >
+                <LogOut size={20} color="#f43f5e" />
+              </button>
+            )}
 
             <div className={styles.header__profile} aria-label="Perfil">
               <button
@@ -182,15 +210,15 @@ const Header: React.FC<HeaderProps> = ({ isAuthenticated = false }) => {
                 }}
               >
                 <img
-                  src={iconProfile}
-                  className={styles["header__action-img"]}
-                  alt="Perfil"
+                  src={isOrganizer ? organizerAvatar : profileIcon}
+                  className={styles["header__profile-avatar"]}
+                  alt={user?.name ?? "Perfil"}
                 />
               </button>
               {isProfileOpen && (
                 <div className={styles["header__profile-dropdown"]}>
-                  <strong>Admin Crafter</strong>
-                  <span>Organizador</span>
+                  <strong>{user?.name ?? "Invitado"}</strong>
+                  <span>{currentRole}</span>
                   <button
                     type="button"
                     className={styles["header__profile-logout"]}
@@ -204,7 +232,10 @@ const Header: React.FC<HeaderProps> = ({ isAuthenticated = false }) => {
             </div>
             <div className={styles.header__divider}></div>
 
-            <div className={styles["header__notification-wrapper"]}>
+            <div
+              className={styles["header__notification-wrapper"]}
+              ref={notificationRef}
+            >
               <button
                 className={styles["header__action-btn"]}
                 aria-label="Notificaciones"
@@ -227,8 +258,14 @@ const Header: React.FC<HeaderProps> = ({ isAuthenticated = false }) => {
                 )}
               </button>
 
-              {isNotificationsOpen && (
-                <div className={styles["header__notification-dropdown"]}>
+              <div
+                className={`${styles["header__notification-dropdown"]} ${
+                  isNotificationsOpen
+                    ? styles["header__notification-dropdown--open"]
+                    : ""
+                }`}
+                aria-hidden={!isNotificationsOpen}
+              >
                   <div className={styles["header__notification-header"]}>
                     <strong>Notificaciones</strong>
                     <button type="button" onClick={clearAll}>
@@ -251,12 +288,10 @@ const Header: React.FC<HeaderProps> = ({ isAuthenticated = false }) => {
                       No hay notificaciones.
                     </p>
                   )}
-                </div>
-              )}
+              </div>
             </div>
           </div>
         </div>
-      )}
     </header>
   );
 };
