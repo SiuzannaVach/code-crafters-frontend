@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import styles from "./Sidebar.module.scss";
 import explorerIcon from "../../assets/icons/explorer.svg";
 import gestionIcon from "../../assets/icons/gestión.svg";
 import organizerAvatar from "../../assets/icons/organizador.svg";
 import { LogOut, User } from "lucide-react";
+import { clearSession } from "../../utils/authStorage";
 
 interface SidebarUser {
   id: string;
@@ -18,23 +19,23 @@ export const Sidebar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [user, setUser] = useState<SidebarUser | null>(null);
-  useEffect(() => {
+  const [user] = useState<SidebarUser | null>(() => {
     const savedUserRaw = localStorage.getItem("logged_user");
-    if (savedUserRaw) {
-      try {
-        const parsedUser = JSON.parse(savedUserRaw) as SidebarUser;
-        setUser(parsedUser);
-      } catch (e) {
-        console.error("Error al parsear logged_user в Sidebar:", e);
-      }
+    if (!savedUserRaw) {
+      return null;
     }
-  }, [location.pathname]);
+    try {
+      return JSON.parse(savedUserRaw) as SidebarUser;
+    } catch (error: unknown) {
+      console.error("Error al parsear logged_user en Sidebar:", error);
+      return null;
+    }
+  });
 
   const isAuthenticated = user !== null;
   const currentName = user?.name ?? "Invitado";
 
-  // Безопасный перевод роли в нижний регистр
+  // Normalize the role before comparing it.
   const userRoleLower = user && user.role ? user.role.toLowerCase() : "";
   const isOrganizer =
     userRoleLower === "organizador" ||
@@ -46,19 +47,12 @@ export const Sidebar: React.FC = () => {
       ? "Organizador"
       : "Espectador"
     : "Visitante";
-
-  const getInitials = (name: string) => {
-    if (!name) return "";
-    const parts = name.trim().split(" ");
-    if (parts.length > 1) {
-      return (parts[0][0] + parts[1][0]).toUpperCase();
-    }
-    return name.slice(0, 2).toUpperCase();
-  };
+  const managementPath = isOrganizer ? "/dashboard" : "/my-events";
+  const managementLabel = isOrganizer ? "GESTIÓN" : "MIS EVENTOS";
 
   const handleLogout = () => {
     console.clear();
-    localStorage.removeItem("logged_user");
+    clearSession();
     navigate("/login");
   };
 
@@ -70,16 +64,12 @@ export const Sidebar: React.FC = () => {
             <div className={styles.avatarPlaceholderBox}>
               <User size={22} color="#a1a1aa" />
             </div>
-          ) : isOrganizer ? (
+          ) : (
             <img
               src={organizerAvatar}
               alt={currentName}
               className={styles.avatarImage}
             />
-          ) : (
-            <div className={styles.avatarInitials}>
-              {getInitials(currentName)}
-            </div>
           )}
         </div>
         <div className={styles.profileInfo}>
@@ -98,23 +88,23 @@ export const Sidebar: React.FC = () => {
           <span>EXPLORAR</span>
         </button>
 
-        {/* 🛠 МЕНЯЕМ ТОЛЬКО ЭТУ КНОПКУ: теперь она ведет на /dashboard */}
+        {/* The management button opens the dashboard. */}
         <button
           type="button"
           className={`${styles.navButton} ${
-            location.pathname === "/dashboard" ||
+            location.pathname === managementPath ||
             location.pathname === "/create-event"
               ? styles.navButtonActive
               : ""
           }`}
-          onClick={() => navigate("/dashboard")}
+          onClick={() => navigate(managementPath)}
         >
           <img
             src={gestionIcon}
             alt="Gestión de eventos"
             className={styles.navIcon}
           />
-          <span>GESTIÓN</span>
+          <span>{managementLabel}</span>
         </button>
       </nav>
 

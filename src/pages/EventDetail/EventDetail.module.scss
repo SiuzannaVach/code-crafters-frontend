@@ -12,6 +12,11 @@ $text-muted: #94a3b8;
   color: #ffffff;
   font-family: sans-serif;
 
+  &__btnSubmit:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
   // ==========================================
   // 📱 
   // ==========================================

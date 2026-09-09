@@ -1,10 +1,9 @@
-import { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Evento } from "../../types/Evento";
-import {
-  mockStats,
-  mockEventosCreados,
-} from "../../data/Dashboard/moskDashboard";
+import { useNotificationContext } from "../useNotificationContext/useNotificationContext";
+import { useEventContext } from "../useEventContext/useEventContext";
+import { clearSession, getSession } from "../../utils/authStorage";
 
 export const useDashboard = () => {
   const navigate = useNavigate();
@@ -12,25 +11,37 @@ export const useDashboard = () => {
   const [activeFilter, setActiveFilter] = useState<
     "todos" | "proximos" | "borradores"
   >("todos");
-  const [eventos, setEventos] = useState<Evento[]>(mockEventosCreados);
+  const { addNotification } = useNotificationContext();
+  const { eventos, deleteEvent } = useEventContext();
 
-  const savedUserRaw = localStorage.getItem("logged_user");
-  const user = savedUserRaw ? JSON.parse(savedUserRaw) : null;
+  const user = getSession();
   const currentName = user ? user.name : "Invitado";
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
 
+  // Safe deletion also sends a notification without breaking the parent.
   const handleDeleteEvent = (id: string) => {
+    // Capture the event name before deletion for the notification.
+    const targetEvent = eventos.find((event) => event.id === id);
+    const eventTitle = targetEvent ? targetEvent.titulo : "Evento";
+
     if (confirm("¿Estás seguro de que deseas eliminar este evento?")) {
-      setEventos((prev) => prev.filter((event) => event.id !== id));
+      // Remove the event from the shared state.
+      deleteEvent(id);
+
+      // Send the Spanish notification to the bell.
+      addNotification(
+        "Centro de notificaciones",
+        `El evento ${eventTitle} ha sido eliminado correctamente`,
+      );
     }
   };
 
   const handleLogout = () => {
     console.clear();
-    localStorage.removeItem("logged_user");
+    clearSession();
     navigate("/login");
   };
 
@@ -52,8 +63,27 @@ export const useDashboard = () => {
     });
   }, [eventos, searchTerm, activeFilter]);
 
+  const stats = useMemo(() => {
+    const getEstado = (evento: Evento) =>
+      evento.estado ?? evento.status ?? "activo";
+
+    return {
+      eventosActivos: eventos.filter(
+        (evento) => getEstado(evento) === "activo",
+      ).length,
+      asistentesTotales: eventos.reduce(
+        (total, evento) => total + (Number.isFinite(evento.vistas) ? evento.vistas : 0),
+        0,
+      ),
+      registradores: 0,
+      borradores: eventos.filter(
+        (evento) => getEstado(evento) === "borrador",
+      ).length,
+    };
+  }, [eventos]);
+
   return {
-    stats: mockStats,
+    stats,
     eventos: filteredEventos,
     searchTerm,
     activeFilter,

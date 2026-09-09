@@ -9,6 +9,8 @@ import {
   Button,
 } from "../../components/Dashboard/DashboardButton";
 import { Calendar, Users, Plus, Search } from "lucide-react";
+import { getSession } from "../../utils/authStorage";
+import organizerAvatar from "../../assets/icons/organizador.svg";
 
 export const Dashboard: React.FC = () => {
   const {
@@ -23,10 +25,18 @@ export const Dashboard: React.FC = () => {
   } = useDashboard();
 
   const navigate = useNavigate();
-  const savedUserRaw = localStorage.getItem("logged_user");
-  const currentUser = savedUserRaw ? JSON.parse(savedUserRaw) : null;
-  const displayName = currentUser?.name || currentUser?.fullName || "";
-  const userAvatar = currentUser?.avatar || "";
+  const currentUser = getSession();
+  const displayName = currentUser?.name ?? currentName;
+  const initials =
+    displayName === "Invitado"
+      ? "IN"
+      : displayName
+          .trim()
+          .split(/\s+/)
+          .slice(0, 2)
+          .map((part) => part[0] ?? "")
+          .join("")
+          .toUpperCase();
   const isOrganizer =
     currentUser?.role === "administrador" ||
     currentUser?.role === "organizador";
@@ -36,17 +46,15 @@ export const Dashboard: React.FC = () => {
       <div className={styles.mobileLayout}>
         <div className={styles.mobileLayout__profile}>
           <div className={styles.mobileLayout__profileHeader}>
-            {userAvatar ? (
+            {isOrganizer ? (
               <img
-                src={userAvatar}
+                src={organizerAvatar}
                 alt={displayName}
                 className={styles.mobileLayout__avatar}
               />
             ) : (
-              <div className={styles.mobileLayout__avatarPlaceholder}>
-                <span>
-                  {displayName ? displayName.slice(0, 2).toUpperCase() : "US"}
-                </span>
+              <div className={styles.mobileLayout__avatarInitials}>
+                {initials}
               </div>
             )}
             <div className={styles.mobileLayout__profileInfo}>
@@ -119,9 +127,7 @@ export const Dashboard: React.FC = () => {
         </div>
 
         <section className={styles.mobileLayout__eventsSection}>
-          {eventos
-            ?.filter((e: Evento) => e.id !== "4")
-            .map((evento: Evento) => (
+          {eventos.map((evento: Evento) => (
               <div key={evento.id} className={styles.eventCardMobile}>
                 <div className={styles.eventCardMobile__imageBox}>
                   <img src={evento.imagen} alt={evento.titulo} />
@@ -143,7 +149,9 @@ export const Dashboard: React.FC = () => {
 
                 <div className={styles.eventCardMobile__actions}>
                   <ActionButton
-                    onClick={() => navigate(`/edit-event/${evento.id}`)}
+                    onClick={() =>
+                      navigate(`/create-event?edit=${encodeURIComponent(evento.id)}`)
+                    }
                   >
                     Editar
                   </ActionButton>
@@ -167,7 +175,9 @@ export const Dashboard: React.FC = () => {
 
           <Button
             className={styles.desktopLayout__btnCreate}
-            onClick={() => navigate("/create-event")}
+            onClick={() =>
+              navigate(`/create-event?edit=${encodeURIComponent(evento.id)}`)
+            }
           >
             <Plus size={16} /> Crear Evento
           </Button>
@@ -232,18 +242,14 @@ export const Dashboard: React.FC = () => {
         </section>
 
         <section className={styles.desktopLayout__mainWrapper}>
-          {(() => {
-            const evento = eventos?.find((e: Evento) => e.id === "4");
-            if (!evento) return null;
-
-            return (
+          {eventos.map((evento: Evento) => (
               <div
                 key={String(evento.id)}
                 className={`baseCard ${styles.eventCardDesktop}`}
               >
                 <div className={styles["eventCardDesktop__image-wrapper"]}>
                   <span className={styles["eventCardDesktop__status-badge"]}>
-                    {evento.status === "activo" ? "Activo" : "Borrador"}
+                    ACTIVO
                   </span>
                   <img
                     src={evento.imagen}
@@ -263,7 +269,9 @@ export const Dashboard: React.FC = () => {
 
                   <div className={styles.eventCardDesktop__footerActions}>
                     <ActionButton
-                      onClick={() => navigate(`/edit-event/${evento.id}`)}
+                      onClick={() =>
+                        navigate(`/create-event?edit=${encodeURIComponent(evento.id)}`)
+                      }
                     >
                       Editar
                     </ActionButton>
@@ -274,8 +282,7 @@ export const Dashboard: React.FC = () => {
                   </div>
                 </div>
               </div>
-            );
-          })()}
+          ))}
         </section>
       </div>
     </div>

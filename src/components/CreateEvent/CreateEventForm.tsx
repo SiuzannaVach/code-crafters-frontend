@@ -28,13 +28,36 @@ type InputFieldProps = DynamicInputProps & {
   id: string;
 };
 
-export const CreateEventInputField: React.FC<InputFieldProps> = ({ label, id, as = 'input', children, ...props }) => {
-  const Component = as as any;
+export const CreateEventInputField: React.FC<InputFieldProps> = (fieldProps) => {
+  if (fieldProps.as === 'textarea') {
+    const { label, id, children, as, ...props } = fieldProps;
+    void as;
+    return (
+      <CreateEventFormGroup label={label} id={id}>
+        <textarea id={id} className={styles.input} {...props}>
+          {children}
+        </textarea>
+      </CreateEventFormGroup>
+    );
+  }
+
+  if (fieldProps.as === 'select') {
+    const { label, id, children, as, ...props } = fieldProps;
+    void as;
+    return (
+      <CreateEventFormGroup label={label} id={id}>
+        <select id={id} className={styles.input} {...props}>
+          {children}
+        </select>
+      </CreateEventFormGroup>
+    );
+  }
+
+  const { label, id, as, ...props } = fieldProps;
+  void as;
   return (
     <CreateEventFormGroup label={label} id={id}>
-      <Component id={id} className={styles.input} {...props}>
-        {children}
-      </Component>
+      <input id={id} className={styles.input} {...props} />
     </CreateEventFormGroup>
   );
 };

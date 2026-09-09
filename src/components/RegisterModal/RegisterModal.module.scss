@@ -1,6 +1,6 @@
 @use '../../styles/global.module' as *;
 
-// 📱 MOBILE STYLES (Мобильный макет)
+// Mobile styles.
 .register-modal {
   position: fixed;
   top: 0;
@@ -134,7 +134,7 @@
     text-decoration: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    appearance: none; // Сброс для линтера
+    appearance: none; // Reset native styling.
     color: $modal-text-purple !important;
     font-weight: 700;
     text-shadow: 0 0 6px rgba($modal-text-purple, 0.4);

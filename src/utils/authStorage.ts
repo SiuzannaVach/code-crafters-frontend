@@ -1,4 +1,5 @@
 import { getItem, setItem } from "./storage";
+import { notifySessionChange } from "./sessionEvents";
 
 export interface StoredUser {
   id: string;
@@ -24,15 +25,16 @@ export function saveNewUser(user: StoredUser): void {
   users.push(user);
   setItem(USERS_KEY, users);
 }
-export function saveSession(user: any): void {
+export function saveSession(user: StoredUser): void {
   localStorage.setItem("logged_user", JSON.stringify(user));
 }
 
-export function getSession(): any {
+export function getSession(): StoredUser | null {
   const saved = localStorage.getItem("logged_user");
   return saved ? JSON.parse(saved) : null;
 }
 
 export function clearSession(): void {
   localStorage.removeItem("logged_user");
+  notifySessionChange();
 }
