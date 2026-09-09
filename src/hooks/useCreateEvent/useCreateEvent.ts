@@ -1,23 +1,9 @@
-import { useState, type ChangeEvent, type FormEvent, useEffect } from "react";
-
-type EventStatus = "borrador" | "activo";
-
-interface StoredCreatedEvent {
-  id: string;
-  title: string;
-  description: string;
-  category: string;
-  maxCapacity: number;
-  date: string | null;
-  time: string;
-  isOnline: boolean;
-  linkOrAddress: string;
-  imageName: string | null;
-  status: EventStatus;
-  createdAt: string;
-}
-
-const CREATED_EVENTS_KEY = "cc_created_events";
+import { useState, type ChangeEvent, type FormEvent } from "react";
+import type { Evento } from "../../types/Evento";
+import {
+  CREATED_EVENTS_KEY,
+  readCreatedEvents,
+} from "../../utils/eventStorage";
 
 export interface EventFormState {
   title: string;
@@ -43,21 +29,38 @@ const INITIAL_STATE: EventFormState = {
   image: null,
 };
 
-export const useCreateEvent = () => {
-  const [formData, setFormData] = useState<EventFormState>(INITIAL_STATE);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!formData.image) {
-      setImagePreview(null);
+const readImageAsDataUrl = (image: File | null): Promise<string> =>
+  new Promise((resolve, reject) => {
+    if (!image) {
+      resolve("");
       return;
     }
 
-    const objectUrl = URL.createObjectURL(formData.image);
-    setImagePreview(objectUrl);
+    const reader = new FileReader();
+    reader.addEventListener("load", () => {
+      if (typeof reader.result !== "string") {
+        reject(new Error("The selected image could not be serialized."));
+        return;
+      }
 
-    return () => URL.revokeObjectURL(objectUrl);
-  }, [formData.image]);
+      resolve(reader.result);
+    });
+    reader.addEventListener("error", () => {
+      reject(reader.error ?? new Error("The selected image could not be read."));
+    });
+    reader.readAsDataURL(image);
+  });
+
+const toEventDate = (date: Date, time: string): string => {
+  const eventDate = new Date(date);
+  const [hours, minutes] = time.split(":").map(Number);
+  eventDate.setHours(hours, minutes, 0, 0);
+  return eventDate.toISOString();
+};
+
+export const useCreateEvent = () => {
+  const [formData, setFormData] = useState<EventFormState>(INITIAL_STATE);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const handleChange = (
     event: ChangeEvent<
@@ -81,72 +84,67 @@ export const useCreateEvent = () => {
   };
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
+    const image = event.target.files?.[0] ?? null;
+    setFormData((previous) => ({ ...previous, image }));
 
-    if (file) {
-      setFormData((previous) => ({ ...previous, image: file }));
+    if (!image) {
+      setImagePreview(null);
+      return;
     }
+
+    void readImageAsDataUrl(image)
+      .then(setImagePreview)
+      .catch((error: unknown) => {
+        console.error("Unable to preview the selected image.", error);
+        setImagePreview(null);
+      });
   };
 
-  const saveEvent = (status: EventStatus) => {
+  const saveEvent = async () => {
     if (
-      status === "activo" &&
-      (!formData.title.trim() ||
-        !formData.description.trim() ||
-        !formData.category ||
-        !formData.maxCapacity ||
-        !formData.date ||
-        !formData.time ||
-        !formData.linkOrAddress.trim())
+      !formData.title.trim() ||
+      !formData.description.trim() ||
+      !formData.category ||
+      !formData.date ||
+      !formData.time ||
+      !formData.linkOrAddress.trim()
     ) {
       window.alert(
-        "Completa todos los campos obligatorios antes de publicar el evento.",
+        "Completa todos los campos obligatorios antes de guardar el evento.",
       );
       return;
     }
 
-    const event: StoredCreatedEvent = {
+    const savedEvent: Evento = {
       id: `event-${Date.now()}`,
-      title: formData.title.trim(),
-      description: formData.description.trim(),
-      category: formData.category,
-      maxCapacity: Number(formData.maxCapacity) || 0,
-      date: formData.date?.toISOString() ?? null,
-      time: formData.time,
-      isOnline: formData.isOnline,
-      linkOrAddress: formData.linkOrAddress.trim(),
-      imageName: formData.image?.name ?? null,
-      status,
-      createdAt: new Date().toISOString(),
+      titulo: formData.title.trim(),
+      descripcion: formData.description.trim(),
+      fecha: toEventDate(formData.date, formData.time),
+      imagen: await readImageAsDataUrl(formData.image),
+      modalidad: formData.isOnline ? "online" : "presencial",
+      ubicacion: formData.linkOrAddress.trim(),
+      categoria: formData.category,
+      organizadorId: "user-1",
+      vistas: 0,
+      estado: "activo",
     };
-
-    const savedEvents = JSON.parse(
-      localStorage.getItem(CREATED_EVENTS_KEY) || "[]",
-    ) as StoredCreatedEvent[];
 
     localStorage.setItem(
       CREATED_EVENTS_KEY,
-      JSON.stringify([...savedEvents, event]),
+      JSON.stringify([...readCreatedEvents(), savedEvent]),
     );
-
-    window.alert(
-      status === "activo"
-        ? "¡Evento publicado correctamente!"
-        : "Borrador guardado correctamente.",
-    );
-
-    if (status === "activo") {
-      setFormData(INITIAL_STATE);
-    }
+    window.alert("¡Evento guardado correctamente!");
+    setFormData(INITIAL_STATE);
+    setImagePreview(null);
   };
 
   const handleSaveDraft = () => {
-    saveEvent("borrador");
+    void saveEvent();
   };
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    saveEvent("activo");
+    void saveEvent();
   };
 
   return {
