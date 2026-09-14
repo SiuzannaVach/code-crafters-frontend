@@ -324,10 +324,10 @@ Proyecto desarrollado siguiendo **Scrum** de forma individual:
 
 - [x] Definición de arquitectura y user stories
 - [x] Diseño de mockups (Figma)
-- [ ] Sprint 1 — Autenticación y MVP Core
-- [ ] Sprint 2 — Gestión de eventos y filtros
-- [ ] Sprint 3 — Notificaciones y estadísticas
-- [ ] Despliegue
+- [x] Sprint 1 — Autenticación y MVP Core
+- [x] Sprint 2 — Gestión de eventos y filtros
+- [x] Sprint 3 — Notificaciones y estadísticas
+- [x] Despliegue
 
 ---
 
