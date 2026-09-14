@@ -64,12 +64,16 @@ export const Sidebar: React.FC = () => {
             <div className={styles.avatarPlaceholderBox}>
               <User size={22} color="#a1a1aa" />
             </div>
-          ) : (
+          ) : isOrganizer ? (
             <img
               src={organizerAvatar}
               alt={currentName}
               className={styles.avatarImage}
             />
+          ) : (
+            <div className={styles.avatarPlaceholderBox}>
+              <User size={22} color="#a1a1aa" />
+            </div>
           )}
         </div>
         <div className={styles.profileInfo}>

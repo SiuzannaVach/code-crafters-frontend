@@ -4,11 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { useNotificationContext } from "../useNotificationContext/useNotificationContext";
 import { getSession } from "../../utils/authStorage";
 import type { Evento } from "../../types/Evento";
+import { desktopEvents, mobileEvents } from "../../data/Home/HomeMosk";
 import {
   getRegistrationKey,
   LOCAL_STORAGE_UPDATE_EVENT,
+  REGISTRATION_CHANGED_EVENT,
   notifyRegistrationChange,
 } from "../../utils/eventRegistration";
+import { AUTH_SESSION_CHANGED_EVENT } from "../../utils/sessionEvents";
 
 interface MyEventsState {
   inscribedEvents: Evento[];
@@ -31,49 +34,69 @@ export const useMyEvents = () => {
   const [state, setState] = useState<MyEventsState>(INITIAL_STATE);
 
   useEffect(() => {
-    let isActive = true;
-
-    Promise.resolve()
-      .then(() => {
+    const loadRegisteredEvents = () => {
+      try {
         const role =
-          typeof sessionRole === "string"
-            ? sessionRole.toLowerCase()
-            : "";
+          typeof sessionRole === "string" ? sessionRole.toLowerCase() : "";
 
         if (role !== "espectador") {
-          return [];
+          setState({ inscribedEvents: [], isLoading: false, error: null });
+          return;
         }
 
-        return eventos.filter((evento) => {
+        const homeEvents: Evento[] = [...desktopEvents, ...mobileEvents].map(
+          (evento) => ({
+            id: String(evento.id),
+            titulo: evento.title,
+            descripcion: Array.isArray(evento.description)
+              ? evento.description.join(" ")
+              : evento.description ?? "",
+            fecha: evento.date,
+            imagen: evento.image,
+            modalidad:
+              evento.modality.toLowerCase().includes("presencial")
+                ? "presencial"
+                : "online",
+            ubicacion: evento.location,
+            categoria: evento.category,
+            organizadorId: "mock-organizer",
+            vistas: evento.views ?? 0,
+            estado: "activo",
+          }),
+        );
+        const eventsById = new Map(
+          [...eventos, ...homeEvents].map((evento) => [String(evento.id), evento]),
+        );
+        const inscribedEvents = [...eventsById.values()].filter((evento) => {
           const registrationKey = getRegistrationKey(evento.id);
           return (
             registrationKey !== null &&
             localStorage.getItem(registrationKey) === "true"
           );
         });
-      })
-      .then((inscribedEvents) => {
-        if (isActive) {
-          setState({
-            inscribedEvents,
-            isLoading: false,
-            error: null,
-          });
-        }
-      })
-      .catch((error: unknown) => {
-        if (isActive) {
-          console.error("Error al cargar los eventos registrados:", error);
-          setState({
-            inscribedEvents: [],
-            isLoading: false,
-            error: "No se pudieron cargar tus eventos.",
-          });
-        }
-      });
+
+        setState({ inscribedEvents, isLoading: false, error: null });
+      } catch (error: unknown) {
+        console.error("Error al cargar los eventos registrados:", error);
+        setState({
+          inscribedEvents: [],
+          isLoading: false,
+          error: "No se pudieron cargar tus eventos.",
+        });
+      }
+    };
+
+    loadRegisteredEvents();
+    window.addEventListener("storage", loadRegisteredEvents);
+    window.addEventListener(LOCAL_STORAGE_UPDATE_EVENT, loadRegisteredEvents);
+    window.addEventListener(REGISTRATION_CHANGED_EVENT, loadRegisteredEvents);
+    window.addEventListener(AUTH_SESSION_CHANGED_EVENT, loadRegisteredEvents);
 
     return () => {
-      isActive = false;
+      window.removeEventListener("storage", loadRegisteredEvents);
+      window.removeEventListener(LOCAL_STORAGE_UPDATE_EVENT, loadRegisteredEvents);
+      window.removeEventListener(REGISTRATION_CHANGED_EVENT, loadRegisteredEvents);
+      window.removeEventListener(AUTH_SESSION_CHANGED_EVENT, loadRegisteredEvents);
     };
   }, [eventos, sessionRole]);
 

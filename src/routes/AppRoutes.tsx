@@ -9,6 +9,7 @@ import EventDetail from "../pages/EventDetail/EventDetail";
 import { Dashboard } from "../pages/Dashboard/Dashboard";
 import MyEvents from "../pages/MyEvents/MyEvents";
 import { getSession } from "../utils/authStorage";
+import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
 
 const ManagementRoute: React.FC = () => {
   const user = getSession();
@@ -42,12 +43,14 @@ const AppRoutes: React.FC = () => {
       <Route path="/register" element={<RegisterModal />} />
 
       {/* Main pages share the authenticated layout. */}
-      <Route element={<AuthenticatedLayout />}>
-        <Route path="/home" element={<Home />} />
-        <Route path="/events/:id" element={<EventDetail />} />
-        <Route path="/create-event" element={<OrganizerRoute />} />
-        <Route path="/dashboard" element={<ManagementRoute />} />
-        <Route path="/my-events" element={<MyEvents />} />
+      <Route element={<ProtectedRoute />}>
+        <Route element={<AuthenticatedLayout />}>
+          <Route path="/home" element={<Home />} />
+          <Route path="/events/:id" element={<EventDetail />} />
+          <Route path="/create-event" element={<OrganizerRoute />} />
+          <Route path="/dashboard" element={<ManagementRoute />} />
+          <Route path="/my-events" element={<MyEvents />} />
+        </Route>
       </Route>
 
       {/* Unknown routes return to login. */}
