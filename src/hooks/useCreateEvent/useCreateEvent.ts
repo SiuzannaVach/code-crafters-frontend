@@ -135,15 +135,16 @@ export const useCreateEvent = () => {
       });
   };
 
-  const saveEvent = async () => {
-    if (
+  const saveEvent = async (estado: "activo" | "borrador") => {
+    const hasMissingRequiredFields =
       !formData.title.trim() ||
       !formData.description.trim() ||
       !formData.category ||
       !formData.date ||
       !formData.time ||
-      !formData.linkOrAddress.trim()
-    ) {
+      !formData.linkOrAddress.trim();
+
+    if (estado === "activo" && hasMissingRequiredFields) {
       window.alert(
         "Completa todos los campos obligatorios antes de guardar el evento.",
       );
@@ -153,18 +154,21 @@ export const useCreateEvent = () => {
     const image = formData.image
       ? await readImageAsDataUrl(formData.image)
       : editingEvent?.imagen ?? "";
+    const fecha = formData.date
+      ? toEventDate(formData.date, formData.time || "00:00")
+      : editingEvent?.fecha ?? new Date().toISOString();
     const savedEvent: Evento = {
       id: editingEvent?.id ?? `event-${Date.now()}`,
       titulo: formData.title.trim(),
       descripcion: formData.description.trim(),
-      fecha: toEventDate(formData.date, formData.time),
+      fecha,
       imagen: image,
       modalidad: formData.isOnline ? "online" : "presencial",
       ubicacion: formData.linkOrAddress.trim(),
       categoria: formData.category,
       organizadorId: "user-1",
       vistas: 0,
-      estado: "activo",
+      estado,
     };
 
     if (editingEvent) {
@@ -184,12 +188,12 @@ export const useCreateEvent = () => {
   };
 
   const handleSaveDraft = () => {
-    void saveEvent();
+    void saveEvent("borrador");
   };
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    void saveEvent();
+    void saveEvent("activo");
   };
 
   return {

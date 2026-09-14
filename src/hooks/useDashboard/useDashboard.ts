@@ -53,10 +53,10 @@ export const useDashboard = () => {
       if (!matchesSearch) return false;
 
       if (activeFilter === "borradores") {
-        return evento.modalidad === "online";
+        return evento.estado === "borrador";
       }
       if (activeFilter === "proximos") {
-        return evento.modalidad === "presencial";
+        return evento.estado === "activo";
       }
 
       return true;
